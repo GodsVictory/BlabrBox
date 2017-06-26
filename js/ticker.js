@@ -8,7 +8,7 @@ function startTicker() {
     for (var i = messages.length - 1; i >= 0; i--) {
       messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .1);
       messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .1);
-      count += messages[i].z;
+      count += messages[i].scale.x + 1;
     }
 
     for (var i = messages.length - 1; i >= 0; i--) {
@@ -21,22 +21,22 @@ function startTicker() {
         }
         messages[i].grow--;
       } else {
-        messages[i].scale.x -= '.'.concat(pad(count, 5));
-        messages[i].scale.y -= '.'.concat(pad(count, 5));
+        messages[i].scale.x -= '.'.concat(pad(Math.round(count), 5));
+        messages[i].scale.y -= '.'.concat(pad(Math.round(count), 5));
       }
 
       // COLLISION
       for (var j = messages.length - 1; j >= 0; j--) {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
-          if (messages[i].x <= messages[j].x) // move left
-            messages[i].vx += Math.abs(messages[j].scale.x / messages[i].scale.x + (messages[j].vx + messages[i].vx)) * (-1 + messages[i].x / messages[j].x);
-          else if (messages[i].x > messages[j].x) // move right
-            messages[i].vx += Math.abs(messages[j].scale.x / messages[i].scale.x + (messages[j].vx + messages[i].vx)) * (-1 + messages[i].x / messages[j].x);
-          if (messages[i].y <= messages[j].y) // move up
-            messages[i].vy += Math.abs(messages[j].scale.y / messages[i].scale.y + (messages[j].vy + messages[i].vy)) * (-1 + messages[i].y / messages[j].y);
-          else if (messages[i].y > messages[j].y) // move down
-            messages[i].vy += Math.abs(messages[j].scale.y / messages[i].scale.y + (messages[j].vy + messages[i].vy)) * (-1 + messages[i].y / messages[j].y);
+          if (messages[i].x <= messages[j].x) // hit right
+            messages[i].vx += 5 * messages[j].scale.x / (-1 + messages[i].x / messages[j].x);
+          else if (messages[i].x > messages[j].x) // hit left
+            messages[i].vx += 5 * messages[j].scale.x / (-1 + messages[i].x / messages[j].x);
+          if (messages[i].y <= messages[j].y) // hit bottom
+            messages[i].vy += 5 * messages[j].scale.y / (-1 + messages[i].y / messages[j].y);
+          else if (messages[i].y > messages[j].y) // hit top
+            messages[i].vy += 5 * messages[j].scale.y / (-1 + messages[i].y / messages[j].y);
         }
       }
 
@@ -51,7 +51,7 @@ function startTicker() {
         messages[i].vy -= 10 * (messages[i].scale.y + 1);
 
       // SET NEW MAX VELOCITY
-      messages[i].maxVel = 10 / messages[i].scale.x;
+      messages[i].maxVel = 3 / messages[i].scale.x;
 
       // RESET VELOCITY TO MAX
       if (messages[i].vx > messages[i].maxVel)
