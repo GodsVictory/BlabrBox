@@ -12,6 +12,7 @@ function startTicker() {
     }
 
     for (var i = messages.length - 1; i >= 0; i--) {
+      var scale = messages[i].scale.x + 1;
 
       // GROW OR SHRINK
       if (messages[i].grow) {
@@ -21,8 +22,8 @@ function startTicker() {
         }
         messages[i].grow--;
       } else {
-        messages[i].scale.x -= '.'.concat(pad(Math.round(count), 5));
-        messages[i].scale.y -= '.'.concat(pad(Math.round(count), 5));
+        messages[i].scale.x -= '.'.concat(pad(Math.round(count), 5)) * scale;
+        messages[i].scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
       }
 
       // COLLISION
@@ -30,28 +31,28 @@ function startTicker() {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
           if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += 5 * messages[j].scale.x / (-1 + messages[i].x / messages[j].x);
+            messages[i].vx += scale * (-1 + messages[i].x / messages[j].x);
           else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += 5 * messages[j].scale.x / (-1 + messages[i].x / messages[j].x);
+            messages[i].vx += scale * (-1 + messages[i].x / messages[j].x);
           if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += 5 * messages[j].scale.y / (-1 + messages[i].y / messages[j].y);
+            messages[i].vy += scale * (-1 + messages[i].y / messages[j].y);
           else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += 5 * messages[j].scale.y / (-1 + messages[i].y / messages[j].y);
+            messages[i].vy += scale * (-1 + messages[i].y / messages[j].y);
         }
       }
 
       // KEEP IN BOUNDS
       if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 10 * (messages[i].scale.x + 1);
+        messages[i].vx += 10 * scale;
       if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 10 * (messages[i].scale.x + 1);
+        messages[i].vx -= 10 * scale;
       if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 10 * (messages[i].scale.y + 1);
+        messages[i].vy += 10 * scale;
       if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 10 * (messages[i].scale.y + 1);
+        messages[i].vy -= 10 * scale;
 
       // SET NEW MAX VELOCITY
-      messages[i].maxVel = 3 / messages[i].scale.x;
+      messages[i].maxVel = 20 * scale;
 
       // RESET VELOCITY TO MAX
       if (messages[i].vx > messages[i].maxVel)
@@ -64,8 +65,8 @@ function startTicker() {
         messages[i].vy = -messages[i].maxVel;
 
       // SLOW DOWN
-      messages[i].vx = lerp(messages[i].vx, 0, .01);
-      messages[i].vy = lerp(messages[i].vy, 0, .01);
+      messages[i].vx = lerp(messages[i].vx, 0, .02 / scale);
+      messages[i].vy = lerp(messages[i].vy, 0, .02 / scale);
 
       // REMOVE WHEN SCALE = 0
       if (messages[i].scale.x <= 0) {
