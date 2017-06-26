@@ -16,8 +16,8 @@ function startTicker() {
       // GROW OR SHRINK
       if (messages[i].grow) {
         if (messages[i].width < window.innerWidth - 10 && messages[i].height < window.innerHeight - 10) {
-          messages[i].scale.x += .015; // (window.innerWidth * window.innerHeight);// * .00000001;
-          messages[i].scale.y += .015; // (window.innerWidth * window.innerHeight);// * .00000001;
+          messages[i].scale.x += (window.innerWidth + window.innerHeight) * .00001;
+          messages[i].scale.y += (window.innerWidth + window.innerHeight) * .00001;
         }
         messages[i].grow--;
       } else {
@@ -40,6 +40,16 @@ function startTicker() {
         }
       }
 
+      // KEEP IN BOUNDS
+      if (messages[i].x - messages[i].width / 2 < 0)
+        messages[i].vx += 10 * (messages[i].scale.x + 1);
+      if (messages[i].x + messages[i].width / 2 > window.innerWidth)
+        messages[i].vx -= 10 * (messages[i].scale.x + 1);
+      if (messages[i].y - messages[i].height / 2 < 0)
+        messages[i].vy += 10 * (messages[i].scale.y + 1);
+      if (messages[i].y + messages[i].height / 2 > window.innerHeight)
+        messages[i].vy -= 10 * (messages[i].scale.y + 1);
+
       // SET NEW MAX VELOCITY
       messages[i].maxVel = 10 / messages[i].scale.x;
 
@@ -52,16 +62,6 @@ function startTicker() {
         messages[i].vy = messages[i].maxVel;
       else if (messages[i].vy < -messages[i].maxVel)
         messages[i].vy = -messages[i].maxVel;
-
-      // KEEP IN BOUNDS
-      if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 5 * (messages[i].scale.x + 1);
-      if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 5 * (messages[i].scale.x + 1);
-      if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 5 * (messages[i].scale.y + 1);
-      if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 5 * (messages[i].scale.y + 1);
 
       // SLOW DOWN
       messages[i].vx = lerp(messages[i].vx, 0, .01);
