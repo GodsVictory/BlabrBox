@@ -1,6 +1,16 @@
 function startTicker() {
+  var count = 0;
   app.ticker.add(function(delta) {
     app.stage.children.sort(depthCompare);
+
+    // APPLY VELOCITY
+    count = 0;
+    for (var i = messages.length - 1; i >= 0; i--) {
+      messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .1);
+      messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .1);
+      count += messages[i].z;
+    }
+
     for (var i = messages.length - 1; i >= 0; i--) {
 
       // GROW OR SHRINK
@@ -11,8 +21,8 @@ function startTicker() {
         }
         messages[i].grow--;
       } else {
-        messages[i].scale.x -= messages.length / (messages[i].scale.x + 1);
-        messages[i].scale.y -= messages.length / (messages[i].scale.y + 1);
+        messages[i].scale.x -= '.'.concat(pad(count, 5));
+        messages[i].scale.y -= '.'.concat(pad(count, 5));
       }
 
       // COLLISION
@@ -45,13 +55,13 @@ function startTicker() {
 
       // KEEP IN BOUNDS
       if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 5 * messages[i].scale.x;
+        messages[i].vx += 5 * (messages[i].scale.x + 1);
       if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 5 * messages[i].scale.x;
+        messages[i].vx -= 5 * (messages[i].scale.x + 1);
       if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 5 * messages[i].scale.y;
+        messages[i].vy += 5 * (messages[i].scale.y + 1);
       if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 5 * messages[i].scale.y;
+        messages[i].vy -= 5 * (messages[i].scale.y + 1);
 
       // SLOW DOWN
       messages[i].vx = lerp(messages[i].vx, 0, .01);
@@ -62,12 +72,6 @@ function startTicker() {
         messages[i].destroy();
         messages.splice(i, 1);
       }
-    }
-
-    // APPLY VELOCITY
-    for (var i = messages.length - 1; i >= 0; i--) {
-      messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .1);
-      messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .1);
     }
   });
 }
@@ -89,4 +93,10 @@ function collides(a, b) {
     a.x + a.width / divideWidthBy > b.x - b.width / divideWidthBy &&
     a.y - a.height / divideHeightBy < b.y + b.height / divideHeightBy &&
     a.y + a.height / divideHeightBy > b.y - b.height / divideHeightBy;
+}
+
+function pad(num, size) {
+  var s = num + "";
+  while (s.length < size) s = "0" + s;
+  return s;
 }
