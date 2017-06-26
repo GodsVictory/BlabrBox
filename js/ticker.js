@@ -11,9 +11,8 @@ function startTicker() {
         }
         messages[i].grow--;
       } else {
-        var mag = messages.length / messages[i].scale.x / 50000;
-        messages[i].scale.x = lerp(messages[i].scale.x, -.1, mag);
-        messages[i].scale.y = lerp(messages[i].scale.y, -.1, mag);
+        messages[i].scale.x -= messages.length / (messages[i].scale.x + 1);
+        messages[i].scale.y -= messages.length / (messages[i].scale.y + 1);
       }
 
       // COLLISION
