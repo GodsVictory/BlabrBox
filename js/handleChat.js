@@ -4,7 +4,7 @@ function handleChat(channel, user, message, self) {
     for (var i = app.stage.children.length - 1; i >= 0; i--) {
       if (message == app.stage.children[i].text) {
         exists = true;
-        app.stage.children[i].grow += 25;
+        app.stage.children[i].grow += 50;
         break;
       }
     }
