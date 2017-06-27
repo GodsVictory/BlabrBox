@@ -13,7 +13,7 @@ function Chat(message) {
   chat.anchor.set(.5);
   chat.scale.x = 0;
   chat.scale.y = 0;
-  chat.grow = 25;
+  chat.grow = 50;
   chat.vx = 0;
   chat.vy = 0;
   chat.maxVel = 0;
