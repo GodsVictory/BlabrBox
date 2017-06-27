@@ -1,8 +1,12 @@
 function startTicker() {
   app.ticker.add(function(delta) {
-    if (channelInput.grow && channelInput.scale.x <= 1) {
+    if (channelInput.grow && channelInput.width < window.innerWidth * .5 && channelInput.height < window.innerHeight * .5) {
       channelInput.scale.x += .1;
       channelInput.scale.y += .1;
+    }
+    if (channelInput.grow && channelInput.width > window.innerWidth * .5 || channelInput.height > window.innerHeight * .5) {
+      channelInput.scale.x -= .1;
+      channelInput.scale.y -= .1;
     }
     if (!channelInput.grow && channelInput.scale.x > 0) {
       channelInput.scale.x -= .01;

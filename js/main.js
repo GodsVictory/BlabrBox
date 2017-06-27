@@ -22,7 +22,7 @@ function init() {
 
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 128,
+    fontSize: 256,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
