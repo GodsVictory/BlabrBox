@@ -6,9 +6,10 @@ function startTicker() {
     // APPLY VELOCITY
     count = 0;
     for (var i = messages.length - 1; i >= 0; i--) {
-      messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .1);
-      messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .1);
+      messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .05);
+      messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .05);
       count += messages[i].scale.x + 1;
+      5
     }
 
     for (var i = messages.length - 1; i >= 0; i--) {
@@ -35,25 +36,25 @@ function startTicker() {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
           if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += 10 / scale * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 50;
           else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += 10 / scale * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 50;
           if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += 10 / scale * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 50;
           else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += 10 / scale * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 50;
         }
       }
 
       // KEEP IN BOUNDS
       if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 1 * scale;
+        messages[i].vx += 10 * scale;
       if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 1 * scale;
+        messages[i].vx -= 10 * scale;
       if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 1 * scale;
+        messages[i].vy += 10 * scale;
       if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 1 * scale;
+        messages[i].vy -= 10 * scale;
 
       // SET NEW MAX VELOCITY
       messages[i].maxVel = 50 / scale;
