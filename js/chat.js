@@ -19,7 +19,7 @@ function Chat(message) {
   chat.maxVel = 0;
   chat.x = window.innerWidth * Math.random();
   chat.y = window.innerHeight * Math.random();
-  app.stage.addChild(chat);
+  chatContainer.addChild(chat);
   return chat;
 }
 

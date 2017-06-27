@@ -1,10 +1,10 @@
 function handleChat(channel, user, message, self) {
   if (!document.hidden) {
     var exists = false;
-    for (var i = app.stage.children.length - 1; i >= 0; i--) {
-      if (message == app.stage.children[i].text) {
+    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+      if (message == chatContainer.children[i].text) {
         exists = true;
-        app.stage.children[i].grow += 30;
+        chatContainer.children[i].grow += 30;
         break;
       }
     }

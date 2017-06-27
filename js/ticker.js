@@ -1,13 +1,21 @@
 function startTicker() {
   app.ticker.add(function(delta) {
-    app.stage.children.sort(depthCompare);
-    var totalMessages = app.stage.children.length - 1;
+    if (channelInput.grow && channelInput.scale.x <= 1) {
+      channelInput.scale.x += .1;
+      channelInput.scale.y += .1;
+    }
+    if (!channelInput.grow && channelInput.scale.x > 0) {
+      channelInput.scale.x -= .01;
+      channelInput.scale.y -= .01;
+    }
+    chatContainer.children.sort(depthCompare);
+    var totalMessages = chatContainer.children.length - 1;
     var count = 0;
     for (var i = totalMessages; i >= 0; i--)
-      count += app.stage.children[i].scale.x + 1;
+      count += chatContainer.children[i].scale.x + 1;
 
     for (var i = totalMessages; i >= 0; i--) {
-      var message = app.stage.children[i];
+      var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
 
       // GROW OR SHRINK
@@ -24,7 +32,7 @@ function startTicker() {
 
       // COLLISION
       for (var j = totalMessages; j >= 0; j--) {
-        var otherMessage = app.stage.children[j];
+        var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
         if (collides(message, otherMessage)) {
           message.vx += (-1 + message.x / otherMessage.x) * otherMessage.scale.x / scale;
@@ -58,7 +66,7 @@ function startTicker() {
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0) {
         message.destroy();
-        totalMessages = app.stage.children.length - 1;
+        totalMessages = chatContainer.children.length - 1;
       }
     }
   });
