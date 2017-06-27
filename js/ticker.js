@@ -1,78 +1,79 @@
 function startTicker() {
-  var count = 0;
   app.ticker.add(function(delta) {
     app.stage.children.sort(depthCompare);
+    var totalMessages = app.stage.children.length - 1;
+    var count = 0;
+    for (var i = totalMessages; i >= 0; i--)
+      count += app.stage.children[i].scale.x + 1;
 
-    // APPLY VELOCITY
-    count = 0;
-    for (var i = messages.length - 1; i >= 0; i--) {
-      messages[i].x = lerp(messages[i].x, messages[i].x + messages[i].vx, .05);
-      messages[i].y = lerp(messages[i].y, messages[i].y + messages[i].vy, .05);
-      count += messages[i].scale.x + 1;
-      5
-    }
-
-    for (var i = messages.length - 1; i >= 0; i--) {
-      var scale = messages[i].scale.x + 1;
+    for (var i = totalMessages; i >= 0; i--) {
+      var message = app.stage.children[i];
+      var scale = message.scale.x + 1;
 
       // GROW OR SHRINK
-      if (messages[i].grow) {
-        if (messages[i].width < window.innerWidth - 10 && messages[i].height < window.innerHeight - 10) {
-          messages[i].scale.x += (window.innerWidth + window.innerHeight) * .00001;
-          messages[i].scale.y += (window.innerWidth + window.innerHeight) * .00001;
+      if (message.grow) {
+        if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10) {
+          message.scale.x += (window.innerWidth + window.innerHeight) * .0000025;
+          message.scale.y += (window.innerWidth + window.innerHeight) * .0000025;
         }
-        messages[i].grow--;
+        message.grow--;
       } else {
-        messages[i].scale.x -= '.'.concat(pad(Math.round(count), 5)) * scale;
-        messages[i].scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
+        message.scale.x -= '.'.concat(pad(Math.round(count), 5)) * scale;
+        message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
       }
 
-      // SLOW DOWN
-      messages[i].vx = lerp(messages[i].vx, 0, .005 / scale);
-      messages[i].vy = lerp(messages[i].vy, 0, .005 / scale);
-
       // COLLISION
-      for (var j = messages.length - 1; j >= 0; j--) {
-        if (messages[i].text == messages[j].text) continue;
-        if (collides(messages[i], messages[j])) {
-          if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 50;
-          else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 50;
-          if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 50;
-          else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 50;
+      for (var j = totalMessages; j >= 0; j--) {
+        var otherMessage = app.stage.children[j];
+        if (message.text == otherMessage.text) continue;
+        if (collides(message, otherMessage)) {
+          if (message.x <= otherMessage.x) // hit right
+            message.vx += (-1 + message.x / otherMessage.x) * (otherMessage.scale.x + 1) / (scale * 10);
+          else if (message.x > otherMessage.x) // hit left
+            message.vx += (-1 + message.x / otherMessage.x) * (otherMessage.scale.x + 1) / (scale * 10);
+          if (message.y <= otherMessage.y) // hit bottom
+            message.vy += (-1 + message.y / otherMessage.y) * (otherMessage.scale.x + 1) / (scale * 10);
+          else if (message.y > otherMessage.y) // hit top
+            message.vy += (-1 + message.y / otherMessage.y) * (otherMessage.scale.x + 1) / (scale * 10);
+          //break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 10 * scale;
-      if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 10 * scale;
-      if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 10 * scale;
-      if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 10 * scale;
+      if (message.x - message.width / 2 < 0)
+        message.vx += .1 * scale;
+      if (message.x + message.width / 2 > window.innerWidth)
+        message.vx -= .1 * scale;
+      if (message.y - message.height / 3 < 0)
+        message.vy += .1 * scale;
+      if (message.y + message.height / 3 > window.innerHeight)
+        message.vy -= .1 * scale;
 
       // SET NEW MAX VELOCITY
-      messages[i].maxVel = 50 / scale;
+      message.maxVel = 25 / scale;
 
       // RESET VELOCITY TO MAX
-      if (messages[i].vx > messages[i].maxVel)
-        messages[i].vx = messages[i].maxVel;
-      else if (messages[i].vx < -messages[i].maxVel)
-        messages[i].vx = -messages[i].maxVel;
-      if (messages[i].vy > messages[i].maxVel)
-        messages[i].vy = messages[i].maxVel;
-      else if (messages[i].vy < -messages[i].maxVel)
-        messages[i].vy = -messages[i].maxVel;
+      if (message.vx > message.maxVel)
+        message.vx = message.maxVel;
+      else if (message.vx < -message.maxVel)
+        message.vx = -message.maxVel;
+      if (message.vy > message.maxVel)
+        message.vy = message.maxVel;
+      else if (message.vy < -message.maxVel)
+        message.vy = -message.maxVel;
+
+      // APPLY VELOCITY
+      message.x += message.vx;
+      message.y += message.vy;
+
+      // SLOW DOWN
+      message.vx = lerp(message.vx, 0, .01 / scale);
+      message.vy = lerp(message.vy, 0, .01 / scale);
 
       // REMOVE WHEN SCALE = 0
-      if (messages[i].scale.x <= 0) {
-        messages[i].destroy();
-        messages.splice(i, 1);
+      if (message.scale.x <= 0) {
+        message.destroy();
+        totalMessages = app.stage.children.length - 1;
       }
     }
   });

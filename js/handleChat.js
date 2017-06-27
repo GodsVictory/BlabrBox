@@ -1,13 +1,14 @@
 function handleChat(channel, user, message, self) {
   if (!document.hidden) {
     var exists = false;
-    for (var i = messages.length - 1; i >= 0; i--)
-      if (message == messages[i].text) {
+    for (var i = app.stage.children.length - 1; i >= 0; i--) {
+      if (message == app.stage.children[i].text) {
         exists = true;
-        messages[i].grow += 10;
+        app.stage.children[i].grow += 25;
         break;
       }
+    }
     if (!exists && message.length < 30)
-      messages.push(Chat(message));
+      Chat(message);
   }
 }

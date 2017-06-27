@@ -1,5 +1,4 @@
 var app;
-var messages = [];
 
 window.onload = function start() {
   loadFont();
