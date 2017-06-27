@@ -27,21 +27,21 @@ function startTicker() {
       }
 
       // SLOW DOWN
-      messages[i].vx = lerp(messages[i].vx, 0, .02 / scale);
-      messages[i].vy = lerp(messages[i].vy, 0, .02 / scale);
+      messages[i].vx = lerp(messages[i].vx, 0, .005 / scale);
+      messages[i].vy = lerp(messages[i].vy, 0, .005 / scale);
 
       // COLLISION
       for (var j = messages.length - 1; j >= 0; j--) {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
           if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += 10 * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += 10 * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += 10 * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += 10 * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
         }
       }
 
