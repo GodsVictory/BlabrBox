@@ -35,13 +35,13 @@ function startTicker() {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
           if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += 10 * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += 10 / scale * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += 10 * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vx += 10 / scale * (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += 10 * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += 10 / scale * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += 10 * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
+            messages[i].vy += 10 / scale * (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
         }
       }
 
@@ -56,7 +56,7 @@ function startTicker() {
         messages[i].vy -= 1 * scale;
 
       // SET NEW MAX VELOCITY
-      messages[i].maxVel = 30 * scale;
+      messages[i].maxVel = 50 / scale;
 
       // RESET VELOCITY TO MAX
       if (messages[i].vx > messages[i].maxVel)

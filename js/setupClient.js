@@ -14,6 +14,9 @@ function setupClient() {
         handleChat('', '', '0000');
       }, 500);
       setInterval(function() {
+        handleChat('', '', '11');
+      }, 500);
+      setInterval(function() {
         handleChat('', '', Math.round((Math.random() * 100)).toString());
       }, 250);
     } else
