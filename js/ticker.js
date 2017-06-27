@@ -26,33 +26,37 @@ function startTicker() {
         messages[i].scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
       }
 
+      // SLOW DOWN
+      messages[i].vx = lerp(messages[i].vx, 0, .02 / scale);
+      messages[i].vy = lerp(messages[i].vy, 0, .02 / scale);
+
       // COLLISION
       for (var j = messages.length - 1; j >= 0; j--) {
         if (messages[i].text == messages[j].text) continue;
         if (collides(messages[i], messages[j])) {
           if (messages[i].x <= messages[j].x) // hit right
-            messages[i].vx += scale * (-1 + messages[i].x / messages[j].x);
+            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].x > messages[j].x) // hit left
-            messages[i].vx += scale * (-1 + messages[i].x / messages[j].x);
+            messages[i].vx += (-1 + messages[i].x / messages[j].x) * (messages[j].scale.x + 1) / scale * 2;
           if (messages[i].y <= messages[j].y) // hit bottom
-            messages[i].vy += scale * (-1 + messages[i].y / messages[j].y);
+            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
           else if (messages[i].y > messages[j].y) // hit top
-            messages[i].vy += scale * (-1 + messages[i].y / messages[j].y);
+            messages[i].vy += (-1 + messages[i].y / messages[j].y) * (messages[j].scale.x + 1) / scale * 2;
         }
       }
 
       // KEEP IN BOUNDS
       if (messages[i].x - messages[i].width / 2 < 0)
-        messages[i].vx += 10 * scale;
+        messages[i].vx += 1 * scale;
       if (messages[i].x + messages[i].width / 2 > window.innerWidth)
-        messages[i].vx -= 10 * scale;
+        messages[i].vx -= 1 * scale;
       if (messages[i].y - messages[i].height / 2 < 0)
-        messages[i].vy += 10 * scale;
+        messages[i].vy += 1 * scale;
       if (messages[i].y + messages[i].height / 2 > window.innerHeight)
-        messages[i].vy -= 10 * scale;
+        messages[i].vy -= 1 * scale;
 
       // SET NEW MAX VELOCITY
-      messages[i].maxVel = 20 * scale;
+      messages[i].maxVel = 30 * scale;
 
       // RESET VELOCITY TO MAX
       if (messages[i].vx > messages[i].maxVel)
@@ -63,10 +67,6 @@ function startTicker() {
         messages[i].vy = messages[i].maxVel;
       else if (messages[i].vy < -messages[i].maxVel)
         messages[i].vy = -messages[i].maxVel;
-
-      // SLOW DOWN
-      messages[i].vx = lerp(messages[i].vx, 0, .02 / scale);
-      messages[i].vy = lerp(messages[i].vy, 0, .02 / scale);
 
       // REMOVE WHEN SCALE = 0
       if (messages[i].scale.x <= 0) {
