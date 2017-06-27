@@ -13,8 +13,8 @@ function startTicker() {
       // GROW OR SHRINK
       if (message.grow) {
         if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10) {
-          message.scale.x += (window.innerWidth + window.innerHeight) * .0000025;
-          message.scale.y += (window.innerWidth + window.innerHeight) * .0000025;
+          message.scale.x += (window.innerWidth + window.innerHeight) * .000001;
+          message.scale.y += (window.innerWidth + window.innerHeight) * .000001;
         }
         message.grow--;
       } else {
