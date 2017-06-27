@@ -1,16 +1,20 @@
 function startTicker() {
   app.ticker.add(function(delta) {
     if (channelInput.grow && channelInput.width < window.innerWidth * .5 && channelInput.height < window.innerHeight * .5) {
-      channelInput.scale.x += .05 * delta;
-      channelInput.scale.y += .05 * delta;
+      channelInput.scale.x += .05;
+      channelInput.scale.y += .05;
     }
     if (channelInput.grow && (channelInput.width > window.innerWidth * .5 || channelInput.height > window.innerHeight * .5)) {
-      channelInput.scale.x -= .05 * delta;
-      channelInput.scale.y -= .05 * delta;
+      channelInput.scale.x -= .05;
+      channelInput.scale.y -= .05;
     }
     if (!channelInput.grow && channelInput.scale.x > 0) {
-      channelInput.scale.x -= .01 * delta;
-      channelInput.scale.y -= .01 * delta;
+      channelInput.scale.x -= .01 / channelInput.scale.x;
+      channelInput.scale.y -= .01 / channelInput.scale.y;
+      if (channelInput.scale.x < 0) {
+        channelInput.scale.x = 0;
+        channelInput.scale.y = 0;
+      }
     }
     chatContainer.children.sort(depthCompare);
     var totalMessages = chatContainer.children.length - 1;
