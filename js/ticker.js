@@ -27,40 +27,25 @@ function startTicker() {
         var otherMessage = app.stage.children[j];
         if (message.text == otherMessage.text) continue;
         if (collides(message, otherMessage)) {
-          if (message.x <= otherMessage.x) // hit right
-            message.vx += (-1 + message.x / otherMessage.x) * (otherMessage.scale.x + 1) / (scale * 10);
-          else if (message.x > otherMessage.x) // hit left
-            message.vx += (-1 + message.x / otherMessage.x) * (otherMessage.scale.x + 1) / (scale * 10);
-          if (message.y <= otherMessage.y) // hit bottom
-            message.vy += (-1 + message.y / otherMessage.y) * (otherMessage.scale.x + 1) / (scale * 10);
-          else if (message.y > otherMessage.y) // hit top
-            message.vy += (-1 + message.y / otherMessage.y) * (otherMessage.scale.x + 1) / (scale * 10);
-          //break;
+          message.vx += (-1 + message.x / otherMessage.x) * otherMessage.scale.x / scale;
+          message.vy += (-1 + message.y / otherMessage.y) * otherMessage.scale.y / scale;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - message.width / 2 < 0)
-        message.vx += .1 * scale;
-      if (message.x + message.width / 2 > window.innerWidth)
-        message.vx -= .1 * scale;
-      if (message.y - message.height / 3 < 0)
-        message.vy += .1 * scale;
-      if (message.y + message.height / 3 > window.innerHeight)
-        message.vy -= .1 * scale;
+      if (message.x - message.width / 2 < 0) message.vx += scale;
+      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale;
+      if (message.y - message.height / 3 < 0) message.vy += scale;
+      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale;
 
       // SET NEW MAX VELOCITY
-      message.maxVel = 25 / scale;
+      message.maxVel = 10 / scale;
 
       // RESET VELOCITY TO MAX
-      if (message.vx > message.maxVel)
-        message.vx = message.maxVel;
-      else if (message.vx < -message.maxVel)
-        message.vx = -message.maxVel;
-      if (message.vy > message.maxVel)
-        message.vy = message.maxVel;
-      else if (message.vy < -message.maxVel)
-        message.vy = -message.maxVel;
+      if (message.vx > message.maxVel) message.vx = message.maxVel;
+      else if (message.vx < -message.maxVel) message.vx = -message.maxVel;
+      if (message.vy > message.maxVel) message.vy = message.maxVel;
+      else if (message.vy < -message.maxVel) message.vy = -message.maxVel;
 
       // APPLY VELOCITY
       message.x += message.vx;

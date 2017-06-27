@@ -11,10 +11,10 @@ function setupClient() {
     var channel = Qurl.create().query('c');
     if (channel == 'simulateChat') {
       setInterval(function() {
-        handleChat('', '', '0000');
+        handleChat('', '', '000 000');
       }, 500);
       setInterval(function() {
-        handleChat('', '', '11');
+        handleChat('', '', '0000000');
       }, 750);
       setInterval(function() {
         handleChat('', '', Math.round((Math.random() * 100)).toString());
