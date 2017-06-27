@@ -82,8 +82,8 @@ function lerp(v0, v1, t) {
 }
 
 function depthCompare(a, b) {
-  if (a.z < b.z) return -1;
-  if (a.z > b.z) return 1;
+  if (a.scale.x < b.scale.x) return -1;
+  if (a.scale.x > b.scale.x) return 1;
   return 0;
 }
 

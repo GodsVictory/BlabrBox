@@ -5,7 +5,6 @@ function handleChat(channel, user, message, self) {
       if (message == messages[i].text) {
         exists = true;
         messages[i].grow += 10;
-        messages[i].z++;
         break;
       }
     if (!exists && message.length < 30)
