@@ -30,6 +30,9 @@ function init() {
   });
   channelInput = new PIXI.Text(channel, style);
   channelInput.anchor.set(.5);
+  channelInput.scale.x = 0;
+  channelInput.scale.y = 0;
+  channelInput.grow = false;
   channelInput.x = window.innerWidth / 2;
   channelInput.y = window.innerHeight / 2;
   app.stage.addChild(channelInput);
