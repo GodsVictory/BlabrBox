@@ -9,6 +9,7 @@ window.onload = function start() {
 }
 
 function init() {
+  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
     backgroundColor: 0x000000,
     antialias: true,
@@ -22,7 +23,7 @@ function init() {
 
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 256,
+    fontSize: (window.innerWidth + window.innerHeight) * .1,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',

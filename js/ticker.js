@@ -29,8 +29,8 @@ function startTicker() {
       // GROW OR SHRINK
       if (message.grow) {
         if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10) {
-          message.scale.x += (window.innerWidth + window.innerHeight) * .000005;
-          message.scale.y += (window.innerWidth + window.innerHeight) * .000005;
+          message.scale.x += .01; //(window.innerWidth + window.innerHeight) * .000005;
+          message.scale.y += .01; //(window.innerWidth + window.innerHeight) * .000005;
         }
         message.grow--;
       } else {
