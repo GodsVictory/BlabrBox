@@ -33,14 +33,15 @@ function startTicker() {
         if (collides(message, otherMessage)) {
           message.vx += (-1 + message.x / otherMessage.x) * otherMessage.scale.x / scale;
           message.vy += (-1 + message.y / otherMessage.y) * otherMessage.scale.y / scale;
+          break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - message.width / 2 < 0) message.vx += scale * .25;
-      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * .25;
-      if (message.y - message.height / 3 < 0) message.vy += scale * .25;
-      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * .25;
+      if (message.x - message.width / 2 < 0) message.vx += scale * .2;
+      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * .2;
+      if (message.y - message.height / 3 < 0) message.vy += scale * .2;
+      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * .2;
 
       // SET NEW MAX VELOCITY
       message.maxVel = 10 / scale;
