@@ -31,8 +31,8 @@ function startTicker() {
         var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
         if (collides(message, otherMessage)) {
-          message.vx += (-1 + message.x / otherMessage.x) * otherMessage.scale.x / scale;
-          message.vy += (-1 + message.y / otherMessage.y) * otherMessage.scale.y / scale;
+          message.vx += keepBetween(-1 + message.x / otherMessage.x, -1, 1) * otherMessage.scale.x / scale;
+          message.vy += keepBetween(-1 + message.y / otherMessage.y, -1, 1) * otherMessage.scale.y / scale;
           break;
         }
       }
@@ -47,8 +47,8 @@ function startTicker() {
       message.maxVel = 10 / scale;
 
       // RESET VELOCITY TO MAX
-      message.vx = Math.max(-message.maxVel, Math.min(message.vx, message.maxVel));
-      message.vy = Math.max(-message.maxVel, Math.min(message.vy, message.maxVel));
+      message.vx = keepBetween(message.vx, -message.maxVel, message.maxVel);
+      message.vy = keepBetween(message.vy, -message.maxVel, message.maxVel);
 
       // APPLY VELOCITY
       message.x += message.vx;
@@ -90,4 +90,8 @@ function pad(num, size) {
   var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
+}
+
+function keepBetween(n, min, max) {
+  return Math.max(min, Math.min(n, max))
 }
