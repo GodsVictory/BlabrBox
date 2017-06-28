@@ -1,16 +1,16 @@
 function startTicker() {
   app.ticker.add(function(delta) {
     if (channelInput.grow && channelInput.width < window.innerWidth * .5 && channelInput.height < window.innerHeight * .5) {
-      channelInput.scale.x += .05;
-      channelInput.scale.y += .05;
+      channelInput.scale.x += .025;
+      channelInput.scale.y += .025;
     }
     if (channelInput.grow && (channelInput.width > window.innerWidth * .5 || channelInput.height > window.innerHeight * .5)) {
-      channelInput.scale.x -= .05;
-      channelInput.scale.y -= .05;
+      channelInput.scale.x -= .025;
+      channelInput.scale.y -= .025;
     }
     if (!channelInput.grow && channelInput.scale.x > 0) {
-      channelInput.scale.x -= .01 / channelInput.scale.x;
-      channelInput.scale.y -= .01 / channelInput.scale.y;
+      channelInput.scale.x -= .001 / channelInput.scale.x;
+      channelInput.scale.y -= .001 / channelInput.scale.y;
       if (channelInput.scale.x < 0) {
         channelInput.scale.x = 0;
         channelInput.scale.y = 0;
@@ -29,8 +29,8 @@ function startTicker() {
       // GROW OR SHRINK
       if (message.grow) {
         if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10) {
-          message.scale.x += (window.innerWidth + window.innerHeight) * .0000025;
-          message.scale.y += (window.innerWidth + window.innerHeight) * .0000025;
+          message.scale.x += (window.innerWidth + window.innerHeight) * .000005;
+          message.scale.y += (window.innerWidth + window.innerHeight) * .000005;
         }
         message.grow--;
       } else {

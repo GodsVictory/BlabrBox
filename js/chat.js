@@ -1,7 +1,7 @@
 function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 256,
+    fontSize: 200,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
