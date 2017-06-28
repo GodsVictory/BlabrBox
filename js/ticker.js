@@ -1,21 +1,13 @@
 function startTicker() {
   app.ticker.add(function(delta) {
-    if (channelInput.grow && channelInput.width < window.innerWidth * .5 && channelInput.height < window.innerHeight * .5) {
-      channelInput.scale.x += .025;
-      channelInput.scale.y += .025;
-    }
-    if (channelInput.grow && (channelInput.width > window.innerWidth * .5 || channelInput.height > window.innerHeight * .5)) {
-      channelInput.scale.x -= .025;
-      channelInput.scale.y -= .025;
-    }
-    if (!channelInput.grow && channelInput.scale.x > 0) {
-      channelInput.scale.x -= .001 / channelInput.scale.x;
-      channelInput.scale.y -= .001 / channelInput.scale.y;
-      if (channelInput.scale.x < 0) {
-        channelInput.scale.x = 0;
-        channelInput.scale.y = 0;
-      }
-    }
+    if (channelInput.grow) {
+      if (channelInput.width < window.innerWidth * .45)
+        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 1, .05);
+      else if (channelInput.width > window.innerWidth * .55)
+        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
+    } else
+      channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
+
     chatContainer.children.sort(depthCompare);
     var totalMessages = chatContainer.children.length - 1;
     var count = 0;
@@ -28,15 +20,11 @@ function startTicker() {
 
       // GROW OR SHRINK
       if (message.grow) {
-        if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10) {
-          message.scale.x += .01; //(window.innerWidth + window.innerHeight) * .000005;
-          message.scale.y += .01; //(window.innerWidth + window.innerHeight) * .000005;
-        }
+        if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10)
+          message.scale.x = message.scale.y += .01;
         message.grow--;
-      } else {
-        message.scale.x -= '.'.concat(pad(Math.round(count), 5)) * scale;
-        message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
-      }
+      } else
+        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
 
       // COLLISION
       for (var j = totalMessages; j >= 0; j--) {
@@ -49,19 +37,17 @@ function startTicker() {
       }
 
       // KEEP IN BOUNDS
-      if (message.x - message.width / 2 < 0) message.vx += scale;
-      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale;
-      if (message.y - message.height / 3 < 0) message.vy += scale;
-      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale;
+      if (message.x - message.width / 2 < 0) message.vx += scale * .25;
+      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * .25;
+      if (message.y - message.height / 3 < 0) message.vy += scale * .25;
+      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * .25;
 
       // SET NEW MAX VELOCITY
       message.maxVel = 10 / scale;
 
       // RESET VELOCITY TO MAX
-      if (message.vx > message.maxVel) message.vx = message.maxVel;
-      else if (message.vx < -message.maxVel) message.vx = -message.maxVel;
-      if (message.vy > message.maxVel) message.vy = message.maxVel;
-      else if (message.vy < -message.maxVel) message.vy = -message.maxVel;
+      message.vx = Math.max(-message.maxVel, Math.min(message.vx, message.maxVel));
+      message.vy = Math.max(-message.maxVel, Math.min(message.vy, message.maxVel));
 
       // APPLY VELOCITY
       message.x += message.vx;

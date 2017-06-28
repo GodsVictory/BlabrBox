@@ -9,7 +9,7 @@ window.onload = function start() {
 }
 
 function init() {
-  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
+  // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
     backgroundColor: 0x000000,
     antialias: true,
@@ -34,6 +34,7 @@ function init() {
   channelInput.scale.x = 0;
   channelInput.scale.y = 0;
   channelInput.grow = false;
+  channelInput.maxScale = 1;
   channelInput.x = window.innerWidth / 2;
   channelInput.y = window.innerHeight / 2;
   app.stage.addChild(channelInput);

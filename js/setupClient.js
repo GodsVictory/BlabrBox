@@ -34,7 +34,7 @@ function setupClient() {
     if (channel != 'Channel...')
       timeout = setTimeout(function() {
         channelInput.grow = false;
-      }, 1000);
+      }, 2000);
 
     window.onkeydown = function(evt) {
       if (evt.key.length == 1 || evt.key == 'Backspace')
@@ -52,10 +52,10 @@ function setupClient() {
           if (!channel)
             channel = 'Channel...'
           else {
-            client.join(channel).catch(function(e) {});
             timeout = setTimeout(function() {
+              client.join(channel).catch(function(e) {});
               channelInput.grow = false;
-            }, 1000);
+            }, 2000);
           }
           channelInput.text = channel;
         }
