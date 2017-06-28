@@ -61,6 +61,10 @@ function init() {
     }, 2000);
   }
 
+  document.ondblclick = function() {
+    screenfull.toggle();
+  }
+
   setupClient();
   startTicker();
 }
