@@ -2,6 +2,7 @@ var app;
 var chatContainer;
 var channelInput;
 var channel = '';
+var cursortimeout;
 
 window.onload = function start() {
   loadFont();
@@ -50,6 +51,14 @@ function init() {
       app.start();
     else
       app.stop();
+  }
+
+  document.onmousemove = function() {
+    document.body.style.cursor = 'auto';
+    clearTimeout(cursortimeout);
+    cursortimeout = setTimeout(function() {
+      document.body.style.cursor = 'none';
+    }, 2000);
   }
 
   setupClient();
