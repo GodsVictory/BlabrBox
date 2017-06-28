@@ -22,44 +22,50 @@ function Chat(message) {
   chatContainer.addChild(chat);
   return chat;
 }
-
-/*function Chat(message) {
+/*
+function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 128,
+    fontSize: (window.innerWidth + window.innerHeight) * .1,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
     strokeThickness: 5,
-    wordWrap: true,
-    wordWrapWidth: 2500,
   });
   var graphic = new PIXI.Graphics();
   graphic.beginFill(0xFFFFFF, 0);
   graphic.drawRect(0, 0, 1, 1);
   graphic.endFill();
   var container = new PIXI.Sprite();
+  container.text = message;
   container.anchor.set(.5);
-  container.scale.x = 1;
-  container.scale.y = 1;
-  container.grow = 32;
-  container.z = 0;
-  container.px = Math.random();
-  container.py = Math.random();
-  container.x = window.innerWidth * container.px;
-  container.y = window.innerHeight * container.py;
-  app.stage.addChild(container);
+  container.scale.x = 0;
+  container.scale.y = 0;
+  container.grow = 30;
+  container.vx = 0;
+  container.vy = 0;
+  container.maxVel = 0;
+  container.x = window.innerWidth * Math.random();
+  container.y = window.innerHeight * Math.random();
+  chatContainer.addChild(container);
   var messageArray = message.split(' ');
   var word;
   var lastWidth = 0;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     word = new PIXI.Text(messageArray[i], style);
-    //word.anchor.set(.5);
+    word.anchor.set(.5);
     container.addChild(word);
     word.x = lastWidth + 25;
     lastWidth = word.x + word.width;
   }
-  /*var chat = new PIXI.Text(message, style);
+  for (var i = 0, len = container.children.length; i < len; i++) {
+    container.children[i].x -= lastWidth / 2;
+  }
+  container.cWidth = lastWidth;
+  container.cHeight = word.height;
+  return container;
+}*/
+/*var chat = new PIXI.Text(message, style);
   chat.anchor.set(.5);
   chat.scale.x = 0;
   chat.scale.y = 0;
