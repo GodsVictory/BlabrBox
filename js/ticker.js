@@ -35,7 +35,7 @@ function startTicker() {
           message.scale.x = message.scale.y += .01;
         message.grow--;
       } else
-        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
+        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 4)) * scale;
 
       // COLLISION
       for (var j = totalMessages; j >= 0; j--) {

@@ -3,6 +3,7 @@ var chatContainer;
 var channelInput;
 var channel = '';
 var cursortimeout;
+var maxChat = 25;
 
 window.onload = function start() {
   loadFont();
