@@ -17,6 +17,17 @@ function startTicker() {
     for (var i = totalMessages; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
+      // APPLY VELOCITY
+      message.x += message.vx * .15;
+      message.y += message.vy * .15;
+      // SLOW DOWN
+      message.vx = lerp(message.vx, 0, .01 / scale);
+      message.vy = lerp(message.vy, 0, .01 / scale);
+    }
+
+    for (var i = totalMessages; i >= 0; i--) {
+      var message = chatContainer.children[i];
+      var scale = message.scale.x + 1;
 
       // GROW OR SHRINK
       if (message.grow) {
@@ -31,32 +42,18 @@ function startTicker() {
         var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
         if (collides(message, otherMessage)) {
-          message.vx += keepBetween(-1 + message.x / otherMessage.x, -1, 1) * otherMessage.scale.x / scale;
-          message.vy += keepBetween(-1 + message.y / otherMessage.y, -1, 1) * otherMessage.scale.y / scale;
+          var otherScale = otherMessage.scale.x + 1;
+          message.vx += message.x < otherMessage.x ? -(otherScale / scale) : otherScale / scale;
+          message.vy += message.y < otherMessage.y ? -(otherScale / scale) : otherScale / scale;
           break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - message.width / 2 < 0) message.vx += scale * .2;
-      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * .2;
-      if (message.y - message.height / 3 < 0) message.vy += scale * .2;
-      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * .2;
-
-      // SET NEW MAX VELOCITY
-      message.maxVel = 10 / scale;
-
-      // RESET VELOCITY TO MAX
-      message.vx = keepBetween(message.vx, -message.maxVel, message.maxVel);
-      message.vy = keepBetween(message.vy, -message.maxVel, message.maxVel);
-
-      // APPLY VELOCITY
-      message.x += message.vx;
-      message.y += message.vy;
-
-      // SLOW DOWN
-      message.vx = lerp(message.vx, 0, .01 / scale);
-      message.vy = lerp(message.vy, 0, .01 / scale);
+      if (message.x - message.width / 2 < 0) message.vx += scale * 2;
+      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * 2;
+      if (message.y - message.height / 3 < 0) message.vy += scale * 2;
+      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * 2;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0) {
@@ -90,8 +87,4 @@ function pad(num, size) {
   var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
-}
-
-function keepBetween(n, min, max) {
-  return Math.max(min, Math.min(n, max))
 }

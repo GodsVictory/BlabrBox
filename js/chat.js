@@ -5,7 +5,7 @@ function Chat(message) {
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 5,
+    strokeThickness: 10,
     wordWrap: true,
     wordWrapWidth: 1500,
   });
