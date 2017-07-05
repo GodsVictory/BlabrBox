@@ -41,12 +41,25 @@ function startTicker() {
       for (var j = totalMessages; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
-        if (collides(message, otherMessage)) {
+        var side = collide(message, otherMessage);
+        var otherScale = otherMessage.scale.x + 1;
+        if (side != 'none') {
+          if (side == 'top')
+            message.vy -= otherScale / scale;
+          if (side == 'bottom')
+            message.vy += otherScale / scale;
+          if (side == 'left')
+            message.vx -= otherScale / scale;
+          if (side == 'right')
+            message.vx += otherScale / scale;
+          break;
+        }
+        /*if (collides(message, otherMessage)) {
           var otherScale = otherMessage.scale.x + 1;
           message.vx += message.x < otherMessage.x ? -(otherScale / scale) : otherScale / scale;
           message.vy += message.y < otherMessage.y ? -(otherScale / scale) : otherScale / scale;
           break;
-        }
+        }*/
       }
 
       // KEEP IN BOUNDS
@@ -87,4 +100,23 @@ function pad(num, size) {
   var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
+}
+
+function collide(r1, r2) {
+  var dx = r1.x - r2.x;
+  var dy = r1.y - r2.y;
+  var width = (r1.width + r2.width) / 2;
+  var height = (r1.height + r2.height) / 2;
+  var crossWidth = width * dy;
+  var crossHeight = height * dx;
+  var collision = 'none';
+  //
+  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
+    if (crossWidth > crossHeight) {
+      collision = (crossWidth > (-crossHeight)) ? 'bottom' : 'left';
+    } else {
+      collision = (crossWidth > -(crossHeight)) ? 'right' : 'top';
+    }
+  }
+  return (collision);
 }

@@ -8,7 +8,7 @@ function handleChat(channel, user, message, self) {
         break;
       }
     }
-    if (!exists && message.length < 30 && chatContainer.children.length < maxChat)
+    if (!exists && message.length < 30) // && chatContainer.children.length < maxChat)
       Chat(message);
   }
 }
