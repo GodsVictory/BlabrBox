@@ -8,7 +8,11 @@ function handleChat(channel, user, message, self) {
         break;
       }
     }
-    if (!exists && message.length < 30) // && chatContainer.children.length < maxChat)
+    var bad = false;
+    for (var i = 0, len = badwords.length; i < len; i++)
+      if (message.indexOf(badwords[i]) > 0)
+        bad = true;
+    if (!bad && !exists && message.length < 30)
       Chat(message);
   }
 }
