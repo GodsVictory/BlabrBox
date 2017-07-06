@@ -30,12 +30,6 @@ function startTicker() {
     // APPLY PHYSICS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
-
-      // REMOVE WHEN SCALE = 0
-      if (message.scale.x <= 0 && message.grow < 1) {
-        message.destroy(true);
-        continue;
-      }
       var scale = message.scale.x + 1;
       var width = 0;
       var height = 0;
@@ -83,6 +77,13 @@ function startTicker() {
       if (message.y - height / 3 < 0) message.vy += scale * 2;
       if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 2;
     }
+
+    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+      var message = chatContainer.children[i];
+      // REMOVE WHEN SCALE = 0
+      if (message.scale.x <= 0 && message.grow < 1)
+        message.destroy(true);
+    }
   });
 }
 
@@ -96,14 +97,14 @@ function depthCompare(a, b) {
   return 0;
 }
 
-function collides(a, b) {
-  var divideWidthBy = 2;
-  var divideHeightBy = 3;
-  return a.x - a.width / divideWidthBy < b.x + b.width / divideWidthBy &&
-    a.x + a.width / divideWidthBy > b.x - b.width / divideWidthBy &&
-    a.y - a.height / divideHeightBy < b.y + b.height / divideHeightBy &&
-    a.y + a.height / divideHeightBy > b.y - b.height / divideHeightBy;
-}
+// function collides(a, b) {
+//   var divideWidthBy = 2;
+//   var divideHeightBy = 3;
+//   return a.x - a.width / divideWidthBy < b.x + b.width / divideWidthBy &&
+//     a.x + a.width / divideWidthBy > b.x - b.width / divideWidthBy &&
+//     a.y - a.height / divideHeightBy < b.y + b.height / divideHeightBy &&
+//     a.y + a.height / divideHeightBy > b.y - b.height / divideHeightBy;
+// }
 
 function pad(num, size) {
   var s = num + "";

@@ -47,7 +47,6 @@ function Chat(message) {
   container.maxVel = 0;
   container.x = window.innerWidth * Math.random();
   container.y = window.innerHeight * Math.random();
-  chatContainer.addChild(container);
   var messageArray = message.split(' ');
   var word;
   var lastWidth = 0;
@@ -84,7 +83,6 @@ function Chat(message) {
     container.children[i].x -= lastWidth / 2;
     container.children[i].y -= height / 2;
   }
-  container.cWidth = lastWidth;
-  container.cHeight = height;
+  chatContainer.addChild(container);
   return container;
 }
