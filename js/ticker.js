@@ -1,5 +1,6 @@
 function startTicker() {
   app.ticker.add(function(delta) {
+    // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
         channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 1, .05);
@@ -8,13 +9,14 @@ function startTicker() {
     } else
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
 
+    // SORT MESSAGES SO BIGGEST IS IN FRONT
     chatContainer.children.sort(depthCompare);
-    var totalMessages = chatContainer.children.length - 1;
     var count = 0;
-    for (var i = totalMessages; i >= 0; i--)
+    for (var i = chatContainer.children.length - 1; i >= 0; i--)
       count += chatContainer.children[i].scale.x + 1;
 
-    for (var i = totalMessages; i >= 0; i--) {
+    // PROCESS VELOCITY
+    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
       // APPLY VELOCITY
@@ -25,8 +27,15 @@ function startTicker() {
       message.vy = lerp(message.vy, 0, .01 / scale);
     }
 
-    for (var i = totalMessages; i >= 0; i--) {
+    // APPLY PHYSICS
+    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
+
+      // REMOVE WHEN SCALE = 0
+      if (message.scale.x <= 0 && message.grow < 1) {
+        message.destroy(true);
+        continue;
+      }
       var scale = message.scale.x + 1;
       var width = 0;
       var height = 0;
@@ -44,7 +53,7 @@ function startTicker() {
         message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 4)) * scale;
 
       // COLLISION
-      for (var j = totalMessages; j >= 0; j--) {
+      for (var j = chatContainer.children.length - 1; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
         var otherWidth = 0;
         var otherHeight = 0;
@@ -73,12 +82,6 @@ function startTicker() {
       if (message.x + width / 2 > window.innerWidth) message.vx -= scale * 2;
       if (message.y - height / 3 < 0) message.vy += scale * 2;
       if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 2;
-
-      // REMOVE WHEN SCALE = 0
-      if (message.scale.x <= 0) {
-        message.destroy();
-        totalMessages = chatContainer.children.length - 1;
-      }
     }
   });
 }
@@ -116,7 +119,6 @@ function collide(r1, r1w, r1h, r2, r2w, r2h) {
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';
-  //
   if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
     if (crossWidth > crossHeight) {
       collision = (crossWidth > (-crossHeight)) ? 'bottom' : 'left';

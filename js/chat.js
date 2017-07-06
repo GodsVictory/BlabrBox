@@ -85,6 +85,6 @@ function Chat(message) {
     container.children[i].y -= height / 2;
   }
   container.cWidth = lastWidth;
-  container.cHeight = word.height;
+  container.cHeight = height;
   return container;
 }
