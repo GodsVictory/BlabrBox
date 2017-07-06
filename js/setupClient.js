@@ -14,15 +14,16 @@ function setupClient() {
     channel = Qurl.create().query('c');
     if (channel)
       if (channel == 'simulateChat') {
+        handleChat('', '', 'Kaappa');
         setInterval(function() {
-          handleChat('', '', '000 000');
+          handleChat('', '', 'test Kappa');
         }, 500);
-        setInterval(function() {
-          handleChat('', '', '0000000');
-        }, 750);
-        setInterval(function() {
-          handleChat('', '', Math.round((Math.random() * 100)).toString());
-        }, 250);
+        // setInterval(function() {
+        //   handleChat('', '', '0000000');
+        // }, 750);
+        // setInterval(function() {
+        //   handleChat('', '', Math.round((Math.random() * 100)).toString());
+        // }, 250);
       } else
         client.join(channel).catch(function(e) {});
     else

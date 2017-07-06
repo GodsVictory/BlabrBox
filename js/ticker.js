@@ -28,10 +28,16 @@ function startTicker() {
     for (var i = totalMessages; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
+      var width = 0;
+      var height = 0;
+      for (var j = 0, len = message.children.length; j < len; j++) {
+        width += message.children[j].width * message.scale.x;
+        height = message.children[j].height * message.scale.y;
+      }
 
       // GROW OR SHRINK
       if (message.grow) {
-        if (message.width < window.innerWidth - 10 && message.height < window.innerHeight - 10)
+        if (width < window.innerWidth - 10 && height < window.innerHeight - 10)
           message.scale.x = message.scale.y += .01;
         message.grow--;
       } else
@@ -40,33 +46,33 @@ function startTicker() {
       // COLLISION
       for (var j = totalMessages; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
+        var otherWidth = 0;
+        var otherHeight = 0;
+        for (var k = 0, len = otherMessage.children.length; k < len; k++) {
+          otherWidth += otherMessage.children[k].width * otherMessage.scale.x;
+          otherHeight = otherMessage.children[k].height * otherMessage.scale.y;
+        }
         if (message.text == otherMessage.text) continue;
-        var side = collide(message, otherMessage);
+        var side = collide(message, width, height, otherMessage, otherWidth, otherHeight);
         var otherScale = otherMessage.scale.x + 1;
         if (side != 'none') {
           if (side == 'top')
             message.vy -= otherScale / scale;
-          if (side == 'bottom')
+          else if (side == 'bottom')
             message.vy += otherScale / scale;
-          if (side == 'left')
+          else if (side == 'left')
             message.vx -= otherScale / scale;
-          if (side == 'right')
+          else if (side == 'right')
             message.vx += otherScale / scale;
           break;
         }
-        /*if (collides(message, otherMessage)) {
-          var otherScale = otherMessage.scale.x + 1;
-          message.vx += message.x < otherMessage.x ? -(otherScale / scale) : otherScale / scale;
-          message.vy += message.y < otherMessage.y ? -(otherScale / scale) : otherScale / scale;
-          break;
-        }*/
       }
 
       // KEEP IN BOUNDS
-      if (message.x - message.width / 2 < 0) message.vx += scale * 2;
-      if (message.x + message.width / 2 > window.innerWidth) message.vx -= scale * 2;
-      if (message.y - message.height / 3 < 0) message.vy += scale * 2;
-      if (message.y + message.height / 3 > window.innerHeight) message.vy -= scale * 2;
+      if (message.x - width / 2 < 0) message.vx += scale * 2;
+      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * 2;
+      if (message.y - height / 3 < 0) message.vy += scale * 2;
+      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 2;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0) {
@@ -102,11 +108,11 @@ function pad(num, size) {
   return s;
 }
 
-function collide(r1, r2) {
+function collide(r1, r1w, r1h, r2, r2w, r2h) {
   var dx = r1.x - r2.x;
   var dy = r1.y - r2.y;
-  var width = (r1.width + r2.width) / 2;
-  var height = (r1.height + r2.height) / 2;
+  var width = (r1w + r2w) / 2;
+  var height = (r1h + r2h) / 2;
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';

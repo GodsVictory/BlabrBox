@@ -12,7 +12,7 @@ function handleChat(channel, user, message, self) {
     for (var i = 0, len = badwords.length; i < len; i++)
       if (message.indexOf(badwords[i]) > 0)
         bad = true;
-    if (!bad && !exists && message.length < 30)
+    if (!bad && !exists && message.length < 30 && gloMemes.length > 0)
       Chat(message);
   }
 }
