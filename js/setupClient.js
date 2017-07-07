@@ -14,7 +14,7 @@ function setupClient() {
     channel = Qurl.create().query('c');
     if (channel)
       if (channel == 'simulateChat') {
-        handleChat('', '', 'Kappa');
+        handleChat('', '', 'Kappa asdf');
         handleChat('', '', 'BibleThump');
         //setInterval(function() {
         //  handleChat('', '', 'test Kappa');

@@ -20,11 +20,11 @@ function startTicker() {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
       // APPLY VELOCITY
-      message.x += message.vx * .15;
-      message.y += message.vy * .15;
+      message.x += message.vx * .1;
+      message.y += message.vy * .1;
       // SLOW DOWN
-      message.vx = lerp(message.vx, 0, .01 / scale);
-      message.vy = lerp(message.vy, 0, .01 / scale);
+      message.vx = lerp(message.vx, 0, .075 / scale);
+      message.vy = lerp(message.vy, 0, .075 / scale);
     }
 
     // APPLY PHYSICS
@@ -40,7 +40,7 @@ function startTicker() {
           message.scale.x = message.scale.y += .01;
         message.grow--;
       } else
-        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 4)) * scale;
+        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
 
       // COLLISION
       for (var j = chatContainer.children.length - 1; j >= 0; j--) {
@@ -52,22 +52,22 @@ function startTicker() {
         if (side != 'none') {
           var otherScale = otherMessage.scale.x + 1;
           if (side == 'top')
-            message.vy -= otherScale / scale;
+            message.vy -= otherScale / (scale * .1);
           else if (side == 'bottom')
-            message.vy += otherScale / scale;
+            message.vy += otherScale / (scale * .1);
           else if (side == 'left')
-            message.vx -= otherScale / scale;
+            message.vx -= otherScale / (scale * .1);
           else if (side == 'right')
-            message.vx += otherScale / scale;
+            message.vx += otherScale / (scale * .1);
           break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - width / 2 < 0) message.vx += scale * 2;
-      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * 2;
-      if (message.y - height / 3 < 0) message.vy += scale * 2;
-      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 2;
+      if (message.x - width / 2 < 0) message.vx += scale;
+      if (message.x + width / 2 > window.innerWidth) message.vx -= scale;
+      if (message.y - height / 3 < 0) message.vy += scale;
+      if (message.y + height / 3 > window.innerHeight) message.vy -= scale;
     }
 
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
