@@ -16,24 +16,12 @@ function startTicker() {
     for (var i = chatContainer.children.length - 1; i >= 0; i--)
       count += chatContainer.children[i].scale.x + 1;
 
-    // PROCESS VELOCITY
-    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
-      var message = chatContainer.children[i];
-      var scale = message.scale.x + 1;
-      // APPLY VELOCITY
-      message.x += message.vx * .1;
-      message.y += message.vy * .1;
-      // SLOW DOWN
-      message.vx = lerp(message.vx, 0, .075 / scale);
-      message.vy = lerp(message.vy, 0, .075 / scale);
-    }
-
     // APPLY PHYSICS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
-      var width = message.getBounds().width;
-      var height = message.getBounds().height;
+      var width = message.getBounds(true).width;
+      var height = message.getBounds(true).height;
 
       // GROW OR SHRINK
       if (message.grow) {
@@ -44,11 +32,11 @@ function startTicker() {
         message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
 
       // COLLISION
-      /*for (var j = chatContainer.children.length - 1; j >= 0; j--) {
+      for (var j = chatContainer.children.length - 1; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
-        var otherWidth = otherMessage.getBounds().width;
-        var otherHeight = otherMessage.getBounds().height;
+        var otherWidth = otherMessage.getBounds(true).width;
+        var otherHeight = otherMessage.getBounds(true).height;
         var side = collide(message, width, height, otherMessage, otherWidth, otherHeight);
         if (side != 'none') {
           var otherScale = otherMessage.scale.x + 1;
@@ -62,17 +50,22 @@ function startTicker() {
             message.vx += otherScale / (scale * .1);
           break;
         }
-      }*/
+      }
 
       // KEEP IN BOUNDS
       if (message.x - width / 2 < 0) message.vx += scale;
       if (message.x + width / 2 > window.innerWidth) message.vx -= scale;
       if (message.y - height / 3 < 0) message.vy += scale;
       if (message.y + height / 3 > window.innerHeight) message.vy -= scale;
-    }
 
-    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
-      var message = chatContainer.children[i];
+      // APPLY VELOCITY
+      message.x += message.vx * .1;
+      message.y += message.vy * .1;
+
+      // SLOW DOWN
+      message.vx = lerp(message.vx, 0, .075 / scale);
+      message.vy = lerp(message.vy, 0, .075 / scale);
+
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
         message.destroy({
@@ -92,15 +85,6 @@ function depthCompare(a, b) {
   if (a.scale.x > b.scale.x) return 1;
   return 0;
 }
-
-// function collides(a, b) {
-//   var divideWidthBy = 2;
-//   var divideHeightBy = 3;
-//   return a.x - a.width / divideWidthBy < b.x + b.width / divideWidthBy &&
-//     a.x + a.width / divideWidthBy > b.x - b.width / divideWidthBy &&
-//     a.y - a.height / divideHeightBy < b.y + b.height / divideHeightBy &&
-//     a.y + a.height / divideHeightBy > b.y - b.height / divideHeightBy;
-// }
 
 function pad(num, size) {
   var s = num + "";
