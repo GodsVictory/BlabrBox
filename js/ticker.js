@@ -1,5 +1,6 @@
 function startTicker() {
   app.ticker.add(function(delta) {
+
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
@@ -43,7 +44,7 @@ function startTicker() {
         message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
 
       // COLLISION
-      for (var j = chatContainer.children.length - 1; j >= 0; j--) {
+      /*for (var j = chatContainer.children.length - 1; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
         if (message.text == otherMessage.text) continue;
         var otherWidth = otherMessage.getBounds().width;
@@ -61,7 +62,7 @@ function startTicker() {
             message.vx += otherScale / (scale * .1);
           break;
         }
-      }
+      }*/
 
       // KEEP IN BOUNDS
       if (message.x - width / 2 < 0) message.vx += scale;
