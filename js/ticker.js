@@ -31,12 +31,8 @@ function startTicker() {
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
-      var width = 0;
-      var height = 0;
-      for (var j = 0, len = message.children.length; j < len; j++) {
-        width += message.children[j].width * message.scale.x;
-        height = message.children[j].height * message.scale.y;
-      }
+      var width = message.getBounds().width;
+      var height = message.getBounds().height;
 
       // GROW OR SHRINK
       if (message.grow) {
@@ -49,16 +45,12 @@ function startTicker() {
       // COLLISION
       for (var j = chatContainer.children.length - 1; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
-        var otherWidth = 0;
-        var otherHeight = 0;
-        for (var k = 0, len = otherMessage.children.length; k < len; k++) {
-          otherWidth += otherMessage.children[k].width * otherMessage.scale.x;
-          otherHeight = otherMessage.children[k].height * otherMessage.scale.y;
-        }
         if (message.text == otherMessage.text) continue;
+        var otherWidth = otherMessage.getBounds().width;
+        var otherHeight = otherMessage.getBounds().height;
         var side = collide(message, width, height, otherMessage, otherWidth, otherHeight);
-        var otherScale = otherMessage.scale.x + 1;
         if (side != 'none') {
+          var otherScale = otherMessage.scale.x + 1;
           if (side == 'top')
             message.vy -= otherScale / scale;
           else if (side == 'bottom')
@@ -82,7 +74,10 @@ function startTicker() {
       var message = chatContainer.children[i];
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
-        message.destroy(true);
+        message.destroy({
+          children: true,
+          baseTexture: true
+        });
     }
   });
 }

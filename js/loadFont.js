@@ -5,7 +5,7 @@ function loadFont() {
     },
 
     active: function() {
-      init();
+      fontLoaded = true;
     }
   };
 

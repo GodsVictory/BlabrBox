@@ -32,25 +32,16 @@ function Chat(message) {
     stroke: '#000000',
     strokeThickness: 5,
   });
-  var graphic = new PIXI.Graphics();
-  graphic.beginFill(0xFFFFFF, 0);
-  graphic.drawRect(0, 0, 1, 1);
-  graphic.endFill();
   var container = new PIXI.Sprite();
   container.text = message;
-  container.anchor.set(.5);
-  container.scale.x = 0;
-  container.scale.y = 0;
   container.grow = 30;
   container.vx = 0;
   container.vy = 0;
-  container.maxVel = 0;
   container.x = window.innerWidth * Math.random();
   container.y = window.innerHeight * Math.random();
+
+  // PARSE MESSAGE
   var messageArray = message.split(' ');
-  var word;
-  var lastWidth = 0;
-  var height = 0;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var emote = false;
     for (var j = 0, gloLen = gloMemes.length; j < gloLen; j++)
@@ -59,30 +50,35 @@ function Chat(message) {
         break;
       }
     if (emote) {
-      word = new PIXI.Sprite.fromImage('http:' + emote);
-      container.addChild(word);
+      var word = new PIXI.Sprite.fromImage(emote);
       word.scale.x = word.scale.y = style.fontSize * .01;
-      word.x = lastWidth;
-      lastWidth = word.x + 75 * style.fontSize * .01;
-      height = 84 * style.fontSize * .01;
+      word.x = container.getBounds().width;
     } else {
-      word = new PIXI.Text(messageArray[i], style);
-      container.addChild(word);
-      word.x = lastWidth;
-      lastWidth = word.x + word.width;
-      height = word.height > height ? word.height : height;
+      var word = new PIXI.Text(messageArray[i], style);
+      word.x = container.getBounds().width;
     }
+    container.addChild(word);
+
+    // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {
-      word = new PIXI.Text(' ', style);
-      container.addChild(word);
-      word.x = lastWidth;
-      lastWidth = word.x + word.width;
+      var space = new PIXI.Text(' ', style);
+      space.x = container.getBounds().width;
+      container.addChild(space);
     }
   }
+
+  // FORCE PROPER DIMENSIONS
+  var dimensionPlaceholder = new PIXI.Text(' ', style);
+  container.addChild(dimensionPlaceholder);
+
+  // MANUALLY SET ANCHOR TO .5
+  var offsetWidth = container.getBounds().width / 2;
+  var offsetHeight = container.getBounds().height / 2;
   for (var i = 0, len = container.children.length; i < len; i++) {
-    container.children[i].x -= lastWidth / 2;
-    container.children[i].y -= height / 2;
+    container.children[i].x -= offsetWidth;
+    container.children[i].y -= offsetHeight;
   }
+  container.scale.x = 0;
+  container.scale.y = 0;
   chatContainer.addChild(container);
-  return container;
 }
