@@ -29,7 +29,7 @@ function startTicker() {
           message.scale.x = message.scale.y += .01;
         message.grow--;
       } else
-        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count), 5)) * scale;
+        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 5), 5)) * scale;
 
       // COLLISION
       for (var j = chatContainer.children.length - 1; j >= 0; j--) {
