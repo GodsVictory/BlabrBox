@@ -17,6 +17,6 @@ function loadEmotes() {
       emotesLoaded = true;
     }
   };
-  getGloMemes.open("GET", "https://twitchemotes.com/api_cache/v2/global.json", true);
+  getGloMemes.open("GET", "assets/global.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
   getGloMemes.send();
 }
