@@ -6,6 +6,7 @@ var cursortimeout;
 var gloMemes = [];
 var fontLoaded = false;
 var emotesLoaded = false;
+var delay = Qurl.create().query('d');
 
 window.onload = function start() {
   loadFont();

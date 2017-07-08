@@ -52,6 +52,7 @@ function Chat(message) {
     if (emote) {
       var word = new PIXI.Sprite.fromImage(emote);
       word.scale.x = word.scale.y = style.fontSize * .01;
+      word.anchor.set(0, 0);
       word.x = container.getBounds().width;
     } else {
       var word = new PIXI.Text(messageArray[i], style);

@@ -37,7 +37,7 @@ function startTicker() {
         if (message.text == otherMessage.text) continue;
         var otherWidth = otherMessage.getBounds(true).width;
         var otherHeight = otherMessage.getBounds(true).height;
-        var side = collide(message, width, height, otherMessage, otherWidth, otherHeight);
+        var side = collide(message, width, height, otherMessage, otherWidth, otherHeight, scale);
         if (side != 'none') {
           var otherScale = otherMessage.scale.x + 1;
           if (side == 'top')
@@ -92,11 +92,11 @@ function pad(num, size) {
   return s;
 }
 
-function collide(r1, r1w, r1h, r2, r2w, r2h) {
+function collide(r1, r1w, r1h, r2, r2w, r2h, scale) {
   var dx = r1.x - r2.x;
   var dy = r1.y - r2.y;
   var width = (r1w + r2w) / 2;
-  var height = (r1h + r2h) / 2;
+  var height = (r1h + r2h) / (scale * 2);
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';
