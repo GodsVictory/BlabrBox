@@ -16,18 +16,15 @@ function setupClient() {
       if (channel == 'simulateChat') {
         handleChat('', '', 'Kappa asdf');
         handleChat('', '', 'BibleThump');
-        //setInterval(function() {
-        //  handleChat('', '', 'test Kappa');
-        //}, 500);
         setInterval(function() {
-          handleChat('', '', 'Kappa || BibleThump //');
+          handleChat('', '', 'Kappa S');
         }, 500);
-        //setInterval(function() {
-        //  handleChat('', '', '0000000');
-        //}, 750);
         setInterval(function() {
-          handleChat('', '', Math.round((Math.random() * 100)).toString());
-        }, 250);
+          handleChat('', '', 'BibleThump S');
+        }, 500);
+        // setInterval(function() {
+        //   handleChat('', '', Math.round((Math.random() * 100)).toString());
+        // }, 250);
       } else
         client.join(channel).catch(function(e) {});
     else
