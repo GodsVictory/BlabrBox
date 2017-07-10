@@ -20,6 +20,7 @@ window.onload = function start() {
 }
 
 function init() {
+  PIXI.settings.GC_MODE = 'manual';
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
     backgroundColor: 0x000000,
     antialias: true,

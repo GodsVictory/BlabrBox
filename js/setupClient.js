@@ -22,9 +22,9 @@ function setupClient() {
         setInterval(function() {
           handleChat('', '', 'BibleThump S');
         }, 500);
-        // setInterval(function() {
-        //   handleChat('', '', Math.round((Math.random() * 100)).toString());
-        // }, 250);
+        setInterval(function() {
+          handleChat('', '', Math.round((Math.random() * 100)).toString());
+        }, 150);
       } else
         client.join(channel).catch(function(e) {});
     else
