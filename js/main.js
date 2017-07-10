@@ -56,13 +56,6 @@ function init() {
     channelInput.y = window.innerHeight / 2;
   }
 
-  document.onvisibilitychange = function() {
-    if (!document.hidden)
-      app.start();
-    else
-      app.stop();
-  }
-
   document.onmousemove = function() {
     document.body.style.cursor = 'auto';
     clearTimeout(cursortimeout);

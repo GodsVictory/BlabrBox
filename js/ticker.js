@@ -1,5 +1,6 @@
 function startTicker() {
   app.ticker.add(function(delta) {
+    if (document.hidden) return;
 
     // INPUT HANDLER
     if (channelInput.grow) {
@@ -10,13 +11,10 @@ function startTicker() {
     } else
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
 
-    // SORT MESSAGES SO BIGGEST IS IN FRONT
-    chatContainer.children.sort(depthCompare);
     var count = 0;
     for (var i = chatContainer.children.length - 1; i >= 0; i--)
       count += chatContainer.children[i].scale.x + 1;
 
-    // APPLY PHYSICS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
@@ -31,6 +29,29 @@ function startTicker() {
       } else
         message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 5), 5)) * scale;
 
+      // APPLY VELOCITY
+      message.x += message.vx * .1;
+      message.y += message.vy * .1;
+
+      // SLOW DOWN
+      message.vx = lerp(message.vx, 0, .075 / scale);
+      message.vy = lerp(message.vy, 0, .075 / scale);
+    }
+  });
+
+  setInterval(function() {
+    if (document.hidden) return;
+
+    // SORT MESSAGES SO BIGGEST IS IN FRONT
+    chatContainer.children.sort(depthCompare);
+
+    // APPLY PHYSICS
+    for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+      var message = chatContainer.children[i];
+      var scale = message.scale.x + 1;
+      var width = message.getBounds(true).width;
+      var height = message.getBounds(true).height;
+
       // COLLISION
       for (var j = chatContainer.children.length - 1; j >= 0; j--) {
         var otherMessage = chatContainer.children[j];
@@ -41,30 +62,22 @@ function startTicker() {
         if (side != 'none') {
           var otherScale = otherMessage.scale.x + 1;
           if (side == 'top')
-            message.vy -= otherScale / (scale * .1);
+            message.vy -= otherScale / (scale * .075);
           else if (side == 'bottom')
-            message.vy += otherScale / (scale * .1);
+            message.vy += otherScale / (scale * .075);
           else if (side == 'left')
-            message.vx -= otherScale / (scale * .1);
+            message.vx -= otherScale / (scale * .075);
           else if (side == 'right')
-            message.vx += otherScale / (scale * .1);
+            message.vx += otherScale / (scale * .075);
           break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - width / 2 < 0) message.vx += scale;
-      if (message.x + width / 2 > window.innerWidth) message.vx -= scale;
-      if (message.y - height / 3 < 0) message.vy += scale;
-      if (message.y + height / 3 > window.innerHeight) message.vy -= scale;
-
-      // APPLY VELOCITY
-      message.x += message.vx * .1;
-      message.y += message.vy * .1;
-
-      // SLOW DOWN
-      message.vx = lerp(message.vx, 0, .075 / scale);
-      message.vy = lerp(message.vy, 0, .075 / scale);
+      if (message.x - width / 2 < 0) message.vx += scale * 5;
+      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * 5;
+      if (message.y - height / 3 < 0) message.vy += scale * 5;
+      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 5;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
@@ -73,7 +86,7 @@ function startTicker() {
           baseTexture: true
         });
     }
-  });
+  }, 1000 / 10);
 }
 
 function lerp(v0, v1, t) {
