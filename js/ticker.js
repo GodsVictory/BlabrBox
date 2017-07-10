@@ -1,7 +1,7 @@
 function startTicker() {
   app.ticker.add(function(delta) {
     if (document.hidden) return;
-
+    document.getElementById('channel').focus();
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
