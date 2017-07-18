@@ -1,15 +1,15 @@
 function startTicker() {
-  var lastFrame = 0;
-  var speed = .5; // 60fps default .1
-  var brakeSpeed = .15; // 60fps default .075
-  var growSpeed = .02; // 60fps default .01
-  var collisionSpeed = .15; // 60fps default .075
-  var boundarySpeed = 10; // 60fps default 5
+  //var lastFrame = 0;
+  var speed = .1; // 60fps default .1 / 30fps .5
+  var brakeSpeed = .075; // 60fps default .075 / 30fps .15
+  var growSpeed = .01; // 60fps default .01 / 30 fps .02
+  var collisionSpeed = .075; // 60fps default .075 / 30fps .15
+  var boundarySpeed = 5; // 60fps default 5 / 30fps 10
 
   app.ticker.add(function(delta) {
     if (document.hidden) return;
-    if (Date.now() - lastFrame < 1000 / 30) return;
-    lastFrame = Date.now();
+    //if (Date.now() - lastFrame < 1000 / 30) return;
+    //lastFrame = Date.now();
     document.getElementById('channel').focus();
     // INPUT HANDLER
     if (channelInput.grow) {
