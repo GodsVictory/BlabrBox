@@ -1,6 +1,15 @@
 function startTicker() {
+  var lastFrame = 0;
+  var speed = .5; // 60fps default .1
+  var brakeSpeed = .15; // 60fps default .075
+  var growSpeed = .02; // 60fps default .01
+  var collisionSpeed = .15; // 60fps default .075
+  var boundarySpeed = 10; // 60fps default 5
+
   app.ticker.add(function(delta) {
     if (document.hidden) return;
+    if (Date.now() - lastFrame < 1000 / 30) return;
+    lastFrame = Date.now();
     document.getElementById('channel').focus();
     // INPUT HANDLER
     if (channelInput.grow) {
@@ -24,18 +33,18 @@ function startTicker() {
       // GROW OR SHRINK
       if (message.grow) {
         if (width < window.innerWidth - 10 && height < window.innerHeight - 10)
-          message.scale.x = message.scale.y += .01;
+          message.scale.x = message.scale.y += growSpeed;
         message.grow--;
       } else
         message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 5), 5)) * scale;
 
       // APPLY VELOCITY
-      message.x += message.vx * .1;
-      message.y += message.vy * .1;
+      message.x += message.vx * speed * delta;
+      message.y += message.vy * speed * delta;
 
       // SLOW DOWN
-      message.vx = lerp(message.vx, 0, .075 / scale);
-      message.vy = lerp(message.vy, 0, .075 / scale);
+      message.vx = lerp(message.vx, 0, brakeSpeed / scale);
+      message.vy = lerp(message.vy, 0, brakeSpeed / scale);
     }
   });
 
@@ -62,22 +71,22 @@ function startTicker() {
         if (side != 'none') {
           var otherScale = otherMessage.scale.x + 1;
           if (side == 'top')
-            message.vy -= otherScale / (scale * .075);
+            message.vy -= otherScale / (scale * collisionSpeed);
           else if (side == 'bottom')
-            message.vy += otherScale / (scale * .075);
+            message.vy += otherScale / (scale * collisionSpeed);
           else if (side == 'left')
-            message.vx -= otherScale / (scale * .075);
+            message.vx -= otherScale / (scale * collisionSpeed);
           else if (side == 'right')
-            message.vx += otherScale / (scale * .075);
+            message.vx += otherScale / (scale * collisionSpeed);
           break;
         }
       }
 
       // KEEP IN BOUNDS
-      if (message.x - width / 2 < 0) message.vx += scale * 5;
-      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * 5;
-      if (message.y - height / 3 < 0) message.vy += scale * 5;
-      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * 5;
+      if (message.x - width / 2 < 0) message.vx += scale * boundarySpeed;
+      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * boundarySpeed;
+      if (message.y - height / 3 < 0) message.vy += scale * boundarySpeed;
+      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * boundarySpeed;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
