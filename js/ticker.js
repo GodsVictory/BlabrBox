@@ -1,10 +1,10 @@
 function startTicker() {
   //var lastFrame = 0;
   var speed = .1; // 60fps default .1 / 30fps .5
-  var brakeSpeed = .075; // 60fps default .075 / 30fps .15
-  var growSpeed = .01; // 60fps default .01 / 30 fps .02
+  var brakeSpeed = .01; // 60fps default .075 / 30fps .15
+  var growSpeed = .005; // 60fps default .01 / 30 fps .02
   var collisionSpeed = .075; // 60fps default .075 / 30fps .15
-  var boundarySpeed = 5; // 60fps default 5 / 30fps 10
+  var boundarySpeed = 20; // 60fps default 5 / 30fps 10
 
   app.ticker.add(function(delta) {
     if (document.hidden) return;
@@ -36,7 +36,7 @@ function startTicker() {
           message.scale.x = message.scale.y += growSpeed;
         message.grow--;
       } else
-        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 5), 5)) * scale;
+        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 2), 5)) * scale;
 
       // APPLY VELOCITY
       message.x += message.vx * speed * delta;
