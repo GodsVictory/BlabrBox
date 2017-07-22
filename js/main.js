@@ -7,6 +7,7 @@ var gloMemes = [];
 var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');
+var newChat = [];
 
 window.onload = function start() {
   loadFont();

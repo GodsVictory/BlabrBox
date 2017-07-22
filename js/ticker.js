@@ -6,11 +6,11 @@ function startTicker() {
   var collisionSpeed = .075; // 60fps default .075 / 30fps .15
   var boundarySpeed = 20; // 60fps default 5 / 30fps 10
 
+  // RENDER LOOP
   app.ticker.add(function(delta) {
     if (document.hidden) return;
-    //if (Date.now() - lastFrame < 1000 / 30) return;
-    //lastFrame = Date.now();
     document.getElementById('channel').focus();
+
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
@@ -20,10 +20,12 @@ function startTicker() {
     } else
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
 
+    // GET COUNT
     var count = 0;
     for (var i = chatContainer.children.length - 1; i >= 0; i--)
       count += chatContainer.children[i].scale.x + 1;
 
+    // PROCESS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
       var message = chatContainer.children[i];
       var scale = message.scale.x + 1;
@@ -48,8 +50,38 @@ function startTicker() {
     }
   });
 
+  // PHYSICS LOOP
   setInterval(function() {
     if (document.hidden) return;
+
+    // HANDLE NEW MESSAGES
+    if (newChat.length > 0) {
+      var newMessage = newChat.shift();
+      if (newMessage.length < 30) {
+        var exists = false;
+        for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+          if (newMessage == chatContainer.children[i].text) {
+            exists = true;
+            chatContainer.children[i].grow += 30;
+            break;
+          }
+        }
+        if (!exists) {
+          var bad = false;
+          for (var i = 0, len = badwords.length; i < len; i++) {
+            if (newMessage.indexOf(badwords[i]) > 0) {
+              bad = true;
+              break;
+            }
+          }
+        }
+        if (!bad && !exists) {
+          setTimeout(function() {
+            Chat(newMessage);
+          }, delay || 0);
+        }
+      }
+    }
 
     // SORT MESSAGES SO BIGGEST IS IN FRONT
     chatContainer.children.sort(depthCompare);
