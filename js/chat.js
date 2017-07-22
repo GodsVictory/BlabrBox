@@ -40,6 +40,10 @@ function Chat(message) {
   container.x = window.innerWidth * Math.random();
   container.y = window.innerHeight * Math.random();
 
+  // FORCE PROPER DIMENSIONS
+  var dimensionPlaceholder = new PIXI.Text(' ', style);
+  container.addChild(dimensionPlaceholder);
+
   // PARSE MESSAGE
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
@@ -52,8 +56,9 @@ function Chat(message) {
     if (emote) {
       var word = new PIXI.Sprite.fromImage(emote);
       word.scale.x = word.scale.y = style.fontSize * .01;
-      word.anchor.set(0, -.2);
+      word.anchor.set(0, .5);
       word.x = container.getBounds().width;
+      word.y = container.getBounds().height / 2;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
@@ -67,10 +72,6 @@ function Chat(message) {
       container.addChild(space);
     }
   }
-
-  // FORCE PROPER DIMENSIONS
-  var dimensionPlaceholder = new PIXI.Text(' ', style);
-  container.addChild(dimensionPlaceholder);
 
   // MANUALLY SET ANCHOR TO .5
   var offsetWidth = container.getBounds().width / 2;
