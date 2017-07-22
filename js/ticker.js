@@ -9,7 +9,6 @@ function startTicker() {
   // RENDER LOOP
   app.ticker.add(function(delta) {
     if (document.hidden) return;
-    document.getElementById('channel').focus();
 
     // INPUT HANDLER
     if (channelInput.grow) {
