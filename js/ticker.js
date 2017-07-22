@@ -52,6 +52,7 @@ function startTicker() {
   // PHYSICS LOOP
   setInterval(function() {
     if (document.hidden) return;
+    document.getElementById('channel').focus();
 
     // HANDLE NEW MESSAGES
     if (newChat.length > 0) {
