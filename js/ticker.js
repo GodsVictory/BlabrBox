@@ -37,7 +37,7 @@ function startTicker() {
           message.scale.x = message.scale.y += growSpeed;
         message.grow--;
       } else
-        message.scale.x = message.scale.y -= '.'.concat(pad(Math.round(count * 2), 5)) * scale * 2;
+        message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(Math.round(count), 4))); //'.'.concat(pad(Math.round(count * scale * 250), 7)); // * scale * 250;
 
       // APPLY VELOCITY
       message.x += message.vx * speed * delta;
