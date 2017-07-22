@@ -2,7 +2,8 @@ var app;
 var chatContainer;
 var channelInput;
 var channel = '';
-var cursortimeout;
+var cursorTimeout;
+var channelTimeout
 var gloMemes = [];
 var fontLoaded = false;
 var emotesLoaded = false;
@@ -59,16 +60,17 @@ function init() {
 
   document.onmousemove = function() {
     document.getElementById('channel').style.cursor = 'default';
-    clearTimeout(cursortimeout);
-    cursortimeout = setTimeout(function() {
+    clearTimeout(cursorTimeout);
+    cursorTimeout = setTimeout(function() {
       document.getElementById('channel').style.cursor = 'none';
     }, 1000);
   }
 
   document.onclick = function() {
     channelInput.grow = true;
+    clearTimeout(channelTimeout);
     if (channel != 'Channel...')
-      timeout = setTimeout(function() {
+      channelTimeout = setTimeout(function() {
         channelInput.grow = false;
       }, 2000);
   }

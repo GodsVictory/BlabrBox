@@ -1,6 +1,4 @@
 function setupClient() {
-  var timeout;
-
   var clientOptions = {
       connection: {
         reconnect: true,
@@ -35,12 +33,12 @@ function setupClient() {
     channelInput.grow = true;
 
     if (channel != 'Channel...')
-      timeout = setTimeout(function() {
+      channelTimeout = setTimeout(function() {
         channelInput.grow = false;
       }, 2000);
 
     document.getElementById('channel').oninput = function() {
-        clearTimeout(timeout);
+        clearTimeout(channelTimeout);
         channelInput.grow = true;
         client.part(channel);
 
@@ -50,7 +48,7 @@ function setupClient() {
         if (!channel)
           channel = 'Channel...'
         else {
-          timeout = setTimeout(function() {
+          channelTimeout = setTimeout(function() {
             client.join(channel).catch(function(e) {});
             channelInput.grow = false;
           }, 2000);
