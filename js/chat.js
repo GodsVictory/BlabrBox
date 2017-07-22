@@ -43,6 +43,8 @@ function Chat(message) {
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
   container.addChild(dimensionPlaceholder);
+  height = container.getBounds().height;
+  dimensionPlaceholder.destroy(true);
 
   // PARSE MESSAGE
   var messageArray = message.split(' ');
@@ -58,7 +60,7 @@ function Chat(message) {
       word.scale.x = word.scale.y = style.fontSize * .01;
       word.anchor.set(0, .5);
       word.x = container.getBounds().width;
-      word.y = container.getBounds().height / 2;
+      word.y = height / 2;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
