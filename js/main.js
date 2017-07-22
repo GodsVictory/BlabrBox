@@ -58,11 +58,11 @@ function init() {
   }
 
   document.onmousemove = function() {
-    document.body.style.cursor = 'auto';
+    document.getElementById('channel').style.cursor = 'default';
     clearTimeout(cursortimeout);
     cursortimeout = setTimeout(function() {
-      document.body.style.cursor = 'none';
-    }, 2000);
+      document.getElementById('channel').style.cursor = 'none';
+    }, 1000);
   }
 
   document.ondblclick = function() {
