@@ -65,6 +65,14 @@ function init() {
     }, 1000);
   }
 
+  document.onclick = function() {
+    channelInput.grow = true;
+    if (channel != 'Channel...')
+      timeout = setTimeout(function() {
+        channelInput.grow = false;
+      }, 2000);
+  }
+
   document.ondblclick = function() {
     screenfull.toggle();
   }
