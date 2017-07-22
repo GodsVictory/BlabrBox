@@ -1,7 +1,7 @@
 function startTicker() {
   //var lastFrame = 0;
   var speed = .1; // 60fps default .1 / 30fps .5
-  var brakeSpeed = .01; // 60fps default .075 / 30fps .15
+  var brakeSpeed = .05; // 60fps default .075 / 30fps .15
   var growSpeed = .005; // 60fps default .01 / 30 fps .02
   var collisionSpeed = .075; // 60fps default .075 / 30fps .15
   var boundarySpeed = 20; // 60fps default 5 / 30fps 10
