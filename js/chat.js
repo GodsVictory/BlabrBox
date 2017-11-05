@@ -46,7 +46,7 @@ function Chat(message) {
   height = container.getBounds().height;
   dimensionPlaceholder.destroy(true);
 
-  // PARSE MESSAGE
+  // PARSE MESSAGE // INSERT EMOTES
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var emote = false;

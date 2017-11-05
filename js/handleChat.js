@@ -1,4 +1,5 @@
 function handleChat(channel, user, message, self) {
   if (!document.hidden)
-    newChat.push(message);
+    if (length > -1 && message.length <= length)
+      newChat.push(message);
 }

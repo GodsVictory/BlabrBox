@@ -15,10 +15,10 @@ function setupClient() {
         handleChat('', '', 'Kappa asdf');
         handleChat('', '', 'BibleThump');
         setInterval(function() {
-          handleChat('', '', 'Kappa S');
+          handleChat('', '', 'Clayton Sucks');
         }, 500);
         setInterval(function() {
-          handleChat('', '', 'BibleThump S');
+          handleChat('', '', 'KappaPride');
         }, 500);
         setInterval(function() {
           handleChat('', '', Math.round((Math.random() * 100)).toString());
