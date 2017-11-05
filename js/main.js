@@ -9,7 +9,6 @@ var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');
 var length = Qurl.create().query('l');
-console.log(length);
 var newChat = [];
 
 window.onload = function start() {

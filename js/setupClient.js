@@ -18,7 +18,7 @@ function setupClient() {
           handleChat('', '', 'Clayton Sucks');
         }, 500);
         setInterval(function() {
-          handleChat('', '', 'KappaPride');
+          handleChat('', '', 'Kappa');
         }, 500);
         setInterval(function() {
           handleChat('', '', Math.round((Math.random() * 100)).toString());
@@ -38,48 +38,48 @@ function setupClient() {
       }, 2000);
 
     document.getElementById('channel').oninput = function() {
-        clearTimeout(channelTimeout);
-        channelInput.grow = true;
-        client.part(channel);
+      clearTimeout(channelTimeout);
+      channelInput.grow = true;
+      client.part(channel);
 
-        channel = document.getElementById('channel').value;
-        Qurl.create().query('c', channel);
+      channel = document.getElementById('channel').value;
+      Qurl.create().query('c', channel);
 
-        if (!channel)
-          channel = 'Channel...'
-        else {
-          channelTimeout = setTimeout(function() {
-            client.join(channel).catch(function(e) {});
-            channelInput.grow = false;
-          }, 2000);
-        }
-        channelInput.text = channel;
+      if (!channel)
+        channel = 'Channel...'
+      else {
+        channelTimeout = setTimeout(function() {
+          client.join(channel).catch(function(e) {});
+          channelInput.grow = false;
+        }, 2000);
       }
-      /* SAVING FOR NOW WHILE TESTING NEW VERSION
-          window.onkeydown = function(evt) {
-            if (evt.key.length == 1 || evt.key == 'Backspace')
-              if (evt.key.match(/[a-z0-9-_ ]/i)) {
-                clearTimeout(timeout);
-                channelInput.grow = true;
-                client.part(channel);
-                if (channel == 'Channel...')
-                  channel = '';
-                if (evt.key == 'Backspace')
-                  channel = channel.substring(0, channel.length - 1);
-                else if (evt.key.match(/[a-z0-9-_ ]/i))
-                  channel += evt.key;
-                Qurl.create().query('c', channel);
-                if (!channel)
-                  channel = 'Channel...'
-                else {
-                  timeout = setTimeout(function() {
-                    client.join(channel).catch(function(e) {});
-                    channelInput.grow = false;
-                  }, 2000);
-                }
-                channelInput.text = channel;
+      channelInput.text = channel;
+    }
+    /* SAVING FOR NOW WHILE TESTING NEW VERSION
+        window.onkeydown = function(evt) {
+          if (evt.key.length == 1 || evt.key == 'Backspace')
+            if (evt.key.match(/[a-z0-9-_ ]/i)) {
+              clearTimeout(timeout);
+              channelInput.grow = true;
+              client.part(channel);
+              if (channel == 'Channel...')
+                channel = '';
+              if (evt.key == 'Backspace')
+                channel = channel.substring(0, channel.length - 1);
+              else if (evt.key.match(/[a-z0-9-_ ]/i))
+                channel += evt.key;
+              Qurl.create().query('c', channel);
+              if (!channel)
+                channel = 'Channel...'
+              else {
+                timeout = setTimeout(function() {
+                  client.join(channel).catch(function(e) {});
+                  channelInput.grow = false;
+                }, 2000);
               }
-          }*/
+              channelInput.text = channel;
+            }
+        }*/
   });
 
   client.connect();
