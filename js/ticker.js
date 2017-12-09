@@ -9,6 +9,9 @@ function startTicker() {
   app.ticker.add(function(delta) {
     if (document.hidden) return;
 
+    // SORT MESSAGES SO BIGGEST IS IN FRONT
+    chatContainer.children.sort(depthCompare);
+    
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
@@ -81,9 +84,6 @@ function startTicker() {
         }
       }
     }
-
-    // SORT MESSAGES SO BIGGEST IS IN FRONT
-    chatContainer.children.sort(depthCompare);
 
     // APPLY PHYSICS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
