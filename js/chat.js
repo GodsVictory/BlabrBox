@@ -50,11 +50,13 @@ function Chat(message) {
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var emote = false;
-    for (var j = 0, gloLen = gloMemes.length; j < gloLen; j++)
-      if (messageArray[i] == gloMemes[j].code) {
-        emote = gloMemes[j].url;
+	  for (var j = 0, glolen = gloMemesKeys.length; j < glolen; j++) {
+      if (messageArray[i] == gloMemesKeys[j]) {
+        emote = "http://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[gloMemesKeys[j]].id + "/3.0"
+        //emote = gloMemes[j].url;
         break;
       }
+    }
     if (emote) {
       var word = new PIXI.Sprite.fromImage(emote);
       word.scale.x = word.scale.y = style.fontSize * .01;

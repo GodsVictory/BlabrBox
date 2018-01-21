@@ -13,8 +13,8 @@ function setupClient() {
     if (channel) {
       if (channel == 'simulateChat') {
         handleChat('', '', 'Kappa asdf');
-        handleChat('', '', 'BibleThump');
-        setInterval(function() {
+        //handleChat('', '', 'BibleThump');
+        /*setInterval(function() {
           handleChat('', '', 'Clayton Sucks');
         }, 500);
         setInterval(function() {
@@ -22,7 +22,7 @@ function setupClient() {
         }, 500);
         setInterval(function() {
           handleChat('', '', Math.round((Math.random() * 100)).toString());
-        }, 150);
+        }, 150);*/
       } else
         client.join(channel).catch(function(e) {});
       document.getElementById('channel').value = channel;
