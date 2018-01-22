@@ -4,11 +4,12 @@ var channelInput;
 var channel = '';
 var cursorTimeout;
 var channelTimeout
-var gloMemes, gloMemesKeys;
+var gloMemes = {},
+  gloMemesKeys, subMemes = {};
 var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');
-var length = Qurl.create().query('l');
+var length = Qurl.create().query('l') || 30;
 var newChat = [];
 
 window.onload = function start() {
@@ -20,6 +21,7 @@ window.onload = function start() {
       init();
     }
   }, 100);
+
 }
 
 function init() {

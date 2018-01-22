@@ -1,28 +1,3 @@
-/*function Chat(message) {
-  var style = new PIXI.TextStyle({
-    fontFamily: 'Fredoka One',
-    fontSize: (window.innerWidth + window.innerHeight) * .1,
-    align: 'center',
-    fill: '#ffffff',
-    stroke: '#000000',
-    strokeThickness: 10,
-    wordWrap: true,
-    wordWrapWidth: 1500,
-  });
-  var chat = new PIXI.Text(message, style);
-  chat.anchor.set(.5);
-  chat.scale.x = 0;
-  chat.scale.y = 0;
-  chat.grow = 30;
-  chat.vx = 0;
-  chat.vy = 0;
-  chat.maxVel = 0;
-  chat.x = window.innerWidth * Math.random();
-  chat.y = window.innerHeight * Math.random();
-  chatContainer.addChild(chat);
-  return chat;
-}*/
-
 function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
@@ -46,28 +21,24 @@ function Chat(message) {
   height = container.getBounds().height;
   dimensionPlaceholder.destroy(true);
 
-  // PARSE MESSAGE // INSERT EMOTES
+  // PARSE MESSAGE
+  // INSERT EMOTES
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
-    var emote = false;
-	  for (var j = 0, glolen = gloMemesKeys.length; j < glolen; j++) {
-      if (messageArray[i] == gloMemesKeys[j]) {
-        emote = "http://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[gloMemesKeys[j]].id + "/3.0"
-        //emote = gloMemes[j].url;
-        break;
-      }
-    }
-    if (emote) {
-      var word = new PIXI.Sprite.fromImage(emote);
-      word.scale.x = word.scale.y = style.fontSize * .01;
-      word.anchor.set(0, .5);
+    if (typeof gloMemes[messageArray[i]] !== 'undefined') {
+      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[messageArray[i]] + "/3.0");
+      word.width = word.height = style.fontSize;
       word.x = container.getBounds().width;
-      word.y = height / 2;
+    } else if (typeof subMemes[messageArray[i]] !== 'undefined') {
+      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + subMemes[messageArray[i]] + "/3.0");
+      word.width = word.height = style.fontSize;
+      word.x = container.getBounds().width;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
     }
     container.addChild(word);
+
 
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {

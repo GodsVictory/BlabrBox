@@ -11,7 +11,7 @@ function startTicker() {
 
     // SORT MESSAGES SO BIGGEST IS IN FRONT
     chatContainer.children.sort(depthCompare);
-    
+
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
@@ -59,29 +59,27 @@ function startTicker() {
     // HANDLE NEW MESSAGES
     if (newChat.length > 0) {
       var newMessage = newChat.shift();
-      if (newMessage.length < 30) {
-        var exists = false;
-        for (var i = chatContainer.children.length - 1; i >= 0; i--) {
-          if (newMessage == chatContainer.children[i].text) {
-            exists = true;
-            chatContainer.children[i].grow += 30;
+      var exists = false;
+      for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+        if (newMessage == chatContainer.children[i].text) {
+          exists = true;
+          chatContainer.children[i].grow += 30;
+          break;
+        }
+      }
+      if (!exists) {
+        var bad = false;
+        for (var i = 0, len = badwords.length; i < len; i++) {
+          if (newMessage.indexOf(badwords[i]) > 0) {
+            bad = true;
             break;
           }
         }
-        if (!exists) {
-          var bad = false;
-          for (var i = 0, len = badwords.length; i < len; i++) {
-            if (newMessage.indexOf(badwords[i]) > 0) {
-              bad = true;
-              break;
-            }
-          }
-        }
-        if (!bad && !exists) {
-          setTimeout(function() {
-            Chat(newMessage);
-          }, delay || 0);
-        }
+      }
+      if (!bad && !exists) {
+        setTimeout(function() {
+          Chat(newMessage);
+        }, delay || 0);
       }
     }
 
