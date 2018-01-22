@@ -17,10 +17,9 @@ function loadEmotes() {
       for (var key in subMemesRaw)
         for (var i = 0, len = subMemesRaw[key].emotes.length; i < len; i++)
           subMemes[subMemesRaw[key].emotes[i].code] = subMemesRaw[key].emotes[i].id;
+      emotesLoaded = true;
     }
   };
   getSubMemes.open("GET", "assets/subscriber.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
   getSubMemes.send();
-
-  emotesLoaded = true;
 }
