@@ -5,7 +5,8 @@ var channel = '';
 var cursorTimeout;
 var channelTimeout
 var gloMemes = {},
-  gloMemesKeys, subMemes = {};
+  subMemes = {},
+  ffzMemes = {};
 var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');

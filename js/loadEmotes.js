@@ -22,4 +22,21 @@ function loadEmotes() {
   };
   getSubMemes.open("GET", "assets/subscriber.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
   getSubMemes.send();
+
+  var ffzMemesRaw, getFfzMemes = new XMLHttpRequest();
+  getFfzMemes.onreadystatechange = function() {
+    if (getFfzMemes.readyState == 4 && getFfzMemes.status == 200) {
+      ffzMemesRaw = JSON.parse(getFfzMemes.responseText).emoticons;
+      for (var i = 0, len = ffzMemesRaw.length; i < len; i++) {
+        ffzMemes[ffzMemesRaw[i].name] = {
+          id: ffzMemesRaw[i].id,
+          height: ffzMemesRaw[i].height,
+          width: ffzMemesRaw[i].width
+        }
+      }
+      console.log(ffzMemes);
+    }
+  };
+  getFfzMemes.open("GET", "assets/ffz.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
+  getFfzMemes.send();
 }
