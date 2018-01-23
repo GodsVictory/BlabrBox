@@ -3,7 +3,7 @@ function startTicker() {
   var brakeSpeed = .01;
   var growSpeed = .005;
   var collisionSpeed = .075;
-  var boundarySpeed = 20;
+  var boundarySpeed = 100;
 
   // RENDER LOOP
   app.ticker.add(function(delta) {
@@ -35,7 +35,7 @@ function startTicker() {
 
       // GROW OR SHRINK
       if (message.grow) {
-        if (width < window.innerWidth - 10 && height < window.innerHeight - 10)
+        if (width < window.innerWidth - 10 && height / 1.7 < window.innerHeight - 10)
           message.scale.x = message.scale.y += growSpeed;
         message.grow--;
       } else {
@@ -116,10 +116,10 @@ function startTicker() {
       }
 
       // KEEP IN BOUNDS
-      if (message.x - width / 2 < 0) message.vx += scale * boundarySpeed;
-      if (message.x + width / 2 > window.innerWidth) message.vx -= scale * boundarySpeed;
-      if (message.y - height / 3 < 0) message.vy += scale * boundarySpeed;
-      if (message.y + height / 3 > window.innerHeight) message.vy -= scale * boundarySpeed;
+      if (message.x - width / 2 < 0) message.vx += boundarySpeed / scale;
+      if (message.x + width / 2 > window.innerWidth) message.vx -= boundarySpeed / scale;
+      if (message.y - height / 3.25 < 0) message.vy += boundarySpeed / scale;
+      if (message.y + height / 3.25 > window.innerHeight) message.vy -= boundarySpeed / scale;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
@@ -151,7 +151,7 @@ function collide(r1, r1w, r1h, r2, r2w, r2h, scale) {
   var dx = r1.x - r2.x;
   var dy = r1.y - r2.y;
   var width = (r1w + r2w) / 2;
-  var height = (r1h + r2h) / 2.5; //(scale);
+  var height = (r1h + r2h) / 3.25; //(scale);
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';

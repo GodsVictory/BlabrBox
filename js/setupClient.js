@@ -19,7 +19,7 @@ function setupClient() {
         }, 500);
         setInterval(function() {
           handleChat('', '', 'Kappa');
-        }, 300);
+        }, 100);
         setInterval(function() {
           handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
         }, 150);

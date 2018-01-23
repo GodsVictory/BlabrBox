@@ -18,41 +18,42 @@ function Chat(message) {
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
   container.addChild(dimensionPlaceholder);
-  height = container.getBounds().height;
+  height = Math.round(container.getBounds().height);
   dimensionPlaceholder.destroy(true);
 
   // PARSE MESSAGE
   // INSERT EMOTES
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
-    var emote = false;
+    var isEmote = false;
     var url = false;
     if (typeof gloMemes[messageArray[i]] !== 'undefined') {
       url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + gloMemes[messageArray[i]] + '/3.0';
       id = 'glo' + gloMemes[messageArray[i]];
-      emote = true;
+      isEmote = true;
     } else if (typeof subMemes[messageArray[i]] !== 'undefined') {
       url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemes[messageArray[i]] + '/3.0';
       id = 'sub' + subMemes[messageArray[i]];
-      emote = true;
+      isEmote = true;
     } else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
       url = "assets/emotes/ffz/" + ffzMemes[messageArray[i]].id + ".png";
       id = 'ffz' + ffzMemes[messageArray[i]].id;
-      emote = true;
+      isEmote = true;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
       container.addChild(word);
     }
-    if (emote) {
-      var word = new PIXI.Sprite.fromImage(url);
-      word.scale.x = word.scale.y = style.fontSize * .01;
-      word.x = container.getBounds().width;
-      word.anchor.set(0, .5);
-      word.y = height / 2;
-      container.addChild(word);
-      var space = new PIXI.Text('   ', style);
-      space.x = word.x;
+    if (isEmote) {
+      var emote = new PIXI.Sprite.fromImage(url);
+      emote.scale.x = emote.scale.y = style.fontSize * .009;
+      emote.x = container.getBounds().width;
+      emote.anchor.set(0, .5);
+      emote.y = height / 2;
+      container.addChild(emote);
+      // force size
+      var space = new PIXI.Text('  ', style);
+      space.x = emote.x;
       container.addChild(space);
     }
 
