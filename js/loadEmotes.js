@@ -7,7 +7,7 @@ function loadEmotes() {
         gloMemes[key] = gloMemesRaw[key].id;
     }
   };
-  getGlowMemes.open("GET", "assets/global.json", true);
+  getGlowMemes.open("GET", "assets/emotes/global/global.json", true);
   getGlowMemes.send();
 
   var subMemesRaw, getSubMemes = new XMLHttpRequest();
@@ -20,7 +20,7 @@ function loadEmotes() {
       emotesLoaded = true;
     }
   };
-  getSubMemes.open("GET", "assets/subscriber.json", true);
+  getSubMemes.open("GET", "assets/emotes/subscriber/subscriber.json", true);
   getSubMemes.send();
 
   var ffzMemesRaw, getFfzMemes = new XMLHttpRequest();

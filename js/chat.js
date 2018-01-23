@@ -26,23 +26,26 @@ function Chat(message) {
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof gloMemes[messageArray[i]] !== 'undefined') {
-      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[messageArray[i]] + "/3.0");
-      word.width = word.height = style.fontSize;
+      var word = new PIXI.Sprite.fromImage("assets/emotes/global/" + gloMemes[messageArray[i]] + ".png");
+      word.scale.x = word.scale.y = style.fontSize * .01;
       word.x = container.getBounds().width;
+      word.anchor.set(0, .5);
+      word.y = height / 2;
     } else if (typeof subMemes[messageArray[i]] !== 'undefined') {
-      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + subMemes[messageArray[i]] + "/3.0");
-      word.width = word.height = style.fontSize;
+      var word = new PIXI.Sprite.fromImage("assets/emotes/subscriber/" + subMemes[messageArray[i]] + ".png");
+      word.scale.x = word.scale.y = style.fontSize * .01;
       word.x = container.getBounds().width;
+      word.anchor.set(0, .5);
+      word.y = height / 2;
     } else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
-      var word = new PIXI.Sprite.fromImage("assets/emotes/ffz/" + ffzMemes[messageArray[i]].id + ".png");
-      word.width = word.height = style.fontSize;
+      var word = new PIXI.Sprite.fromImage("assets/emotes/ffz/" + ffzMemes[messageArray[i]] + ".png");
+      word.scale.x = word.scale.y = style.fontSize * .01;
       word.x = container.getBounds().width;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
     }
     container.addChild(word);
-
 
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {

@@ -12,7 +12,7 @@ function setupClient() {
     channel = Qurl.create().query('c');
     if (channel) {
       if (channel == 'simulateChat') {
-        handleChat('', '', 'monkaS a BibleThump');
+        handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump');
         //handleChat('', '', 'BibleThump');
         /*setInterval(function() {
           handleChat('', '', 'Clayton Sucks');

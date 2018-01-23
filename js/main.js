@@ -1,4 +1,23 @@
-// get ffz emotes: curl -sO ffz.json 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|.urls|.[]' | grep '/4"$' | sed 's/"//g' | while read line;do wget -q http:${line} -O $(echo $line | cut -d'/' -f5).png;done
+/* get ffz emotes:
+curl -so ffz.json 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc'
+cat ffz.json |\
+  jq '.emoticons|.[]|.id' |\
+  while read line;do [ -f ${line}.png ] || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/4" -O ${line}.png || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/2" -O ${line}.png || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/1" -O ${line}.png;done
+
+get twitch global emotes:
+curl -so global.json 'https://twitchemotes.com/api_cache/v3/global.json'
+cat global.json |\
+  jq '.[]|.id' |\
+  while read line;do [ -f ${line}.png ] || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png;done
+
+get twitch subscriber emotes:
+curl -so subscriber.json 'https://twitchemotes.com/api_cache/v3/subscriber.json'
+cat subscriber.json |\
+  jq '.[]|.emotes|.[]|.id' |\
+  while read line;do [ -f ${line}.png ] || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png;done
+*/
+
+
 var app;
 var chatContainer;
 var channelInput;
@@ -11,19 +30,46 @@ var gloMemes = {},
 var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');
-var length = Qurl.create().query('l') || 30;
+var length = Qurl.create().query('l') || 40;
 var newChat = [];
 
 window.onload = function start() {
   loadFont();
-  loadEmotes();
+  //loadEmotes();
   var waitForLoad = setInterval(function() {
-    if (fontLoaded && emotesLoaded) {
+    if (fontLoaded) { // && emotesLoaded) {
       clearInterval(waitForLoad);
-      init();
+      load1();
     }
   }, 100);
 
+}
+
+const loader = PIXI.loader;
+
+function load1() {
+  loader.add('global', 'assets/emotes/global/global.json');
+  loader.add('ffz', 'assets/emotes/ffz/ffz.json');
+  loader.once('complete', function(loader, resources) {
+    load2();
+  }).load();
+}
+
+function load2() {
+  for (var key in loader.resources.global.data)
+    gloMemes[key] = loader.resources.global.data[key].id;
+  for (var i = 0, len = loader.resources.ffz.data.emoticons.length; i < len; i++)
+    ffzMemes[loader.resources.ffz.data.emoticons[i].name] = loader.resources.ffz.data.emoticons[i].id;
+
+  for (var key in gloMemes)
+    loader.add('glo' + gloMemes[key], 'assets/emotes/global/' + gloMemes[key] + '.png');
+  /*for (var key in subMemes)
+    loader.add('glo' + subMemes[key], 'assets/emotes/subscriber/' + subMemes[key] + '.png');*/
+  for (var key in ffzMemes)
+    loader.add('ffz' + ffzMemes[key], 'assets/emotes/ffz/' + ffzMemes[key] + '.png');
+  loader.once('complete', function(loader, resources) {
+    init();
+  }).load();
 }
 
 function init() {
