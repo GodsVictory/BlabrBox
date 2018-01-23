@@ -26,15 +26,15 @@ function Chat(message) {
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof gloMemes[messageArray[i]] !== 'undefined') {
-      var word = new PIXI.Sprite.fromImage("https://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[messageArray[i]] + "/3.0");
+      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + gloMemes[messageArray[i]] + "/3.0");
       word.width = word.height = style.fontSize;
       word.x = container.getBounds().width;
     } else if (typeof subMemes[messageArray[i]] !== 'undefined') {
-      var word = new PIXI.Sprite.fromImage("https://static-cdn.jtvnw.net/emoticons/v1/" + subMemes[messageArray[i]] + "/3.0");
+      var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + subMemes[messageArray[i]] + "/3.0");
       word.width = word.height = style.fontSize;
       word.x = container.getBounds().width;
     } else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
-        var word = new PIXI.Sprite.fromImage("https://cdn.frankerfacez.com/emoticon/" + ffzMemes[messageArray[i]].id + "/4");
+        var word = new PIXI.Sprite.fromImage("http://cdn.frankerfacez.com/emoticon/" + ffzMemes[messageArray[i]].id + "/4");
         word.width = word.height = style.fontSize;
         word.x = container.getBounds().width;
     } else {
