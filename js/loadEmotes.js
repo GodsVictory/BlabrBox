@@ -7,7 +7,7 @@ function loadEmotes() {
         gloMemes[key] = gloMemesRaw[key].id;
     }
   };
-  getGlowMemes.open("GET", "assets/global.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
+  getGlowMemes.open("GET", "assets/global.json", true);
   getGlowMemes.send();
 
   var subMemesRaw, getSubMemes = new XMLHttpRequest();
@@ -20,7 +20,7 @@ function loadEmotes() {
       emotesLoaded = true;
     }
   };
-  getSubMemes.open("GET", "assets/subscriber.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
+  getSubMemes.open("GET", "assets/subscriber.json", true);
   getSubMemes.send();
 
   var ffzMemesRaw, getFfzMemes = new XMLHttpRequest();
@@ -34,9 +34,8 @@ function loadEmotes() {
           width: ffzMemesRaw[i].width
         }
       }
-      console.log(ffzMemes);
     }
   };
-  getFfzMemes.open("GET", "assets/ffz.json", true); //"https://twitchemotes.com/api_cache/v2/global.json", true);
+  getFfzMemes.open("GET", "assets/ffz.json", true);
   getFfzMemes.send();
 }
