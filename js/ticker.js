@@ -38,8 +38,12 @@ function startTicker() {
         if (width < window.innerWidth - 10 && height < window.innerHeight - 10)
           message.scale.x = message.scale.y += growSpeed;
         message.grow--;
-      } else
-        message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(Math.round(count), 4))); //'.'.concat(pad(Math.round(count * scale * 250), 7)); // * scale * 250;
+      } else {
+        if (count < 10)
+          message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(10, 4)));
+        else
+          message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(Math.round(count), 4)));
+      }
 
       // APPLY VELOCITY
       message.x += message.vx * speed * delta;

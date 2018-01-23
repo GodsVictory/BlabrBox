@@ -14,15 +14,15 @@ function setupClient() {
       if (channel == 'simulateChat') {
         handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump');
         //handleChat('', '', 'BibleThump');
-        /*setInterval(function() {
-          handleChat('', '', 'Clayton Sucks');
+        setInterval(function() {
+          //  handleChat('', '', 'Clayton Sucks');
         }, 500);
         setInterval(function() {
           handleChat('', '', 'Kappa');
-        }, 500);
+        }, 300);
         setInterval(function() {
-          handleChat('', '', Math.round((Math.random() * 100)).toString());
-        }, 150);*/
+          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+        }, 150);
       } else
         client.join(channel).catch(function(e) {});
       document.getElementById('channel').value = channel;

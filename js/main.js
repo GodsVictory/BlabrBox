@@ -8,13 +8,13 @@ get twitch global emotes:
 curl -so global.json 'https://twitchemotes.com/api_cache/v3/global.json'
 cat global.json |\
   jq '.[]|.id' |\
-  while read line;do [ -f ${line}.png ] || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png;done
+  while read line;do [ -f ${line}.png ] || { while [[ $(pgrep -c wget) -ge 50 ]];do sleep .25;done;{wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/2.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/1.0" -O ${line}.png} & };done
 
 get twitch subscriber emotes:
 curl -so subscriber.json 'https://twitchemotes.com/api_cache/v3/subscriber.json'
 cat subscriber.json |\
   jq '.[]|.emotes|.[]|.id' |\
-  while read line;do [ -f ${line}.png ] || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png;done
+  while read line;do [ -f ${line}.png ] || { while [[ $(pgrep -c wget) -ge 50 ]];do sleep .25;done;{wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/2.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/1.0" -O ${line}.png} & };done
 */
 
 
@@ -48,8 +48,9 @@ window.onload = function start() {
 const loader = PIXI.loader;
 
 function load1() {
-  loader.add('global', 'assets/emotes/global/global.json');
-  loader.add('ffz', 'assets/emotes/ffz/ffz.json');
+  loader.add('global', 'assets/global.json');
+  loader.add('subscriber', 'assets/subscriber.json');
+  loader.add('ffz', 'assets/ffz.json');
   loader.once('complete', function(loader, resources) {
     load2();
   }).load();
@@ -58,22 +59,34 @@ function load1() {
 function load2() {
   for (var key in loader.resources.global.data)
     gloMemes[key] = loader.resources.global.data[key].id;
-  for (var i = 0, len = loader.resources.ffz.data.emoticons.length; i < len; i++)
-    ffzMemes[loader.resources.ffz.data.emoticons[i].name] = loader.resources.ffz.data.emoticons[i].id;
+  subMemesRaw = loader.resources.subscriber.data;
+  for (var key in subMemesRaw)
+    for (var i = 0, len = subMemesRaw[key].emotes.length; i < len; i++)
+      subMemes[subMemesRaw[key].emotes[i].code] = subMemesRaw[key].emotes[i].id;
+  ffzMemesRaw = loader.resources.ffz.data.emoticons;
+  for (var i = 0, len = ffzMemesRaw.length; i < len; i++) {
+    ffzMemes[ffzMemesRaw[i].name] = {
+      id: ffzMemesRaw[i].id,
+      height: ffzMemesRaw[i].height,
+      width: ffzMemesRaw[i].width
+    }
+  }
+  init();
 
-  for (var key in gloMemes)
+  /*for (var key in gloMemes)
     loader.add('glo' + gloMemes[key], 'assets/emotes/global/' + gloMemes[key] + '.png');
-  /*for (var key in subMemes)
-    loader.add('glo' + subMemes[key], 'assets/emotes/subscriber/' + subMemes[key] + '.png');*/
+  for (var key in subMemes)
+    loader.add('sub' + subMemes[key], 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemes[key] + '/3.0');
   for (var key in ffzMemes)
     loader.add('ffz' + ffzMemes[key], 'assets/emotes/ffz/' + ffzMemes[key] + '.png');
   loader.once('complete', function(loader, resources) {
     init();
-  }).load();
+  }).load();*/
 }
 
 function init() {
   PIXI.settings.GC_MODE = 'manual';
+  // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
     backgroundColor: 0x000000,
     antialias: true,
