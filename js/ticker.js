@@ -39,10 +39,10 @@ function startTicker() {
           message.scale.x = message.scale.y += growSpeed;
         message.grow--;
       } else {
-        if (count < 10)
+        if (count / 2 < 10)
           message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(10, 4)));
         else
-          message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(Math.round(count), 4)));
+          message.scale.x = message.scale.y = lerp(message.scale.x, -.1, '.'.concat(pad(Math.round(count / 2), 4)));
       }
 
       // APPLY VELOCITY
