@@ -36,6 +36,6 @@ function loadEmotes() {
       }
     }
   };
-  getFfzMemes.open("GET", "assets/ffz.json", true);
+  getFfzMemes.open("GET", "assets/emotes/ffz/ffz.json", true);
   getFfzMemes.send();
 }

@@ -33,10 +33,10 @@ function Chat(message) {
       var word = new PIXI.Sprite.fromImage("http://static-cdn.jtvnw.net/emoticons/v1/" + subMemes[messageArray[i]] + "/3.0");
       word.width = word.height = style.fontSize;
       word.x = container.getBounds().width;
-      /*} else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
-          var word = new PIXI.Sprite.fromImage("http://cdn.frankerfacez.com/emoticon/" + ffzMemes[messageArray[i]].id + "/4");
-          word.width = word.height = style.fontSize;
-          word.x = container.getBounds().width;*/
+    } else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
+      var word = new PIXI.Sprite.fromImage("assets/emotes/ffz/" + ffzMemes[messageArray[i]].id + ".png");
+      word.width = word.height = style.fontSize;
+      word.x = container.getBounds().width;
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;

@@ -1,3 +1,4 @@
+// get ffz emotes: curl -sO ffz.json 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|.urls|.[]' | grep '/4"$' | sed 's/"//g' | while read line;do wget -q http:${line} -O $(echo $line | cut -d'/' -f5).png;done
 var app;
 var chatContainer;
 var channelInput;
@@ -32,7 +33,8 @@ function init() {
     antialias: true,
     position: 'absolute',
     top: 0,
-    left: 0
+    left: 0,
+    crossOrigin: true
   });
   document.body.appendChild(app.view);
   chatContainer = new PIXI.Container();
