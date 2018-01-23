@@ -22,9 +22,9 @@ function startTicker() {
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
 
     // GET COUNT
-    var count = 0;
-    for (var i = chatContainer.children.length - 1; i >= 0; i--)
-      count += chatContainer.children[i].scale.x + 1;
+    var count = chatContainer.children.length;
+    //for (var i = chatContainer.children.length - 1; i >= 0; i--)
+    //  count += chatContainer.children[i].scale.x + 1;
 
     // PROCESS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {

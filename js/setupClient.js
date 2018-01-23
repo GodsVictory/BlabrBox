@@ -12,11 +12,9 @@ function setupClient() {
     channel = Qurl.create().query('c');
     if (channel) {
       if (channel == 'simulateChat') {
-        handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump');
-        //handleChat('', '', 'BibleThump');
         setInterval(function() {
-          //  handleChat('', '', 'Clayton Sucks');
-        }, 500);
+          handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump asdf asdf asdf asdf asdf asdf asdf asdf asdf');
+        }, 5000);
         setInterval(function() {
           handleChat('', '', 'Kappa');
         }, 100);
@@ -58,4 +56,10 @@ function setupClient() {
   });
 
   client.connect();
+}
+
+function handleChat(channel, user, message, self) {
+  if (!document.hidden)
+    if (message.length <= length)
+      newChat.push(message);
 }
