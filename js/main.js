@@ -20,7 +20,7 @@ cat subscriber.json |\
 
 var app;
 var chatContainer;
-var channelInput;
+var channelInput, loading;
 var channel = '';
 var cursorTimeout;
 var channelTimeout
@@ -49,6 +49,33 @@ window.onload = function start() {
 const loader = PIXI.loader;
 
 function load1() {
+  PIXI.settings.GC_MODE = 'manual';
+  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+  app = new PIXI.Application(window.innerWidth, window.innerHeight, {
+    backgroundColor: 0x000000,
+    antialias: false,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    crossOrigin: true
+  });
+  document.body.appendChild(app.view);
+  var style = new PIXI.TextStyle({
+    fontFamily: 'Fredoka One',
+    fontSize: (window.innerWidth + window.innerHeight) * .1,
+    align: 'center',
+    fill: '#ffffff',
+    stroke: '#000000',
+    strokeThickness: 5,
+  });
+  loading = new PIXI.Text("LOADING", style);
+  loading.anchor.set(.5);
+  loading.grow = false;
+  loading.maxScale = 1;
+  loading.x = window.innerWidth / 2;
+  loading.y = window.innerHeight / 2;
+  app.stage.addChild(loading);
+
   loader.add('global', 'assets/global.json');
   loader.add('subscriber', 'assets/subscriber.json');
   loader.add('ffz', 'assets/ffz.json');
@@ -83,20 +110,10 @@ function load2() {
 }
 
 function init() {
-  PIXI.settings.GC_MODE = 'manual';
-  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-  app = new PIXI.Application(window.innerWidth, window.innerHeight, {
-    backgroundColor: 0x000000,
-    antialias: false,
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    crossOrigin: true
+  loading.destroy({
+    children: true,
+    baseTexture: true
   });
-  document.body.appendChild(app.view);
-  chatContainer = new PIXI.Container();
-  app.stage.addChild(chatContainer);
-
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
     fontSize: (window.innerWidth + window.innerHeight) * .1,
@@ -114,6 +131,9 @@ function init() {
   channelInput.x = window.innerWidth / 2;
   channelInput.y = window.innerHeight / 2;
   app.stage.addChild(channelInput);
+
+  chatContainer = new PIXI.Container();
+  app.stage.addChild(chatContainer);
 
   window.onresize = function() {
     app.renderer.resize(window.innerWidth, window.innerHeight);
