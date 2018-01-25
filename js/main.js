@@ -26,11 +26,12 @@ var cursorTimeout;
 var channelTimeout
 var gloMemes = {},
   subMemes = {},
-  ffzMemes = {};
+  ffzMemes = {},
+  memes = {};
 var fontLoaded = false;
 var emotesLoaded = false;
 var delay = Qurl.create().query('d');
-var length = Qurl.create().query('l') || 40;
+var length = Qurl.create().query('l') || 30;
 var newChat = [];
 
 window.onload = function start() {
@@ -58,38 +59,35 @@ function load1() {
 
 function load2() {
   for (var key in loader.resources.global.data)
-    gloMemes[key] = loader.resources.global.data[key].id;
+    memes[key] = {
+      id: loader.resources.global.data[key].id,
+      url: 'http://static-cdn.jtvnw.net/emoticons/v1/' + loader.resources.global.data[key].id + '/3.0'
+    }
   subMemesRaw = loader.resources.subscriber.data;
   for (var key in subMemesRaw)
     for (var i = 0, len = subMemesRaw[key].emotes.length; i < len; i++)
-      subMemes[subMemesRaw[key].emotes[i].code] = subMemesRaw[key].emotes[i].id;
+      memes[subMemesRaw[key].emotes[i].code] = {
+        id: subMemesRaw[key].emotes[i].id,
+        url: 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemesRaw[key].emotes[i].id + '/3.0'
+      }
   ffzMemesRaw = loader.resources.ffz.data.emoticons;
   for (var i = 0, len = ffzMemesRaw.length; i < len; i++) {
-    ffzMemes[ffzMemesRaw[i].name] = {
+    memes[ffzMemesRaw[i].name] = {
       id: ffzMemesRaw[i].id,
       height: ffzMemesRaw[i].height,
-      width: ffzMemesRaw[i].width
+      width: ffzMemesRaw[i].width,
+      url: 'assets/emotes/ffz/' + ffzMemesRaw[i].id + '.png'
     }
   }
   init();
-
-  /*for (var key in gloMemes)
-    loader.add('glo' + gloMemes[key], 'assets/emotes/global/' + gloMemes[key] + '.png');
-  for (var key in subMemes)
-    loader.add('sub' + subMemes[key], 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemes[key] + '/3.0');
-  for (var key in ffzMemes)
-    loader.add('ffz' + ffzMemes[key], 'assets/emotes/ffz/' + ffzMemes[key] + '.png');
-  loader.once('complete', function(loader, resources) {
-    init();
-  }).load();*/
 }
 
 function init() {
   PIXI.settings.GC_MODE = 'manual';
-  // PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+  PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
     backgroundColor: 0x000000,
-    antialias: true,
+    antialias: false,
     position: 'absolute',
     top: 0,
     left: 0,

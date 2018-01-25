@@ -1,11 +1,11 @@
 function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: window.innerWidth * .15,
+    fontSize: window.innerWidth * window.innerHeight * .00004,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 5,
+    strokeThickness: 3,
   });
   var container = new PIXI.Sprite();
   container.text = message;
@@ -25,27 +25,8 @@ function Chat(message) {
   // INSERT EMOTES
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
-    var isEmote = false;
-    var url = false;
-    if (typeof gloMemes[messageArray[i]] !== 'undefined') {
-      url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + gloMemes[messageArray[i]] + '/3.0';
-      id = 'glo' + gloMemes[messageArray[i]];
-      isEmote = true;
-    } else if (typeof subMemes[messageArray[i]] !== 'undefined') {
-      url = 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemes[messageArray[i]] + '/3.0';
-      id = 'sub' + subMemes[messageArray[i]];
-      isEmote = true;
-    } else if (typeof ffzMemes[messageArray[i]] !== 'undefined') {
-      url = "assets/emotes/ffz/" + ffzMemes[messageArray[i]].id + ".png";
-      id = 'ffz' + ffzMemes[messageArray[i]].id;
-      isEmote = true;
-    } else {
-      var word = new PIXI.Text(messageArray[i], style);
-      word.x = container.getBounds().width;
-      container.addChild(word);
-    }
-    if (isEmote) {
-      var emote = new PIXI.Sprite.fromImage(url);
+    if (typeof memes[messageArray[i]] !== 'undefined') {
+      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]].url);
       emote.scale.x = emote.scale.y = style.fontSize * .009;
       emote.x = container.getBounds().width;
       emote.anchor.set(0, .5);
@@ -55,8 +36,11 @@ function Chat(message) {
       var space = new PIXI.Text('  ', style);
       space.x = emote.x;
       container.addChild(space);
+    } else {
+      var word = new PIXI.Text(messageArray[i], style);
+      word.x = container.getBounds().width;
+      container.addChild(word);
     }
-
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {
       var space = new PIXI.Text(' ', style);

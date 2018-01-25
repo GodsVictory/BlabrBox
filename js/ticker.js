@@ -1,9 +1,9 @@
 function startTicker() {
   var speed = .05;
-  var brakeSpeed = .01;
-  var growSpeed = .005;
-  var collisionSpeed = .075;
-  var boundarySpeed = 100;
+  var brakeSpeed = .0075;
+  var growSpeed = .02;
+  var collisionSpeed = 15;
+  var boundarySpeed = 10;
 
   // RENDER LOOP
   app.ticker.add(function(delta) {
@@ -23,8 +23,6 @@ function startTicker() {
 
     // GET COUNT
     var count = chatContainer.children.length;
-    //for (var i = chatContainer.children.length - 1; i >= 0; i--)
-    //  count += chatContainer.children[i].scale.x + 1;
 
     // PROCESS
     for (var i = chatContainer.children.length - 1; i >= 0; i--) {
@@ -46,12 +44,14 @@ function startTicker() {
       }
 
       // APPLY VELOCITY
-      message.x += message.vx * speed * delta;
-      message.y += message.vy * speed * delta;
+      message.x += message.vx * (speed / scale);
+      message.y += message.vy * (speed / scale);
 
       // SLOW DOWN
-      message.vx = lerp(message.vx, 0, brakeSpeed / scale);
-      message.vy = lerp(message.vy, 0, brakeSpeed / scale);
+      if (inBoundsX(message.x, width) == 0 && inBoundsY(message.y, height) == 0) {
+        message.vx = lerp(message.vx, 0, brakeSpeed * scale);
+        message.vy = lerp(message.vy, 0, brakeSpeed * scale);
+      }
     }
   });
 
@@ -64,20 +64,18 @@ function startTicker() {
     if (newChat.length > 0) {
       var newMessage = newChat.shift();
       var exists = false;
-      for (var i = chatContainer.children.length - 1; i >= 0; i--) {
-        if (newMessage == chatContainer.children[i].text) {
+      chatContainer.children.find(function(ele) {
+        if (ele.text === newMessage) {
           exists = true;
-          chatContainer.children[i].grow += 30;
-          break;
+          ele.grow += 60;
         }
-      }
+      });
       if (!exists) {
         var bad = false;
-        for (var i = 0, len = badwords.length; i < len; i++) {
-          if (newMessage.indexOf(badwords[i]) > 0) {
-            bad = true;
-            break;
-          }
+        if (badwords.some(function(v) {
+            return newMessage.indexOf(v) >= 0;
+          })) {
+          bad = true;
         }
       }
       if (!bad && !exists) {
@@ -96,30 +94,23 @@ function startTicker() {
 
       // COLLISION
       for (var j = chatContainer.children.length - 1; j >= 0; j--) {
+        if (i == j) continue;
         var otherMessage = chatContainer.children[j];
-        if (message.text == otherMessage.text) continue;
         var otherWidth = otherMessage.getBounds(true).width;
         var otherHeight = otherMessage.getBounds(true).height;
+        var otherScale = otherMessage.scale.x + 1;
         var side = collide(message, width, height, otherMessage, otherWidth, otherHeight, scale);
-        if (side != 'none') {
-          var otherScale = otherMessage.scale.x + 1;
-          if (side == 'top')
-            message.vy -= otherScale / (scale * collisionSpeed);
-          else if (side == 'bottom')
-            message.vy += otherScale / (scale * collisionSpeed);
-          else if (side == 'left')
-            message.vx -= otherScale / (scale * collisionSpeed);
-          else if (side == 'right')
-            message.vx += otherScale / (scale * collisionSpeed);
-          break;
-        }
+        if (side == 'none') continue;
+        if (side == 'top') message.vy -= collisionSpeed / (scale / otherScale);
+        else if (side == 'bottom') message.vy += collisionSpeed / (scale / otherScale);
+        else if (side == 'left') message.vx -= collisionSpeed / (scale / otherScale);
+        else if (side == 'right') message.vx += collisionSpeed / (scale / otherScale);
+        break;
       }
 
       // KEEP IN BOUNDS
-      if (message.x - width / 2 < 0) message.vx += boundarySpeed / scale;
-      if (message.x + width / 2 > window.innerWidth) message.vx -= boundarySpeed / scale;
-      if (message.y - height / 3.25 < 0) message.vy += boundarySpeed / scale;
-      if (message.y + height / 3.25 > window.innerHeight) message.vy -= boundarySpeed / scale;
+      message.vx += inBoundsX(message.x, width) * boundarySpeed * scale;
+      message.vy += inBoundsY(message.y, width) * boundarySpeed * scale;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
@@ -145,6 +136,18 @@ function pad(num, size) {
   var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
+}
+
+function inBoundsX(x, width) {
+  if (x - width / 2 < 0) return 1;
+  else if (x + width / 2 > window.innerWidth) return -1;
+  return 0;
+}
+
+function inBoundsY(y, height) {
+  if (y - height / 3.25 < 0) return 1;
+  else if (y + height / 3.25 > window.innerHeight) return -1;
+  return 0;
 }
 
 function collide(r1, r1w, r1h, r2, r2w, r2h, scale) {

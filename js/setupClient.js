@@ -13,10 +13,16 @@ function setupClient() {
     if (channel) {
       if (channel == 'simulateChat') {
         setInterval(function() {
-          handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump asdf asdf asdf asdf asdf asdf asdf asdf asdf');
-        }, 5000);
+          handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump asdf asdf asdf asdf asdf asdf asdf asdf asdf '.concat(Math.round((Math.random() * 100)).toString()));
+        }, 150);
         setInterval(function() {
           handleChat('', '', 'Kappa');
+        }, 100);
+        setInterval(function() {
+          handleChat('', '', 'fuck');
+        }, 100);
+        setInterval(function() {
+          handleChat('', '', 'qwer');
         }, 100);
         setInterval(function() {
           handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
