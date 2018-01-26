@@ -1,8 +1,8 @@
 function startTicker() {
   var speed = .05;
   var brakeSpeed = .0075;
-  var growSpeed = .02;
-  var collisionSpeed = 15;
+  var growSpeed = .01;
+  var collisionSpeed = 10;
   var boundarySpeed = 10;
 
   // RENDER LOOP
