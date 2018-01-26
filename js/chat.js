@@ -26,7 +26,7 @@ function Chat(message) {
   var messageArray = message.split(' ');
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof memes[messageArray[i]] !== 'undefined') {
-      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]].url);
+      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]]);
       emote.scale.x = emote.scale.y = style.fontSize * .009;
       emote.x = container.getBounds().width;
       emote.anchor.set(0, .5);

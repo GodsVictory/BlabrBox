@@ -1,35 +1,28 @@
 var app;
 var chatContainer;
-var channelInput, loading;
+var channelInput;
 var channel = '';
 var cursorTimeout;
 var channelTimeout
-var gloMemes = {},
-  subMemes = {},
-  ffzMemes = {},
-  memes = {};
+var memes = {};
 var fontLoaded = false;
-var emotesLoaded = false;
 var delay = Qurl.create().query('d');
 var length = Qurl.create().query('l') || 30;
 var newChat = [];
+var loading;
 
 window.onload = function start() {
   loadFont();
-  //loadEmotes();
   var waitForLoad = setInterval(function() {
-    if (fontLoaded) { // && emotesLoaded) {
+    if (fontLoaded) {
       clearInterval(waitForLoad);
-      load1();
-      init();
+      load();
     }
   }, 100);
-
 }
-
 const loader = PIXI.loader;
 
-function load1() {
+function load() {
   PIXI.settings.GC_MODE = 'manual';
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
@@ -57,37 +50,11 @@ function load1() {
   loading.y = window.innerHeight / 2;
   app.stage.addChild(loading);
 
-  loader.add('global', 'assets/global.json');
-  loader.add('subscriber', 'assets/subscriber.json');
-  loader.add('ffz', 'assets/ffz.json');
+  loader.add('emotes', 'assets/emotes.json');
   loader.once('complete', function(loader, resources) {
-    load2();
+    memes = resources.emotes.data;
+    init();
   }).load();
-}
-
-function load2() {
-  for (var key in loader.resources.global.data)
-    memes[key] = {
-      id: loader.resources.global.data[key].id,
-      url: 'http://static-cdn.jtvnw.net/emoticons/v1/' + loader.resources.global.data[key].id + '/3.0'
-    }
-  subMemesRaw = loader.resources.subscriber.data;
-  for (var key in subMemesRaw)
-    for (var i = 0, len = subMemesRaw[key].emotes.length; i < len; i++)
-      memes[subMemesRaw[key].emotes[i].code] = {
-        id: subMemesRaw[key].emotes[i].id,
-        url: 'http://static-cdn.jtvnw.net/emoticons/v1/' + subMemesRaw[key].emotes[i].id + '/3.0'
-      }
-  ffzMemesRaw = loader.resources.ffz.data.emoticons;
-  for (var i = 0, len = ffzMemesRaw.length; i < len; i++) {
-    memes[ffzMemesRaw[i].name] = {
-      id: ffzMemesRaw[i].id,
-      height: ffzMemesRaw[i].height,
-      width: ffzMemesRaw[i].width,
-      url: 'assets/emotes/ffz/' + ffzMemesRaw[i].id + '.png'
-    }
-  }
-  emotesLoaded = true;
 }
 
 function init() {
@@ -112,7 +79,6 @@ function init() {
   channelInput.x = window.innerWidth / 2;
   channelInput.y = window.innerHeight / 2;
   app.stage.addChild(channelInput);
-
   chatContainer = new PIXI.Container();
   app.stage.addChild(chatContainer);
 
@@ -167,3 +133,10 @@ cat subscriber.json |\
   jq '.[]|.emotes|.[]|.id' |\
   while read line;do [ -f ${line}.png ] || { while [[ $(pgrep -c wget) -ge 50 ]];do sleep .25;done;{wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/2.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/1.0" -O ${line}.png} & };done
 */
+// cat ffz.json | jq '.emoticons|.[]|{name:.name,urls:(.urls[.urls|keys[-1]])}'
+//
+// echo '{' > emotes.json
+// curl - s 'https://twitchemotes.com/api_cache/v3/global.json' | jq '.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
+// curl - s 'https://twitchemotes.com/api_cache/v3/subscriber.json' | jq '.[]|.emotes|.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
+// curl - s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|{(.name):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"assets/ffz/"$2".png\","}' >> emotes.json
+// echo '}' >> emotes.json
