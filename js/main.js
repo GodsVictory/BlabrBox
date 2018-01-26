@@ -50,7 +50,7 @@ function load() {
   loading.y = window.innerHeight / 2;
   app.stage.addChild(loading);
 
-  loader.add('emotes', 'assets/emotes.json');
+  loader.add('emotes', 'assets/emotes.min.json');
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
     init();
@@ -139,4 +139,6 @@ cat subscriber.json |\
 // curl - s 'https://twitchemotes.com/api_cache/v3/global.json' | jq '.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
 // curl - s 'https://twitchemotes.com/api_cache/v3/subscriber.json' | jq '.[]|.emotes|.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
 // curl - s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|{(.name):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"assets/ffz/"$2".png\","}' >> emotes.json
+// sed '$ s/,//g' emotes.json -i
 // echo '}' >> emotes.json
+// jq -c . < emotes.json >> emotes.min.json
