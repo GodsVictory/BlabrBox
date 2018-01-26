@@ -19,7 +19,7 @@ function setupClient() {
           handleChat('', '', 'Kappa');
         }, 100);
         setInterval(function() {
-          handleChat('', '', 'fuck');
+          handleChat('', '', 'OMEGALUL');
         }, 100);
         setInterval(function() {
           handleChat('', '', 'qwer');
