@@ -1,8 +1,8 @@
 function startTicker() {
-  var speed = .05;
-  var brakeSpeed = .0075;
+  var speed = 10;
+  var brakeSpeed = 15;
   var growSpeed = .02;
-  var collisionSpeed = 10;
+  var collisionSpeed = 5;
   var boundarySpeed = 10;
 
   // RENDER LOOP
@@ -44,14 +44,16 @@ function startTicker() {
       }
 
       // APPLY VELOCITY
-      message.x += message.vx * (speed / scale);
-      message.y += message.vy * (speed / scale);
+      // message.x += message.vx * (speed / scale);
+      // message.y += message.vy * (speed / scale);
+      message.x = lerp(message.x, message.x + message.vx, (speed * .025 / scale));
+      message.y = lerp(message.y, message.y + message.vy, (speed * .025 / scale));
 
       // SLOW DOWN
-      if (inBoundsX(message.x, width) == 0 && inBoundsY(message.y, height) == 0) {
-        message.vx = lerp(message.vx, 0, brakeSpeed * scale);
-        message.vy = lerp(message.vy, 0, brakeSpeed * scale);
-      }
+      //if (inBoundsX(message.x, width) == 0 && inBoundsY(message.y, height) == 0) {
+      message.vx = lerp(message.vx, 0, brakeSpeed * 0.00075 * scale);
+      message.vy = lerp(message.vy, 0, brakeSpeed * 0.00075 * scale);
+      //}
     }
   });
 
