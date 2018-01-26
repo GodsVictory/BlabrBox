@@ -12,20 +12,20 @@ function setupClient() {
     channel = Qurl.create().query('c');
     if (channel) {
       if (channel == 'simulateChat') {
+        // setInterval(function() {
+        //   handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump asdf asdf asdf asdf asdf asdf asdf asdf asdf '.concat(Math.round((Math.random() * 100)).toString()));
+        // }, 150);
+        // setInterval(function() {
+        //   handleChat('', '', 'Kappa');
+        // }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', 'OMEGALUL');
+        // }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', 'qwer');
+        // }, 100);
         setInterval(function() {
-          handleChat('', '', 'Kappa Kappa Kappa monkaS a BibleThump asdf asdf asdf asdf asdf asdf asdf asdf asdf '.concat(Math.round((Math.random() * 100)).toString()));
-        }, 150);
-        setInterval(function() {
-          handleChat('', '', 'Kappa');
-        }, 100);
-        setInterval(function() {
-          handleChat('', '', 'OMEGALUL');
-        }, 100);
-        setInterval(function() {
-          handleChat('', '', 'qwer');
-        }, 100);
-        setInterval(function() {
-          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+          handleChat('', '', 'asdf asdf asdf asdf asdf asdf asdf Kappa '.concat(Math.round((Math.random() * 100)).toString()));
         }, 150);
       } else
         client.join(channel).catch(function(e) {});

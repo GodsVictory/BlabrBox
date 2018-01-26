@@ -110,7 +110,7 @@ function startTicker() {
 
       // KEEP IN BOUNDS
       message.vx += inBoundsX(message.x, width) * boundarySpeed * scale;
-      message.vy += inBoundsY(message.y, width) * boundarySpeed * scale;
+      message.vy += inBoundsY(message.y, height) * boundarySpeed * scale;
 
       // REMOVE WHEN SCALE = 0
       if (message.scale.x <= 0 && message.grow < 1)
