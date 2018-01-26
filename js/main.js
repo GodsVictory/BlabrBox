@@ -21,6 +21,7 @@ window.onload = function start() {
     if (fontLoaded) { // && emotesLoaded) {
       clearInterval(waitForLoad);
       load1();
+      init();
     }
   }, 100);
 
@@ -86,7 +87,7 @@ function load2() {
       url: 'assets/emotes/ffz/' + ffzMemesRaw[i].id + '.png'
     }
   }
-  init();
+  emotesLoaded = true;
 }
 
 function init() {
