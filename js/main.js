@@ -134,11 +134,16 @@ cat subscriber.json |\
   while read line;do [ -f ${line}.png ] || { while [[ $(pgrep -c wget) -ge 50 ]];do sleep .25;done;{wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/3.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/2.0" -O ${line}.png || wget -q "http://static-cdn.jtvnw.net/emoticons/v1/${line}/1.0" -O ${line}.png} & };done
 */
 // cat ffz.json | jq '.emoticons|.[]|{name:.name,urls:(.urls[.urls|keys[-1]])}'
-//
-// echo '{' > emotes.json
-// curl - s 'https://twitchemotes.com/api_cache/v3/global.json' | jq '.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
-// curl - s 'https://twitchemotes.com/api_cache/v3/subscriber.json' | jq '.[]|.emotes|.[]|{(.code):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
-// curl - s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|{(.name):(.id)}' | grep - v '{\|}' | awk '{print $1 "\"assets/ffz/"$2".png\","}' >> emotes.json
-// sed '$ s/,//g' emotes.json -i
-// echo '}' >> emotes.json
-// jq -c . < emotes.json >> emotes.min.json
+/*
+rm -rf ~/tmp
+mkdir ~/tmp
+cd ~/tmp || exit
+echo '{' > emotes.json
+curl -s 'https://twitchemotes.com/api_cache/v3/global.json' | jq '.[]|{(.code):(.id)}' | grep -v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
+curl -s 'https://twitchemotes.com/api_cache/v3/subscriber.json' | jq '.[]|.emotes|.[]|{(.code):(.id)}' | grep -v '{\|}' | awk '{print $1 "\"http://static-cdn.jtvnw.net/emoticons/v1/"$2"/3.0\","}' >> emotes.json
+rm -rf emotes;mkdir -p emotes/ffz;curl -s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|.id' | while read line;do [ -f ${line}.png ] || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/4" -O emotes/ffz/${line}.png || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/2" -O emotes/ffz/${line}.png || wget -q "http://cdn.frankerfacez.com/emoticon/${line}/1" -O emotes/ffz/${line}.png;done
+curl -s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|{(.name):(.id)}' | grep -v '{\|}' | awk '{print $1 "\"assets/ffz/"$2".png\","}' >> emotes.json
+sed '$ s/,//g' emotes.json -i
+echo '}' >> emotes.json
+jq -c . < emotes.json > emotes.min.json && rm -f emotes.json
+*/
