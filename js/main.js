@@ -7,7 +7,7 @@ var channelTimeout
 var memes = {};
 var fontLoaded = false;
 var delay = Qurl.create().query('d');
-var length = Qurl.create().query('l') || 30;
+var length = Qurl.create().query('l') || 40;
 var newChat = [];
 var loading;
 
