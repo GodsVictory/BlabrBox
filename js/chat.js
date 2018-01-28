@@ -1,5 +1,5 @@
 function Chat(message) {
-  var style = new PIXI.TextStyle({
+  style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
     fontSize: (window.innerWidth + window.innerHeight) * .03,
     align: 'center',
@@ -7,19 +7,24 @@ function Chat(message) {
     stroke: '#000000',
     strokeThickness: 3,
   });
-  var container = new PIXI.Sprite();
-  container.text = message;
-  container.grow = 30;
-  container.vx = 0;
-  container.vy = 0;
-  container.x = window.innerWidth * Math.random();
-  container.y = window.innerHeight * Math.random();
+  this.message = message;
+  this.container = new PIXI.Sprite();
+  this.container.text = message;
+  this.grow = 30;
+  this.container.vx = 0;
+  this.container.vy = 0;
+  this.container.x = window.innerWidth * Math.random();
+  this.container.y = window.innerHeight * Math.random();
+  this.collisionSpeed = 150;
+  this.boundarySpeed = 175;
+  this.growSpeed = .02;
+  this.speed = 25;
+  this.brakeSpeed = 15;
 
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
-  container.addChild(dimensionPlaceholder);
-  height = Math.round(container.getBounds().height);
-  dimensionPlaceholder.destroy(true);
+  this.container.addChild(dimensionPlaceholder);
+  height = Math.round(this.container.getBounds().height);
 
   // PARSE MESSAGE
   // INSERT EMOTES
@@ -30,31 +35,171 @@ function Chat(message) {
       var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]].url);
       emote.width = memes[messageArray[i]].width * ratio;
       emote.height = memes[messageArray[i]].height * ratio;
-      emote.x = container.getBounds().width;
+      emote.x = i == 0 ? 0 : this.container.getBounds().width;
       emote.anchor.set(0, .5);
       emote.y = height / 2;
-      container.addChild(emote);
+      this.container.addChild(emote);
     } else {
       var word = new PIXI.Text(messageArray[i], style);
-      word.x = container.getBounds().width;
-      container.addChild(word);
+      word.x = i == 0 ? 0 : this.container.getBounds().width;
+      this.container.addChild(word);
     }
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {
       var space = new PIXI.Text(' ', style);
-      space.x = container.getBounds().width;
-      container.addChild(space);
+      space.x = this.container.getBounds().width;
+      this.container.addChild(space);
     }
   }
 
   // MANUALLY SET ANCHOR TO .5
-  var offsetWidth = container.getBounds().width / 2;
-  var offsetHeight = container.getBounds().height / 2;
-  for (var i = 0, len = container.children.length; i < len; i++) {
-    container.children[i].x -= offsetWidth;
-    container.children[i].y -= offsetHeight;
+  var offsetWidth = this.container.getBounds().width / 2;
+  var offsetHeight = this.container.getBounds().height / 2;
+  for (var i = 0, len = this.container.children.length; i < len; i++) {
+    this.container.children[i].x -= offsetWidth;
+    this.container.children[i].y -= offsetHeight;
   }
-  container.scale.x = 0;
-  container.scale.y = 0;
-  chatContainer.addChild(container);
+  this.container.scale.x = 0;
+  this.container.scale.y = 0;
+
+  chatContainer.addChild(this.container);
+}
+
+Chat.prototype.getScale = function() {
+  return this.container.scale.x;
+}
+
+Chat.prototype.setScale = function(scale) {
+  this.container.scale.x = scale;
+  this.container.scale.y = scale;
+}
+
+Chat.prototype.setX = function(x) {
+  this.container.x = x;
+}
+
+Chat.prototype.setY = function(y) {
+  this.container.y = y;
+}
+
+Chat.prototype.getX = function() {
+  return this.container.x;
+}
+
+Chat.prototype.getY = function() {
+  return this.container.y;
+}
+
+Chat.prototype.setVX = function(vx) {
+  this.container.vx = vx;
+}
+
+Chat.prototype.setVY = function(vy) {
+  this.container.vy = vy;
+}
+
+Chat.prototype.getVX = function(vx) {
+  return this.container.vx;
+}
+
+Chat.prototype.getVY = function(vy) {
+  return this.container.vy;
+}
+
+Chat.prototype.getWidth = function() {
+  return this.container.getBounds().width;
+}
+
+Chat.prototype.getHeight = function() {
+  return this.container.getBounds().height;
+}
+
+Chat.prototype.applyVelocity = function(vx) {
+  this.setX(lerp(this.getX(), this.getX() + this.getVX(), (this.speed * .025)));
+  this.setY(lerp(this.getY(), this.getY() + this.getVY(), (this.speed * .025)));
+}
+
+Chat.prototype.slowDown = function(vx) {
+  this.setVX(lerp(this.getVX(), 0, this.brakeSpeed * 0.00075 * (this.getScale() + 1)));
+  this.setVY(lerp(this.getVY(), 0, this.brakeSpeed * 0.00075 * (this.getScale() + 1)));
+}
+
+Chat.prototype.collision = function() {
+  for (var message in messages) {
+    if (this.message == message) continue;
+    var other = messages[message];
+    var side = this.checkCollide(this.getX(), this.getY(), this.getWidth(), this.getHeight(), other.getX(), other.getY(), other.getWidth(),
+      other.getHeight());
+    if (side == 'none') continue;
+    if (side == 'top')
+      this.setVY(this.getVY() - (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+    else if (side == 'bottom')
+      this.setVY(this.getVY() + (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+    else if (side == 'left')
+      this.setVX(this.getVX() - (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+    else if (side == 'right')
+      this.setVX(this.getVX() + (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+  }
+}
+
+Chat.prototype.checkCollide = function(r1x, r1y, r1w, r1h, r2x, r2y, r2w, r2h) {
+  var dx = r1x - r2x;
+  var dy = r1y - r2y;
+  var width = (r1w + r2w) / 2;
+  var height = (r1h + r2h) / 3.25;
+  var crossWidth = width * dy;
+  var crossHeight = height * dx;
+  var collision = 'none';
+  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
+    if (crossWidth > crossHeight) {
+      collision = (crossWidth > (-crossHeight)) ? 'bottom' : 'left';
+    } else {
+      collision = (crossWidth > -(crossHeight)) ? 'right' : 'top';
+    }
+  }
+  return (collision);
+}
+
+Chat.prototype.keepInBounds = function() {
+  this.setVX(this.getVX() + this.inBoundsX() * this.boundarySpeed * .01);
+  this.setVY(this.getVY() + this.inBoundsY() * this.boundarySpeed * .01);
+}
+
+Chat.prototype.inBoundsX = function(x, width) {
+  if (this.getX() - this.getWidth() / 2 < 0) return 1;
+  else if (this.getX() + this.getWidth() / 2 > window.innerWidth) return -1;
+  return 0;
+}
+
+Chat.prototype.inBoundsY = function(y, height) {
+  if (this.getY() - this.getHeight() / 3.25 < 0) return 1;
+  else if (this.getY() + this.getHeight() / 3.25 > window.innerHeight) return -1;
+  return 0;
+}
+
+Chat.prototype.addGrow = function(amount, count) {
+  this.grow += Math.round(amount / count);
+}
+
+Chat.prototype.applyGrow = function(count) {
+  if (this.grow) {
+    if (this.getWidth() < window.innerWidth - 10 && this.getHeight() / 1.7 < window.innerHeight - 10)
+      this.setScale(this.getScale() + this.growSpeed);
+    this.grow--;
+  } else {
+    if (count / 2 < 10)
+      this.setScale(lerp(this.getScale(), -.0001, 10 / 2 / this.getScale() * .00012));
+    else
+      this.setScale(lerp(this.getScale(), -.0001, count / 2 / this.getScale() * .00012));
+  }
+}
+
+Chat.prototype.checkRemove = function() {
+  if (this.getScale() <= 0 && this.grow < 1) {
+    delete messages[this.message];
+    this.container.destroy({
+      children: true,
+      baseTexture: true
+    });
+  }
 }

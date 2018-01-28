@@ -24,6 +24,7 @@ curl -s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' 
  grep -v '{\|}' | awk '{print $1 "," "\"assets/emotes/ffz/"$2".png\","}' | sed 's/":,"/","/g' >> assets/ffz.json
 
  curl -s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' | jq '.emoticons|.[]|.id' |\
+ cat assets/ffz.json | cut -d, -f1 | sed 's/"//g' |
   while read line
   do
     ((
@@ -32,7 +33,9 @@ curl -s 'http://api.frankerfacez.com/v1/emoticons?per_page=200&sort=count-desc' 
         wget -qN "http://cdn.frankerfacez.com/emoticon/${line}/2" -O assets/emotes/ffz/${line}.png ||\
         wget -qN "http://cdn.frankerfacez.com/emoticon/${line}/1" -O assets/emotes/ffz/${line}.png
     ) & )
-done
+  done
+
+
 
 cat assets/global.json | while read line
 do
@@ -54,6 +57,11 @@ do
     echo $code,$url,$size >> assets/ffz.csv
   ) & )
   while [[ $(pgrep -c php) -ge 50 ]];do sleep .25;done
+done
+
+for f in assets/emotes/ffz/*.png
+do
+  [[ $(grep ${f%.*} assets/ffz.csv) ]] || rm -f $f
 done
 
 echo '{' >> assets/emotes.json
