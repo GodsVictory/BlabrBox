@@ -17,8 +17,9 @@ function startTicker() {
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
 
     // PROCESS
+    var count = chatContainer.children.length;
     for (var message in messages) {
-      messages[message].applyGrow(Object.keys(messages).length);
+      messages[message].applyGrow(count);
       messages[message].applyVelocity();
       messages[message].slowDown();
     }
@@ -40,7 +41,7 @@ function startTicker() {
     if (newChat.length > 0) {
       var newMessage = newChat.shift();
       if (typeof messages[newMessage] !== 'undefined') {
-        messages[newMessage].addGrow(1000, Object.keys(messages).length);
+        messages[newMessage].addGrow(1000, chatContainer.children.length);
       } else {
         if (!badwords.some(function(v) {
             return newMessage.indexOf(v) >= 0;
