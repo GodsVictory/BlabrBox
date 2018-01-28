@@ -25,7 +25,7 @@ function setupClient() {
         //   handleChat('', '', 'qwer');
         // }, 100);
         setInterval(function() {
-          handleChat('', '', 'asdf asdf asdf asdf asdf asdf asdf Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
         }, 150);
       } else
         client.join(channel).catch(function(e) {});

@@ -24,18 +24,16 @@ function Chat(message) {
   // PARSE MESSAGE
   // INSERT EMOTES
   var messageArray = message.split(' ');
+  var ratio = style.fontSize * .009;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof memes[messageArray[i]] !== 'undefined') {
-      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]]);
-      emote.scale.x = emote.scale.y = style.fontSize * .009;
+      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]].url);
+      emote.width = memes[messageArray[i]].width * ratio;
+      emote.height = memes[messageArray[i]].height * ratio;
       emote.x = container.getBounds().width;
       emote.anchor.set(0, .5);
       emote.y = height / 2;
       container.addChild(emote);
-      // force size
-      var space = new PIXI.Text('  ', style);
-      space.x = emote.x;
-      container.addChild(space);
     } else {
       var word = new PIXI.Text(messageArray[i], style);
       word.x = container.getBounds().width;
