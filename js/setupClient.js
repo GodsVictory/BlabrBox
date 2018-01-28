@@ -18,16 +18,16 @@ function setupClient() {
         // setInterval(function() {
         //   handleChat('', '', 'Kappa');
         // }, 100);
-        setInterval(function() {
-          handleChat('', '', 'ass');
-        }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', 'ass');
+        // }, 100);
         // setInterval(function() {
         //   handleChat('', '', '0');
         // }, 100);
         // setInterval(function() {
         //   handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
-        // }, 150);
-        // handleChat('', '', 'asdfasdf');
+        // }, 100);
+        handleChat('', '', 'asdfasdf');
       } else
         client.join(channel).catch(function(e) {});
       document.getElementById('channel').value = channel;

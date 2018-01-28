@@ -32,9 +32,15 @@ function Chat(message) {
   var ratio = style.fontSize * .009;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof memes[messageArray[i]] !== 'undefined') {
-      var emote = new PIXI.Sprite.fromImage(memes[messageArray[i]].url);
-      emote.width = memes[messageArray[i]].width * ratio;
-      emote.height = memes[messageArray[i]].height * ratio;
+      var meme = memes[messageArray[i]];
+      var url;
+      if (meme.u == 't')
+        url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
+      else
+        url = "assets/emotes/ffz/" + meme.i + ".png";
+      var emote = new PIXI.Sprite.fromImage(url);
+      emote.width = meme.w * ratio;
+      emote.height = meme.h * ratio;
       emote.x = i == 0 ? 0 : this.container.getBounds().width;
       emote.anchor.set(0, .5);
       emote.y = height / 2;
@@ -187,10 +193,7 @@ Chat.prototype.applyGrow = function(count) {
       this.setScale(this.getScale() + this.growSpeed);
     this.grow--;
   } else {
-    if (count / 2 < 10)
-      this.setScale(lerp(this.getScale(), -.0001, 10 / 2 / this.getScale() * .00012));
-    else
-      this.setScale(lerp(this.getScale(), -.0001, count / 2 / this.getScale() * .00012));
+    this.setScale(lerp(this.getScale(), -.0001, (count < 30 ? 30 : count) / 50000 / this.getScale()));
   }
 }
 
