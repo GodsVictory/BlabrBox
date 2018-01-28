@@ -113,11 +113,11 @@ Chat.prototype.getVY = function(vy) {
 }
 
 Chat.prototype.getWidth = function() {
-  return this.container.getBounds().width;
+  return this.container.getBounds(false).width;
 }
 
 Chat.prototype.getHeight = function() {
-  return this.container.getBounds().height;
+  return this.container.getBounds(false).height;
 }
 
 Chat.prototype.applyVelocity = function(vx) {
