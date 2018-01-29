@@ -153,7 +153,7 @@ Chat.prototype.checkCollide = function(r1x, r1y, r1w, r1h, r2x, r2y, r2w, r2h) {
   var dx = r1x - r2x;
   var dy = r1y - r2y;
   var width = (r1w + r2w) / 2;
-  var height = (r1h + r2h) / 3.25;
+  var height = (r1h + r2h) / 2.5;
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';
@@ -179,8 +179,8 @@ Chat.prototype.inBoundsX = function(x, width) {
 }
 
 Chat.prototype.inBoundsY = function(y, height) {
-  if (this.getY() - this.getHeight() / 3.25 < 0) return 1;
-  else if (this.getY() + this.getHeight() / 3.25 > window.innerHeight) return -1;
+  if (this.getY() - this.getHeight() / 2.5 < 0) return 1;
+  else if (this.getY() + this.getHeight() / 2.5 > window.innerHeight) return -1;
   return 0;
 }
 
@@ -189,7 +189,7 @@ Chat.prototype.addGrow = function(count) {
 }
 
 Chat.prototype.applyGrow = function(count) {
-  if (this.getWidth() > window.innerWidth - 10 || this.getHeight() / 1.7 > window.innerHeight - 10)
+  if (this.getWidth() > window.innerWidth - 10 || this.getHeight() / 1.5 > window.innerHeight - 10)
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 10)

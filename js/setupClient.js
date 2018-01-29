@@ -20,16 +20,16 @@ function setupClient() {
         // }, 100);
         setInterval(function() {
           handleChat('', '', 'Kappa');
-        }, 1000);
+        }, 100);
         // setInterval(function() {
         //   handleChat('', '', 'ass');
         // }, 100);
         // setInterval(function() {
         //   handleChat('', '', '0');
         // }, 100);
-        // setInterval(function() {
-        //   handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
-        // }, 100);
+        setInterval(function() {
+          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+        }, 100);
         // handleChat('', '',
         //   'asdfasdf ');
       } else
