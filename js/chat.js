@@ -18,7 +18,7 @@ function Chat(message) {
   this.collisionSpeed = 150;
   this.boundarySpeed = 175;
   this.growSpeed = .02;
-  this.decaySpeed = .0001;
+  this.decaySpeed = .00005;
   this.speed = 25;
   this.brakeSpeed = 15;
 
