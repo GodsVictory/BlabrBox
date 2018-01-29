@@ -9,13 +9,12 @@ function startTicker() {
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
-        channelInput.scale.x = channelInput.scale.y += .05;
+        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 1, .05);
       else if (channelInput.width > window.innerWidth * .55)
-        channelInput.scale.x = channelInput.scale.y -= .05;
-    } else if (channelInput.scale.x > 0)
-      channelInput.scale.x = channelInput.scale.y -= .005;
-    else channelInput.scale.x = channelInput.scale.y = 0;
-
+        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
+    } else
+      channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
+  
     // PROCESS
     var count = chatContainer.children.length;
     for (var message in messages) {
