@@ -30,7 +30,6 @@ function Chat(message) {
   // PARSE MESSAGE
   // INSERT EMOTES
   var messageArray = message.split(' ');
-  var ratio = style.fontSize * .009;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof memes[messageArray[i]] !== 'undefined') {
       var meme = memes[messageArray[i]];
@@ -40,9 +39,10 @@ function Chat(message) {
       else
         url = "assets/emotes/ffz/" + meme.i + ".png";
       var emote = new PIXI.Sprite.fromImage(url);
-      emote.width = meme.w * ratio;
-      emote.height = meme.h * ratio;
-      emote.x = i == 0 ? 0 : this.container.getBounds().width;
+      emote.width = height / meme.h * meme.w - 25;
+      emote.height = height / meme.h * meme.h - 25;
+      if (i > 0)
+        emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
       emote.y = height / 2;
       this.container.addChild(emote);
