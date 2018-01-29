@@ -18,6 +18,7 @@ function Chat(message) {
   this.collisionSpeed = 150;
   this.boundarySpeed = 175;
   this.growSpeed = .02;
+  this.decaySpeed = .00005;
   this.speed = 25;
   this.brakeSpeed = 15;
 
@@ -183,22 +184,26 @@ Chat.prototype.inBoundsY = function(y, height) {
   return 0;
 }
 
-Chat.prototype.addGrow = function(amount, count) {
-  this.grow += Math.round(amount / count);
+Chat.prototype.addGrow = function(count) {
+  this.grow += Math.round(100 / (count / 10 + 1) / (this.getScale() / 5 + 1));
 }
 
 Chat.prototype.applyGrow = function(count) {
-  if (this.grow) {
-    if (this.getWidth() < window.innerWidth - 10 && this.getHeight() / 1.7 < window.innerHeight - 10)
-      this.setScale(this.getScale() + this.growSpeed);
+  if (this.getWidth() > window.innerWidth - 10 || this.getHeight() / 1.7 > window.innerHeight - 10)
+    this.grow = 0;
+  if (this.grow == 0) {
+    if (count < 10)
+      this.setScale(this.getScale() - this.decaySpeed * 10);
+    else
+      this.setScale(this.getScale() - this.decaySpeed * count);
+  } else
+    this.setScale(this.getScale() + this.growSpeed);
+  if (this.grow > 0)
     this.grow--;
-  } else {
-    this.setScale(lerp(this.getScale(), -.0001, (count < 30 ? 30 : count) / 50000 / this.getScale()));
-  }
 }
 
 Chat.prototype.checkRemove = function() {
-  if (this.getScale() <= 0 && this.grow < 1) {
+  if (this.getScale() <= .01) {
     delete messages[this.message];
     this.container.destroy({
       children: true,

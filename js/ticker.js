@@ -1,5 +1,4 @@
 function startTicker() {
-
   // RENDER LOOP
   app.ticker.add(function(delta) {
     if (document.hidden) return;
@@ -10,11 +9,12 @@ function startTicker() {
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < window.innerWidth * .45)
-        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 1, .05);
+        channelInput.scale.x = channelInput.scale.y += .05;
       else if (channelInput.width > window.innerWidth * .55)
-        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
-    } else
-      channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
+        channelInput.scale.x = channelInput.scale.y -= .05;
+    } else if (channelInput.scale.x > 0)
+      channelInput.scale.x = channelInput.scale.y -= .005;
+    else channelInput.scale.x = channelInput.scale.y = 0;
 
     // PROCESS
     var count = chatContainer.children.length;
@@ -31,6 +31,7 @@ function startTicker() {
     document.getElementById('channel').focus();
 
     // APPLY PHYSICS
+    var count = chatContainer.children.length;
     for (var message in messages) {
       messages[message].collision();
       messages[message].keepInBounds();
@@ -41,7 +42,7 @@ function startTicker() {
     if (newChat.length > 0) {
       var newMessage = newChat.shift();
       if (typeof messages[newMessage] !== 'undefined') {
-        messages[newMessage].addGrow(1000, chatContainer.children.length);
+        messages[newMessage].addGrow(chatContainer.children.length);
       } else {
         if (!badwords.some(function(v) {
             return newMessage.indexOf(v) >= 0;
