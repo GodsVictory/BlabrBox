@@ -134,7 +134,7 @@ Chat.prototype.collision = function() {
     BottomLeft: this.getX() - this.getWidth() / 2 + this.getHeight() / 2
   };
   var angle = 2 * Math.atan(thisInfo.h / thisInfo.w) * 180 / Math.PI / 2;
-  var overlap = 22.5;
+  var overlap = angle / 2;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
