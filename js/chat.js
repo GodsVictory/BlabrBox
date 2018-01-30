@@ -147,7 +147,7 @@ Chat.prototype.collision = function() {
       var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
       if (degree < 0) degree += 360;
-      var weight = collisionSpeed * .01 + thisInfo.h / otherInfo.h * .25;
+      var weight = collisionSpeed * .01 + otherInfo.h / thisInfo.h * .25;
       if (degree > 0 + angle - overlap && degree < 180 - angle + overlap) // this is getting hit on the top
         this.setVY(thisInfo.vy + weight);
       else if (degree < 360 - angle + overlap && degree > 180 + angle - overlap) // this is getting hit on the bottom
