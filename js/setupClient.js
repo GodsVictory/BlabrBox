@@ -27,9 +27,9 @@ function setupClient() {
         // setInterval(function() {
         //   handleChat('', '', '0');
         // }, 100);
-        setInterval(function() {
-          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
-        }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+        // }, 100);
         // handleChat('', '',
         //   'asdfasdf ');
       } else
