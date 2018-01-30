@@ -47,12 +47,12 @@ function load() {
   loading.anchor.set(.5);
   var iWidth = loading.getBounds().width;
   var iHeight = loading.getBounds().height;
-  loading.scale.x = loading.scale.y = (window.innerWidth + window.innerHeight) / 3000 * window.devicePixelRatio;
-  loading.x = window.innerWidth / 2;
-  loading.y = window.innerHeight / 2;
+  loading.scale.x = loading.scale.y = (app.renderer.width + app.renderer.height) / 3000 * window.devicePixelRatio;
+  loading.x = app.renderer.width / 2;
+  loading.y = app.renderer.height / 2;
   app.stage.addChild(loading);
-  loading.width = window.innerWidth * .25;
-  loading.height = window.innerWidth * .25 / iWidth * iHeight;
+  loading.width = app.renderer.width * .25;
+  loading.height = app.renderer.width * .25 / iWidth * iHeight;
 
   loader.add('emotes', 'assets/emotes.min.json');
   loader.once('complete', function(loader, resources) {
@@ -68,7 +68,7 @@ function init() {
   });
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: (window.innerWidth + window.innerHeight) * .1,
+    fontSize: (app.renderer.width + app.renderer.height) * .1,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -80,16 +80,16 @@ function init() {
   channelInput.scale.y = 0;
   channelInput.grow = false;
   channelInput.maxScale = 1;
-  channelInput.x = window.innerWidth / 2;
-  channelInput.y = window.innerHeight / 2;
+  channelInput.x = app.renderer.width / 2;
+  channelInput.y = app.renderer.height / 2;
   app.stage.addChild(channelInput);
   chatContainer = new PIXI.Container();
   app.stage.addChild(chatContainer);
 
   window.onresize = function() {
     app.renderer.resize(window.innerWidth, window.innerHeight);
-    channelInput.x = window.innerWidth / 2;
-    channelInput.y = window.innerHeight / 2;
+    channelInput.x = app.renderer.width / 2;
+    channelInput.y = app.renderer.height / 2;
   }
 
   document.onmousemove = function() {
