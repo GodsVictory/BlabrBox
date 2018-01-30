@@ -159,6 +159,13 @@ Chat.prototype.collision = function() {
       break;
     }
   }
+  /*
+  Collision works by first checking if rectangles overlap. If yes, it then
+  determines the collided rectangles offset angle (center point to top right
+  corner). It then checks the angle between both center points to determine
+  which side it collided with and used the offset angle to determine which
+  direction to move.
+  */
 }
 
 Chat.prototype.checkCollide = function(r1, r2) {
