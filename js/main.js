@@ -37,7 +37,7 @@ function load() {
   document.body.appendChild(app.view);
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 64,
+    fontSize: 32,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -47,7 +47,6 @@ function load() {
   loading.anchor.set(.5);
   var iWidth = loading.getBounds().width;
   var iHeight = loading.getBounds().height;
-  loading.scale.x = loading.scale.y = (app.renderer.width + app.renderer.height) / 3000 * window.devicePixelRatio;
   loading.x = app.renderer.width / 2;
   loading.y = app.renderer.height / 2;
   app.stage.addChild(loading);
@@ -68,7 +67,7 @@ function init() {
   });
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: (app.renderer.width + app.renderer.height) * .1,
+    fontSize: 32,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -79,7 +78,6 @@ function init() {
   channelInput.scale.x = 0;
   channelInput.scale.y = 0;
   channelInput.grow = false;
-  channelInput.maxScale = 1;
   channelInput.x = app.renderer.width / 2;
   channelInput.y = app.renderer.height / 2;
   app.stage.addChild(channelInput);

@@ -1,7 +1,7 @@
 function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: Math.round((app.renderer.width + app.renderer.height) * window.devicePixelRatio * .03),
+    fontSize: 32, //Math.round((app.renderer.width + app.renderer.height) * window.devicePixelRatio * .03),
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -66,15 +66,6 @@ function Chat(message) {
   chatContainer.addChild(this.container);
 }
 
-Chat.prototype.getScale = function() {
-  return this.container.scale.x;
-}
-
-Chat.prototype.setScale = function(scale) {
-  this.container.scale.x = scale;
-  this.container.scale.y = scale;
-}
-
 Chat.prototype.setX = function(x) {
   this.container.x = x;
 }
@@ -121,8 +112,8 @@ Chat.prototype.applyVelocity = function(vx) {
 }
 
 Chat.prototype.slowDown = function(vx) {
-  this.setVX(lerp(this.getVX(), 0, brakeSpeed * 0.00075 * (this.getScale() + 1)));
-  this.setVY(lerp(this.getVY(), 0, brakeSpeed * 0.00075 * (this.getScale() + 1)));
+  this.setVX(lerp(this.getVX(), 0, brakeSpeed * 0.00075)); // * (this.getScale() + 1)));
+  this.setVY(lerp(this.getVY(), 0, brakeSpeed * 0.00075)); // * (this.getScale() + 1)));
 }
 
 Chat.prototype.collision = function() {
@@ -131,9 +122,12 @@ Chat.prototype.collision = function() {
     y: this.getY(),
     h: this.getHeight(),
     w: this.getWidth(),
-    scale: this.getScale(),
     vx: this.getVX(),
-    vy: this.getVY()
+    vy: this.getVY(),
+    left: this.getX() - this.getWidth() / 2,
+    right: this.getX() + this.getWidth() / 2,
+    top: this.getY() - this.getHeight() / 2,
+    bottom: this.getY() + this.getHeight() / 2
   };
   for (var message in messages) {
     if (this.message == message) continue;
@@ -143,39 +137,32 @@ Chat.prototype.collision = function() {
       y: other.getY(),
       h: other.getHeight(),
       w: other.getWidth(),
-      scale: other.getScale()
+      left: other.getX() - other.getWidth() / 2,
+      right: other.getX() + other.getWidth() / 2,
+      top: other.getY() - other.getHeight() / 2,
+      bottom: other.getY() + other.getHeight() / 2
     };
-    var side = this.checkCollide(thisInfo, otherInfo);
-    if (side == 'none') continue;
-    if (side == 'top')
-      this.setVY(thisInfo.vy - (collisionSpeed * .01 / ((thisInfo.scale + 5) / (otherInfo.scale + 1))));
-    else if (side == 'bottom')
-      this.setVY(thisInfo.vy + (collisionSpeed * .01 / ((thisInfo.scale + 5) / (otherInfo.scale + 1))));
-    else if (side == 'left')
-      this.setVX(thisInfo.vx - (collisionSpeed * .01 / ((thisInfo.scale + 5) / (otherInfo.scale + 1))));
-    else if (side == 'right')
-      this.setVX(thisInfo.vx + (collisionSpeed * .01 / ((thisInfo.scale + 5) / (otherInfo.scale + 1))));
+    if (this.checkCollide(thisInfo, otherInfo)) {
+      var degree = this.checkCollide(thisInfo, otherInfo);
+      var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
+      if (degree < 0) degree += 360;
+      if (degree < 315 && degree > 225) // this is getting hit on the bottom
+        this.setVY(thisInfo.vy - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+      else if (degree > 45 && degree < 135) // this is getting hit on the top
+        this.setVY(thisInfo.vy + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+      else if (degree > 135 && degree < 225) // this is getting hit on the left
+        this.setVX(thisInfo.vx + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+      else if (degree < 45 || degree > 315) // this is getting hit on the right
+        this.setVX(thisInfo.vx - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+    }
   }
 }
 
 Chat.prototype.checkCollide = function(r1, r2) {
-  var dx = r1.x - r2.x;
-  var dy = r1.y - r2.y;
-  var width = (r1.w + r2.w) / 2;
-  var height = (r1.h + r2.h) / 2;
-  var crossWidth = width * dy;
-  var crossHeight = height * dx;
-  var collision = 'none';
-  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
-    if (crossWidth > crossHeight) {
-      if (crossWidth > (-crossHeight)) collision = 'bottom';
-      else collision = 'left';
-    } else {
-      if (crossWidth > -(crossHeight)) collision = 'right';
-      else collision = 'top';
-    }
-  }
-  return (collision);
+  return !(r2.left > r1.right ||
+    r2.right < r1.left ||
+    r2.top > r1.bottom ||
+    r2.bottom < r1.top);
 }
 
 Chat.prototype.keepInBounds = function() {
@@ -195,6 +182,15 @@ Chat.prototype.inBoundsY = function(y, height) {
   return 0;
 }
 
+Chat.prototype.getScale = function() {
+  return this.container.scale.x;
+}
+
+Chat.prototype.setScale = function(scale) {
+  this.container.scale.x = scale;
+  this.container.scale.y = scale;
+}
+
 Chat.prototype.addGrow = function(count) {
   this.grow += Math.round(100 / (count / 100 + 1) / (this.getScale() / 5 + 1));
 }
@@ -204,9 +200,9 @@ Chat.prototype.applyGrow = function(count) {
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 10)
-      this.setScale(this.getScale() - decaySpeed * (this.getScale() + 1) * 10);
+      this.setScale(this.getScale() - decaySpeed * 10);
     else
-      this.setScale(this.getScale() - decaySpeed * (this.getScale() + 1) * count);
+      this.setScale(this.getScale() - decaySpeed * count);
   } else
     this.setScale(this.getScale() + growSpeed);
   if (this.grow > 0)

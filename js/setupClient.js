@@ -18,15 +18,18 @@ function setupClient() {
         // setInterval(function() {
         //   handleChat('', '', 'Kappa');
         // }, 100);
-        setInterval(function() {
-          handleChat('', '', window.innerWidth.toString());
-        }, 100);
-        setInterval(function() {
-          handleChat('', '', window.innerHeight.toString());
-        }, 100);
-        setInterval(function() {
-          handleChat('', '', window.devicePixelRatio.toString());
-        }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', 'BibleThump');
+        // }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', window.innerWidth.toString());
+        // }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', window.innerHeight.toString());
+        // }, 100);
+        // setInterval(function() {
+        //   handleChat('', '', window.devicePixelRatio.toString());
+        // }, 100);
         // setInterval(function() {
         //   handleChat('', '', 'ass');
         // }, 100);
@@ -34,7 +37,7 @@ function setupClient() {
         //   handleChat('', '', '0');
         // }, 100);
         setInterval(function() {
-          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
+          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 10000)).toString()));
         }, 100);
         // handleChat('', '',
         //   'asdfasdf ');

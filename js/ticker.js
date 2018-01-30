@@ -1,7 +1,7 @@
-var growSpeed = .02;
-var collisionSpeed = 150;
+var growSpeed = 0;
+var decaySpeed = 0;
+var collisionSpeed = 50;
 var boundarySpeed = 200;
-var decaySpeed = .00005;
 var speed = 50;
 var brakeSpeed = 25;
 
@@ -16,7 +16,7 @@ function startTicker() {
     // INPUT HANDLER
     if (channelInput.grow) {
       if (channelInput.width < app.renderer.width * .45)
-        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 1, .05);
+        channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 100, .001);
       else if (channelInput.width > app.renderer.width * .55)
         channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
     } else
@@ -35,6 +35,9 @@ function startTicker() {
   setInterval(function() {
     if (document.hidden) return;
     document.getElementById('channel').focus();
+
+    growSpeed = (app.renderer.width * app.renderer.height) * .00000005;
+    decaySpeed = growSpeed * .004;
 
     // APPLY PHYSICS
     for (var message in messages) {
