@@ -133,8 +133,6 @@ Chat.prototype.collision = function() {
     TopLeft: this.getX() - this.getWidth() / 2 - this.getHeight() / 2,
     BottomLeft: this.getX() - this.getWidth() / 2 + this.getHeight() / 2
   };
-  var angle = 2 * Math.atan(thisInfo.h / thisInfo.w) * 180 / Math.PI / 2;
-  var overlap = angle / 2;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
@@ -148,6 +146,8 @@ Chat.prototype.collision = function() {
       top: other.getY() - other.getHeight() / 2,
       bottom: other.getY() + other.getHeight() / 2
     };
+    var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
+    var overlap = angle / 2;
     if (this.checkCollide(thisInfo, otherInfo)) {
       var degree = this.checkCollide(thisInfo, otherInfo);
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
