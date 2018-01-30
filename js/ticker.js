@@ -7,7 +7,7 @@ function startTicker() {
     chatContainer.children.sort(depthCompare);
 
     // INPUT HANDLER
-    if (channelInput.grow) {
+    if (channelInput.grow && channelInput.text.length > 0) {
       if (channelInput.width < app.renderer.width * .45)
         channelInput.scale.x = channelInput.scale.y += growSpeed;
       else if (channelInput.width > app.renderer.width * .55)
