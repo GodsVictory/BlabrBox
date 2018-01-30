@@ -56,8 +56,8 @@ function load() {
   loading.x = app.renderer.width / 2;
   loading.y = app.renderer.height / 2;
   app.stage.addChild(loading);
-  loading.width = app.renderer.width * .25;
-  loading.height = app.renderer.width * .25 / iWidth * iHeight;
+  loading.width = app.renderer.width * .45;
+  loading.height = app.renderer.width * .45 / iWidth * iHeight;
 
   loader.add('emotes', 'assets/emotes.min.json');
   loader.once('complete', function(loader, resources) {
@@ -129,6 +129,10 @@ function pad(num, size) {
   var s = num + "";
   while (s.length < size) s = "0" + s;
   return s;
+}
+
+function isMobile() {
+  return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
 }
 
 var badwords = ['2g1c', '2 girls 1 cup', 'acrotomophilia', 'alabama hot pocket', 'alaskan pipeline', 'anal', 'anilingus', 'anus', 'apeshit',

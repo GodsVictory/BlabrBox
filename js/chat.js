@@ -129,9 +129,9 @@ Chat.prototype.collision = function() {
     top: this.getY() - this.getHeight() / 2,
     bottom: this.getY() + this.getHeight() / 2
   };
-  for (var message in messages) {
-    if (this.message == message) continue;
-    var other = messages[message];
+  for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+    if (this.message == chatContainer.children[i].text) continue;
+    var other = messages[chatContainer.children[i].text];
     var otherInfo = {
       x: other.getX(),
       y: other.getY(),
@@ -154,6 +154,7 @@ Chat.prototype.collision = function() {
         this.setVX(thisInfo.vx + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
       else if (degree < 70 || degree > 290) // this is getting hit on the right
         this.setVX(thisInfo.vx - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+      break;
     }
   }
 }
