@@ -146,13 +146,13 @@ Chat.prototype.collision = function() {
       var degree = this.checkCollide(thisInfo, otherInfo);
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
       if (degree < 0) degree += 360;
-      if (degree < 315 && degree > 225) // this is getting hit on the bottom
+      if (degree < 340 && degree > 200) // this is getting hit on the bottom
         this.setVY(thisInfo.vy - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree > 45 && degree < 135) // this is getting hit on the top
+      else if (degree > 20 && degree < 160) // this is getting hit on the top
         this.setVY(thisInfo.vy + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree > 135 && degree < 225) // this is getting hit on the left
+      if (degree > 110 && degree < 250) // this is getting hit on the left
         this.setVX(thisInfo.vx + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree < 45 || degree > 315) // this is getting hit on the right
+      else if (degree < 70 || degree > 290) // this is getting hit on the right
         this.setVX(thisInfo.vx - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
     }
   }
