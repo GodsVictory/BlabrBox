@@ -11,7 +11,13 @@ var length = Qurl.create().query('l') || 40;
 var newChat = [];
 var loading;
 var messages = {};
-
+var growSpeed = 0;
+var decaySpeed = 0;
+var collisionSpeed = 50;
+var boundarySpeed = 200;
+var speed = 50;
+var brakeSpeed = 25;
+var fontSize = 36;
 window.onload = function start() {
   loadFont();
   var waitForLoad = setInterval(function() {
@@ -37,11 +43,11 @@ function load() {
   document.body.appendChild(app.view);
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 32,
+    fontSize: fontSize,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 5,
+    strokeThickness: 2,
   });
   loading = new PIXI.Text("LOADING", style);
   loading.anchor.set(.5);
@@ -67,11 +73,11 @@ function init() {
   });
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 32,
+    fontSize: fontSize,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 5,
+    strokeThickness: 2,
   });
   channelInput = new PIXI.Text(channel, style);
   channelInput.anchor.set(.5);

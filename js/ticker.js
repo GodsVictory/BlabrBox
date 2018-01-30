@@ -1,10 +1,3 @@
-var growSpeed = 0;
-var decaySpeed = 0;
-var collisionSpeed = 50;
-var boundarySpeed = 200;
-var speed = 50;
-var brakeSpeed = 25;
-
 function startTicker() {
   // RENDER LOOP
   app.ticker.add(function(delta) {

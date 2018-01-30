@@ -1,11 +1,11 @@
 function Chat(message) {
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: 32, //Math.round((app.renderer.width + app.renderer.height) * window.devicePixelRatio * .03),
+    fontSize: fontSize,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 3,
+    strokeThickness: 2
   });
   this.message = message;
   this.container = new PIXI.Sprite();
