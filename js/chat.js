@@ -128,11 +128,9 @@ Chat.prototype.collision = function() {
     right: this.getX() + this.getWidth() / 2,
     top: this.getY() - this.getHeight() / 2,
     bottom: this.getY() + this.getHeight() / 2,
-    TopRight: this.getX() + this.getWidth() / 2 - this.getHeight() / 2,
-    BottomRight: this.getX() + this.getWidth() / 2 + this.getHeight() / 2,
-    TopLeft: this.getX() - this.getWidth() / 2 - this.getHeight() / 2,
-    BottomLeft: this.getX() - this.getWidth() / 2 + this.getHeight() / 2
+    angle: 2 * Math.atan(this.getHeight() / this.getWidth()) * 180 / Math.PI / 2
   };
+  var overlap = 0;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
@@ -146,19 +144,16 @@ Chat.prototype.collision = function() {
       top: other.getY() - other.getHeight() / 2,
       bottom: other.getY() + other.getHeight() / 2
     };
-    var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
-    var overlap = angle / 2;
     if (this.checkCollide(thisInfo, otherInfo)) {
-      var degree = this.checkCollide(thisInfo, otherInfo);
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
       if (degree < 0) degree += 360;
-      if (degree < 360 - angle + overlap && degree > 180 + angle - overlap) // this is getting hit on the bottom
+      if (degree < 360 - thisInfo.angle + overlap && degree > 180 + thisInfo.angle - overlap) // this is getting hit on the bottom
         this.setVY(thisInfo.vy - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree > 0 + angle - overlap && degree < 180 - angle + overlap) // this is getting hit on the top
+      else if (degree > 0 + thisInfo.angle - overlap && degree < 180 - thisInfo.angle + overlap) // this is getting hit on the top
         this.setVY(thisInfo.vy + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      if (degree > 180 - angle - overlap && degree < 180 + angle + overlap) // this is getting hit on the left
+      if (degree > 180 - thisInfo.angle - overlap && degree < 180 + thisInfo.angle + overlap) // this is getting hit on the left
         this.setVX(thisInfo.vx + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree < 0 + angle + overlap || degree > 360 - angle - overlap) // this is getting hit on the right
+      else if (degree < 0 + thisInfo.angle + overlap || degree > 360 - thisInfo.angle - overlap) // this is getting hit on the right
         this.setVX(thisInfo.vx - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
       break;
     }
