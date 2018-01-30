@@ -1,3 +1,10 @@
+var growSpeed = 0;
+var collisionSpeed = 150;
+var boundarySpeed = 175;
+var decaySpeed = .00005;
+var speed = 25;
+var brakeSpeed = 15;
+
 function startTicker() {
   // RENDER LOOP
   app.ticker.add(function(delta) {
@@ -14,7 +21,7 @@ function startTicker() {
         channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
     } else
       channelInput.scale.x = channelInput.scale.y = lerp(channelInput.scale.x, 0, .05);
-  
+
     // PROCESS
     var count = chatContainer.children.length;
     for (var message in messages) {
@@ -28,9 +35,9 @@ function startTicker() {
   setInterval(function() {
     if (document.hidden) return;
     document.getElementById('channel').focus();
+    growSpeed = (window.innerWidth + window.innerHeight) / 150000 * window.devicePixelRatio;
 
     // APPLY PHYSICS
-    var count = chatContainer.children.length;
     for (var message in messages) {
       messages[message].collision();
       messages[message].keepInBounds();

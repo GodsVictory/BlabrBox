@@ -1,7 +1,7 @@
 function Chat(message) {
-  style = new PIXI.TextStyle({
+  var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: (window.innerWidth + window.innerHeight) * .03,
+    fontSize: 64, //(window.innerWidth + window.innerHeight) * .03,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -15,12 +15,6 @@ function Chat(message) {
   this.container.vy = 0;
   this.container.x = window.innerWidth * Math.random();
   this.container.y = window.innerHeight * Math.random();
-  this.collisionSpeed = 150;
-  this.boundarySpeed = 175;
-  this.growSpeed = .02;
-  this.decaySpeed = .00005;
-  this.speed = 25;
-  this.brakeSpeed = 15;
 
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
@@ -39,8 +33,8 @@ function Chat(message) {
       else
         url = "assets/emotes/ffz/" + meme.i + ".png";
       var emote = new PIXI.Sprite.fromImage(url);
-      emote.width = height / meme.h * meme.w * .75;
-      emote.height = height / meme.h * meme.h * .75;
+      emote.width = height / meme.h * meme.w * .575;
+      emote.height = height / meme.h * meme.h * .575;
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
@@ -118,17 +112,17 @@ Chat.prototype.getWidth = function() {
 }
 
 Chat.prototype.getHeight = function() {
-  return this.container.getBounds(false).height;
+  return this.container.getBounds(false).height / 1.75;
 }
 
 Chat.prototype.applyVelocity = function(vx) {
-  this.setX(lerp(this.getX(), this.getX() + this.getVX(), (this.speed * .025)));
-  this.setY(lerp(this.getY(), this.getY() + this.getVY(), (this.speed * .025)));
+  this.setX(lerp(this.getX(), this.getX() + this.getVX(), (speed * .025)));
+  this.setY(lerp(this.getY(), this.getY() + this.getVY(), (speed * .025)));
 }
 
 Chat.prototype.slowDown = function(vx) {
-  this.setVX(lerp(this.getVX(), 0, this.brakeSpeed * 0.00075 * (this.getScale() + 1)));
-  this.setVY(lerp(this.getVY(), 0, this.brakeSpeed * 0.00075 * (this.getScale() + 1)));
+  this.setVX(lerp(this.getVX(), 0, brakeSpeed * 0.00075 * (this.getScale() + 1)));
+  this.setVY(lerp(this.getVY(), 0, brakeSpeed * 0.00075 * (this.getScale() + 1)));
 }
 
 Chat.prototype.collision = function() {
@@ -139,13 +133,14 @@ Chat.prototype.collision = function() {
       other.getHeight());
     if (side == 'none') continue;
     if (side == 'top')
-      this.setVY(this.getVY() - (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+      this.setVY(this.getVY() - (collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
     else if (side == 'bottom')
-      this.setVY(this.getVY() + (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+      this.setVY(this.getVY() + (collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
     else if (side == 'left')
-      this.setVX(this.getVX() - (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+      this.setVX(this.getVX() - (collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
     else if (side == 'right')
-      this.setVX(this.getVX() + (this.collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+      this.setVX(this.getVX() + (collisionSpeed * .01 / ((this.getScale() + 5) / (other.getScale() + 1))));
+    break;
   }
 }
 
@@ -153,7 +148,7 @@ Chat.prototype.checkCollide = function(r1x, r1y, r1w, r1h, r2x, r2y, r2w, r2h) {
   var dx = r1x - r2x;
   var dy = r1y - r2y;
   var width = (r1w + r2w) / 2;
-  var height = (r1h + r2h) / 2.5;
+  var height = (r1h + r2h) / 2;
   var crossWidth = width * dy;
   var crossHeight = height * dx;
   var collision = 'none';
@@ -168,8 +163,8 @@ Chat.prototype.checkCollide = function(r1x, r1y, r1w, r1h, r2x, r2y, r2w, r2h) {
 }
 
 Chat.prototype.keepInBounds = function() {
-  this.setVX(this.getVX() + this.inBoundsX() * this.boundarySpeed * .01);
-  this.setVY(this.getVY() + this.inBoundsY() * this.boundarySpeed * .01);
+  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed * .01);
+  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed * .01);
 }
 
 Chat.prototype.inBoundsX = function(x, width) {
@@ -179,25 +174,25 @@ Chat.prototype.inBoundsX = function(x, width) {
 }
 
 Chat.prototype.inBoundsY = function(y, height) {
-  if (this.getY() - this.getHeight() / 2.5 < 0) return 1;
-  else if (this.getY() + this.getHeight() / 2.5 > window.innerHeight) return -1;
+  if (this.getY() - this.getHeight() / 2 < 0) return 1;
+  else if (this.getY() + this.getHeight() / 2 > window.innerHeight) return -1;
   return 0;
 }
 
 Chat.prototype.addGrow = function(count) {
-  this.grow += Math.round(100 / (count / 10 + 1) / (this.getScale() / 5 + 1));
+  this.grow += Math.round(100 / (count / 100 + 1) / (this.getScale() / 5 + 1));
 }
 
 Chat.prototype.applyGrow = function(count) {
-  if (this.getWidth() > window.innerWidth - 10 || this.getHeight() / 1.5 > window.innerHeight - 10)
+  if (this.getWidth() > window.innerWidth - 10 || this.getHeight() > window.innerHeight - 10)
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 10)
-      this.setScale(this.getScale() - this.decaySpeed * (this.getScale() + 1) * 10);
+      this.setScale(this.getScale() - decaySpeed * (this.getScale() + 1) * 10);
     else
-      this.setScale(this.getScale() - this.decaySpeed * (this.getScale() + 1) * count);
+      this.setScale(this.getScale() - decaySpeed * (this.getScale() + 1) * count);
   } else
-    this.setScale(this.getScale() + this.growSpeed);
+    this.setScale(this.getScale() + growSpeed);
   if (this.grow > 0)
     this.grow--;
 }

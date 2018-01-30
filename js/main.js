@@ -37,7 +37,7 @@ function load() {
   document.body.appendChild(app.view);
   var style = new PIXI.TextStyle({
     fontFamily: 'Fredoka One',
-    fontSize: (window.innerWidth + window.innerHeight) * .025,
+    fontSize: 64,
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
@@ -45,11 +45,14 @@ function load() {
   });
   loading = new PIXI.Text("LOADING", style);
   loading.anchor.set(.5);
-  loading.grow = false;
-  loading.maxScale = 1;
+  var iWidth = loading.getBounds().width;
+  var iHeight = loading.getBounds().height;
+  loading.scale.x = loading.scale.y = (window.innerWidth + window.innerHeight) / 3000 * window.devicePixelRatio;
   loading.x = window.innerWidth / 2;
   loading.y = window.innerHeight / 2;
   app.stage.addChild(loading);
+  loading.width = window.innerWidth * .25;
+  loading.height = window.innerWidth * .25 / iWidth * iHeight;
 
   loader.add('emotes', 'assets/emotes.min.json');
   loader.once('complete', function(loader, resources) {
