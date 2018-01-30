@@ -127,8 +127,7 @@ Chat.prototype.collision = function() {
     left: this.getX() - this.getWidth() / 2,
     right: this.getX() + this.getWidth() / 2,
     top: this.getY() - this.getHeight() / 2,
-    bottom: this.getY() + this.getHeight() / 2,
-    angle: 2 * Math.atan(this.getHeight() / this.getWidth()) * 180 / Math.PI / 2
+    bottom: this.getY() + this.getHeight() / 2
   };
   var overlap = 0;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
@@ -145,18 +144,17 @@ Chat.prototype.collision = function() {
       bottom: other.getY() + other.getHeight() / 2
     };
     if (this.checkCollide(thisInfo, otherInfo)) {
+      var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
       if (degree < 0) degree += 360;
-
       var weight = collisionSpeed * .01 + thisInfo.h / otherInfo.h * .25;
-
-      if (degree > 0 + thisInfo.angle - overlap && degree < 180 - thisInfo.angle + overlap) // this is getting hit on the top
+      if (degree > 0 + angle - overlap && degree < 180 - angle + overlap) // this is getting hit on the top
         this.setVY(thisInfo.vy + weight);
-      else if (degree < 360 - thisInfo.angle + overlap && degree > 180 + thisInfo.angle - overlap) // this is getting hit on the bottom
+      else if (degree < 360 - angle + overlap && degree > 180 + angle - overlap) // this is getting hit on the bottom
         this.setVY(thisInfo.vy - weight);
-      if (degree > 180 - thisInfo.angle - overlap && degree < 180 + thisInfo.angle + overlap) // this is getting hit on the left
+      if (degree > 180 - angle - overlap && degree < 180 + angle + overlap) // this is getting hit on the left
         this.setVX(thisInfo.vx + weight);
-      else if (degree < 0 + thisInfo.angle + overlap || degree > 360 - thisInfo.angle - overlap) // this is getting hit on the right
+      else if (degree < 0 + angle + overlap || degree > 360 - angle - overlap) // this is getting hit on the right
         this.setVX(thisInfo.vx - weight);
       break;
     }
