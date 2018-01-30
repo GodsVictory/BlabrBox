@@ -147,14 +147,17 @@ Chat.prototype.collision = function() {
     if (this.checkCollide(thisInfo, otherInfo)) {
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
       if (degree < 0) degree += 360;
-      if (degree < 360 - thisInfo.angle + overlap && degree > 180 + thisInfo.angle - overlap) // this is getting hit on the bottom
-        this.setVY(thisInfo.vy - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
-      else if (degree > 0 + thisInfo.angle - overlap && degree < 180 - thisInfo.angle + overlap) // this is getting hit on the top
-        this.setVY(thisInfo.vy + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+
+      var weight = collisionSpeed * .01 + thisInfo.h / otherInfo.h * .25;
+
+      if (degree > 0 + thisInfo.angle - overlap && degree < 180 - thisInfo.angle + overlap) // this is getting hit on the top
+        this.setVY(thisInfo.vy + weight);
+      else if (degree < 360 - thisInfo.angle + overlap && degree > 180 + thisInfo.angle - overlap) // this is getting hit on the bottom
+        this.setVY(thisInfo.vy - weight);
       if (degree > 180 - thisInfo.angle - overlap && degree < 180 + thisInfo.angle + overlap) // this is getting hit on the left
-        this.setVX(thisInfo.vx + (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+        this.setVX(thisInfo.vx + weight);
       else if (degree < 0 + thisInfo.angle + overlap || degree > 360 - thisInfo.angle - overlap) // this is getting hit on the right
-        this.setVX(thisInfo.vx - (collisionSpeed * .01 / (thisInfo.h / otherInfo.h)));
+        this.setVX(thisInfo.vx - weight);
       break;
     }
   }

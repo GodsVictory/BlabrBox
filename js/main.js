@@ -18,6 +18,7 @@ var boundarySpeed = 200;
 var speed = 50;
 var brakeSpeed = 25;
 var fontSize = 36;
+
 window.onload = function start() {
   loadFont();
   var waitForLoad = setInterval(function() {
