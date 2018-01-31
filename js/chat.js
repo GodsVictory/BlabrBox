@@ -143,6 +143,20 @@ Chat.prototype.collision = function() {
       top: other.getY() - other.getHeight() / 2,
       bottom: other.getY() + other.getHeight() / 2
     };
+
+    var side = this.checkCollide(thisInfo, otherInfo);
+    if (side == 'none') continue;
+    var weight = collisionSpeed * .01 + otherInfo.h / thisInfo.h * .25;
+    if (side == 'top')
+      this.setVY(thisInfo.vy + weight);
+    else if (side == 'bottom')
+      this.setVY(thisInfo.vy - weight);
+    else if (side == 'left')
+      this.setVX(thisInfo.vx + weight);
+    else if (side == 'right')
+      this.setVX(thisInfo.vx - weight);
+    break;
+    /*
     if (this.checkCollide(thisInfo, otherInfo)) {
       var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
       var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
@@ -157,7 +171,7 @@ Chat.prototype.collision = function() {
       else if (degree < 0 + angle + overlap || degree > 360 - angle - overlap) // this is getting hit on the right
         this.setVX(thisInfo.vx - weight);
       break;
-    }
+  }*/
   }
   /*
   Collision works by first checking if rectangles overlap. If yes, it then
@@ -169,11 +183,31 @@ Chat.prototype.collision = function() {
 }
 
 Chat.prototype.checkCollide = function(r1, r2) {
+  var dx = r1.x - r2.x;
+  var dy = r1.y - r2.y;
+  var width = (r1.w + r2.w) / 2;
+  var height = (r1.h + r2.h) / 2;
+  var crossWidth = width * dy;
+  var crossHeight = height * dx;
+  var collision = 'none';
+  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
+    if (crossWidth > crossHeight) {
+      if (crossWidth > (-crossHeight)) collision = 'top';
+      else collision = 'right';
+    } else {
+      if (crossWidth > -(crossHeight)) collision = 'left';
+      else collision = 'bottom';
+    }
+  }
+  return (collision);
+}
+/*
+Chat.prototype.checkCollide = function(r1, r2) {
   return !(r2.left > r1.right ||
     r2.right < r1.left ||
     r2.top > r1.bottom ||
     r2.bottom < r1.top);
-}
+}*/
 
 Chat.prototype.keepInBounds = function() {
   this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed * .01);
