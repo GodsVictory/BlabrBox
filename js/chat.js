@@ -1,12 +1,4 @@
 function Chat(message) {
-  var style = new PIXI.TextStyle({
-    fontFamily: 'Fredoka One',
-    fontSize: fontSize,
-    align: 'center',
-    fill: '#ffffff',
-    stroke: '#000000',
-    strokeThickness: 2
-  });
   this.message = message;
   this.container = new PIXI.Sprite();
   this.container.text = message;
@@ -83,11 +75,17 @@ Chat.prototype.getY = function() {
 }
 
 Chat.prototype.setVX = function(vx) {
-  this.container.vx = vx;
+  if (Math.abs(vx) > maxSpeed) {
+    if (vx < 0) this.container.vx = -maxSpeed;
+    else this.container.vx = maxSpeed;
+  } else this.container.vx = +vx.toFixed(2);
 }
 
 Chat.prototype.setVY = function(vy) {
-  this.container.vy = vy;
+  if (Math.abs(vy) > maxSpeed) {
+    if (vy < 0) this.container.vy = -maxSpeed;
+    else this.container.vy = maxSpeed;
+  } else this.container.vy = +vy.toFixed(2);
 }
 
 Chat.prototype.getVX = function(vx) {
@@ -106,28 +104,26 @@ Chat.prototype.getHeight = function() {
   return this.container.getBounds(false).height / 1.75;
 }
 
-Chat.prototype.applyVelocity = function(vx) {
-  this.setX(lerp(this.getX(), this.getX() + this.getVX(), (speed * .025)));
-  this.setY(lerp(this.getY(), this.getY() + this.getVY(), (speed * .025)));
+Chat.prototype.applyVelocity = function(delta) {
+  this.setX(this.getX() + this.getVX() * delta);
+  this.setY(this.getY() + this.getVY() * delta);
 }
 
-Chat.prototype.slowDown = function(vx) {
-  this.setVX(lerp(this.getVX(), 0, brakeSpeed * 0.00075)); // * (this.getScale() + 1)));
-  this.setVY(lerp(this.getVY(), 0, brakeSpeed * 0.00075)); // * (this.getScale() + 1)));
+Chat.prototype.slowDown = function(delta) {
+  if (this.getVX() < -.05 || this.getVX() > .05) this.setVX(this.getVX() * brakeSpeed);
+  else this.setVX(0);
+  if (this.getVY() < -.05 || this.getVY() > .05) this.setVY(this.getVY() * brakeSpeed);
+  else this.setVY(0);
 }
 
-Chat.prototype.collision = function() {
+Chat.prototype.collision = function(delta) {
   var thisInfo = {
     x: this.getX(),
     y: this.getY(),
     h: this.getHeight(),
     w: this.getWidth(),
     vx: this.getVX(),
-    vy: this.getVY(),
-    left: this.getX() - this.getWidth() / 2,
-    right: this.getX() + this.getWidth() / 2,
-    top: this.getY() - this.getHeight() / 2,
-    bottom: this.getY() + this.getHeight() / 2
+    vy: this.getVY()
   };
   var overlap = 0;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
@@ -137,16 +133,12 @@ Chat.prototype.collision = function() {
       x: other.getX(),
       y: other.getY(),
       h: other.getHeight(),
-      w: other.getWidth(),
-      left: other.getX() - other.getWidth() / 2,
-      right: other.getX() + other.getWidth() / 2,
-      top: other.getY() - other.getHeight() / 2,
-      bottom: other.getY() + other.getHeight() / 2
+      w: other.getWidth()
     };
 
     var side = this.checkCollide(thisInfo, otherInfo);
     if (side == 'none') continue;
-    var weight = collisionSpeed * .01 + otherInfo.h / thisInfo.h * .25;
+    var weight = collisionSpeed * (otherInfo.h / thisInfo.h);
     if (side == 'top')
       this.setVY(thisInfo.vy + weight);
     else if (side == 'bottom')
@@ -156,30 +148,7 @@ Chat.prototype.collision = function() {
     else if (side == 'right')
       this.setVX(thisInfo.vx - weight);
     break;
-    /*
-    if (this.checkCollide(thisInfo, otherInfo)) {
-      var angle = 2 * Math.atan(otherInfo.h / otherInfo.w) * 180 / Math.PI / 2;
-      var degree = Math.atan2(-(otherInfo.y - thisInfo.y), (otherInfo.x - thisInfo.x)) * 180 / Math.PI;
-      if (degree < 0) degree += 360;
-      var weight = collisionSpeed * .01 + otherInfo.h / thisInfo.h * .25;
-      if (degree > 0 + angle - overlap && degree < 180 - angle + overlap) // this is getting hit on the top
-        this.setVY(thisInfo.vy + weight);
-      else if (degree < 360 - angle + overlap && degree > 180 + angle - overlap) // this is getting hit on the bottom
-        this.setVY(thisInfo.vy - weight);
-      if (degree > 180 - angle - overlap && degree < 180 + angle + overlap) // this is getting hit on the left
-        this.setVX(thisInfo.vx + weight);
-      else if (degree < 0 + angle + overlap || degree > 360 - angle - overlap) // this is getting hit on the right
-        this.setVX(thisInfo.vx - weight);
-      break;
-  }*/
   }
-  /*
-  Collision works by first checking if rectangles overlap. If yes, it then
-  determines the collided rectangles offset angle (center point to top right
-  corner). It then checks the angle between both center points to determine
-  which side it collided with and used the offset angle to determine which
-  direction to move.
-  */
 }
 
 Chat.prototype.checkCollide = function(r1, r2) {
@@ -201,17 +170,10 @@ Chat.prototype.checkCollide = function(r1, r2) {
   }
   return (collision);
 }
-/*
-Chat.prototype.checkCollide = function(r1, r2) {
-  return !(r2.left > r1.right ||
-    r2.right < r1.left ||
-    r2.top > r1.bottom ||
-    r2.bottom < r1.top);
-}*/
 
-Chat.prototype.keepInBounds = function() {
-  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed * .01);
-  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed * .01);
+Chat.prototype.keepInBounds = function(delta) {
+  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed);
+  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed);
 }
 
 Chat.prototype.inBoundsX = function(x, width) {
@@ -239,16 +201,16 @@ Chat.prototype.addGrow = function(count) {
   this.grow += Math.round(100 / (count / 100 + 1) / (this.getScale() / 5 + 1));
 }
 
-Chat.prototype.applyGrow = function(count) {
+Chat.prototype.applyGrow = function(delta, count) {
   if (this.getWidth() > app.renderer.width - 10 || this.getHeight() > app.renderer.height - 10)
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 10)
-      this.setScale(this.getScale() - decaySpeed * 10);
+      this.setScale(this.getScale() - decaySpeed * 10 * delta);
     else
-      this.setScale(this.getScale() - decaySpeed * count);
+      this.setScale(this.getScale() - decaySpeed * count * delta);
   } else
-    this.setScale(this.getScale() + growSpeed);
+    this.setScale(this.getScale() + growSpeed * delta);
   if (this.grow > 0)
     this.grow--;
 }
