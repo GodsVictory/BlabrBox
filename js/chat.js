@@ -138,7 +138,7 @@ Chat.prototype.collision = function(delta) {
 
     var side = this.checkCollide(thisInfo, otherInfo);
     if (side == 'none') continue;
-    var weight = collisionSpeed * (otherInfo.h / thisInfo.h);
+    var weight = collisionSpeed * ((otherInfo.h * otherInfo.w) / (thisInfo.h * thisInfo.w));
     if (side == 'top')
       this.setVY(thisInfo.vy + weight);
     else if (side == 'bottom')
