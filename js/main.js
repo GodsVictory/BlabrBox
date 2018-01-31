@@ -1,6 +1,8 @@
 var app, chatContainer, channelInput, channel, cursorTimeout, channelTimeout, fontLoaded, loading, style;
 var memes = {},
-  messages = {};
+  messages = {},
+  newChat = [],
+  badwords = {};
 var delay = Qurl.create().query('d');
 var length = Qurl.create().query('l') || 40;
 var growSpeed = 0;
@@ -17,7 +19,7 @@ window.onload = function start() {
     if (fontLoaded) {
       clearInterval(waitForLoad);
       load();
-    } else console.log('asdf');
+    }
   }, 100);
 }
 const loader = PIXI.loader;
@@ -53,8 +55,10 @@ function load() {
   loading.height = app.renderer.width * .45 / iWidth * iHeight;
 
   loader.add('emotes', 'assets/emotes.min.json');
+  loader.add('badwords', 'assets/badwords.json');
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
+    badwords = resources.badwords.data;
     init();
   }).load();
 }

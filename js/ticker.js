@@ -32,6 +32,20 @@ function startTicker() {
       messages[message].keepInBounds(delta);
       messages[message].checkRemove(delta);
     }
+
+    if (newChat.length > 0) {
+      var message = newChat.shift();
+      if (typeof messages[message] !== 'undefined')
+        messages[message].addGrow(chatContainer.children.length);
+      else {
+        if (!badwords.words.some(function(v) {
+            return message.indexOf(v) >= 0;
+          }))
+          setTimeout(function() {
+            messages[message] = new Chat(message);
+          }, delay || 0);
+      }
+    }
   });
 }
 
