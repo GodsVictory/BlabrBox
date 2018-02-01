@@ -129,6 +129,7 @@ Chat.prototype.collision = function(delta) {
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
+    if (typeof other === 'undefined') continue;
     var otherInfo = {
       x: other.getX(),
       y: other.getY(),

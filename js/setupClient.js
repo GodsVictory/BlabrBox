@@ -58,6 +58,8 @@ function setupClient() {
 function handleChat(channel, user, message, self) {
   if (!document.hidden)
     if (message.length <= length) {
-      newChat.push(message);
+      setTimeout(function() {
+        newChat.push(message);
+      }, delay || 0);
     }
 }

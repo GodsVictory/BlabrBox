@@ -41,9 +41,7 @@ function startTicker() {
         if (!badwords.words.some(function(v) {
             return message.indexOf(v) >= 0;
           }))
-          setTimeout(function() {
-            messages[message] = new Chat(message);
-          }, delay || 0);
+          messages[message] = new Chat(message);
       }
     }
   });
