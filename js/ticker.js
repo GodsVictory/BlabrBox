@@ -20,7 +20,7 @@ function startTicker() {
       channelInput.scale.x = channelInput.scale.y = 0;
 
     growSpeed = (app.renderer.width * app.renderer.height) * .000000075;
-    decaySpeed = growSpeed * .005;
+    decaySpeed = growSpeed * .0015;
 
     // PROCESS
     var count = chatContainer.children.length;

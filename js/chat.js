@@ -207,9 +207,9 @@ Chat.prototype.applyGrow = function(delta, count) {
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 10)
-      this.setScale(this.getScale() - decaySpeed * 10 * delta);
+      this.setScale(this.getScale() - (decaySpeed * 10 + (this.getHeight() * .0001)) * delta);
     else
-      this.setScale(this.getScale() - decaySpeed * count * delta);
+      this.setScale(this.getScale() - (decaySpeed * count + (this.getHeight() * .0001)) * delta);
   } else
     this.setScale(this.getScale() + growSpeed * delta);
   if (this.grow > 0)
