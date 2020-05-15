@@ -28,7 +28,8 @@ function load() {
   PIXI.settings.GC_MODE = 'manual';
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
   app = new PIXI.Application(window.innerWidth, window.innerHeight, {
-    backgroundColor: 0x000000,
+    //backgroundColor: 0x000000,
+    transparent: true,
     antialias: false,
     position: 'absolute',
     top: 0,
