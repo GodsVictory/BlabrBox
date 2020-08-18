@@ -3,6 +3,7 @@ var memes = {},
   messages = {},
   newChat = [],
   badwords = {};
+var bg = Qurl.create().query('bg') || "black";
 var delay = Qurl.create().query('d');
 var length = Qurl.create().query('l') || 40;
 var growSpeed = 0;
@@ -14,6 +15,7 @@ var brakeSpeed = .98;
 var fontSize = 36;
 
 window.onload = function start() {
+  $(document.body).css("background-color", bg);
   loadFont();
   var waitForLoad = setInterval(function() {
     if (fontLoaded) {
