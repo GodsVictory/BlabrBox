@@ -15,7 +15,7 @@ var brakeSpeed = .98;
 var fontSize = 36;
 
 window.onload = function start() {
-  $(document.body).css("background-color", bg);
+  document.body.style.backgroundColor = bg;
   loadFont();
   var waitForLoad = setInterval(function() {
     if (fontLoaded) {
