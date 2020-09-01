@@ -62,11 +62,10 @@ function load() {
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
   loader.add('lzma', 'assets/emotes.xz');
-  var my_lzma = new LZMA("lib/lzma_worker.js");
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
     badwords = resources.badwords.data;
-    my_lzma.decompress(resources.lzma.data, function on_finish(result, error) {
+    LZMA.decompress(resources.lzma.data, function on_finish(result, error) {
       console.log(result);
     });
     init();
