@@ -24,7 +24,7 @@ function Chat(message) {
     });
 
   // FORCE PROPER DIMENSIONS
-  var dimensionPlaceholder = new PIXI.Text(' ', style);
+  var dimensionPlaceholder = new PIXI.Text(' ', this.style);
   this.container.addChild(dimensionPlaceholder);
   height = Math.round(this.container.getBounds().height);
 
@@ -48,13 +48,13 @@ function Chat(message) {
       emote.y = height / 2;
       this.container.addChild(emote);
     } else {
-      var word = new PIXI.Text(messageArray[i], style);
+      var word = new PIXI.Text(messageArray[i], this.style);
       word.x = i == 0 ? 0 : this.container.getBounds().width;
       this.container.addChild(word);
     }
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {
-      var space = new PIXI.Text(' ', style);
+      var space = new PIXI.Text(' ', this.style);
       space.x = this.container.getBounds().width;
       this.container.addChild(space);
     }
