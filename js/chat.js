@@ -7,6 +7,21 @@ function Chat(message) {
   this.container.vy = 0;
   this.container.x = app.renderer.width * Math.random();
   this.container.y = app.renderer.height * Math.random();
+  if (emoteOnly)
+    this.style = new PIXI.TextStyle({
+      fontFamily: 'Fredoka One',
+      fontSize: fontSize,
+      align: 'center',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 2,
+    });
+  else
+    this.style = new PIXI.TextStyle({
+      fontFamily: 'Fredoka One',
+      fontSize: fontSize,
+      align: 'center',
+    });
 
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
@@ -33,11 +48,9 @@ function Chat(message) {
       emote.y = height / 2;
       this.container.addChild(emote);
     } else {
-      if (!emoteOnly) {
-        var word = new PIXI.Text(messageArray[i], style);
-        word.x = i == 0 ? 0 : this.container.getBounds().width;
-        this.container.addChild(word);
-      }
+      var word = new PIXI.Text(messageArray[i], style);
+      word.x = i == 0 ? 0 : this.container.getBounds().width;
+      this.container.addChild(word);
     }
     // ADD SPACES IF ADDITIONAL WORD
     if (i + 1 < len) {
