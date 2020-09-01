@@ -61,6 +61,7 @@ function load() {
 
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
+  loader.add('lzma', 'assets/emotes.xz');
   var my_lzma = new LZMA("lib/lzma_worker.js");
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
