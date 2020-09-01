@@ -35,6 +35,7 @@ function startTicker() {
 
     if (newChat.length > 0) {
       var message = newChat.shift();
+      console.log(chatContainer.children.length);
       if (typeof messages[message] !== 'undefined')
         messages[message].addGrow(chatContainer.children.length);
       else {
