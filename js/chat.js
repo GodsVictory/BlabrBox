@@ -20,15 +20,15 @@ function Chat(message) {
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var isMeme = false;
     if (typeof memes[messageArray[i]] !== 'undefined') {
-      var meme = memes[messageArray[i]];
+      //var meme = memes[messageArray[i]];
       var url;
-      if (meme.u == 't')
-        url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
-      else
-        url = "assets/emotes/ffz/" + meme.i + ".png";
+      //if (meme.u == 't')
+        url = "https://static-cdn.jtvnw.net/emoticons/v1/" + memes[messageArray[i]] + "/3.0";
+      //else
+      //  url = "assets/emotes/ffz/" + memes[messageArray[i]] + ".png";
       var emote = new PIXI.Sprite.fromImage(url);
-      emote.width = height / meme.h * meme.w * .575;
-      emote.height = height / meme.h * meme.h * .575;
+      //emote.width = height / meme.h * meme.w * .575;
+      //emote.height = height / meme.h * meme.h * .575;
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);

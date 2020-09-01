@@ -59,7 +59,7 @@ function load() {
   loading.width = app.renderer.width * .45;
   loading.height = app.renderer.width * .45 / iWidth * iHeight;
 
-  loader.add('emotes', 'assets/emotes.min.json');
+  loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
