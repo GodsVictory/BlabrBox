@@ -24,7 +24,6 @@ function startTicker() {
 
     // PROCESS
     var count = chatContainer.children.length;
-    console.log(chatContainer.children);
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       messages[message].applyVelocity(delta);
@@ -36,7 +35,6 @@ function startTicker() {
 
     if (newChat.length > 0) {
       var message = newChat.shift();
-      console.log(chatContainer.children.length);
       if (typeof messages[message] !== 'undefined')
         messages[message].addGrow(chatContainer.children.length);
       else {

@@ -50,7 +50,6 @@ function Chat(message) {
   }
 
   if (emoteOnly && !emoteFound) {
-    delete messages[this.message];
     this.container.destroy({
       children: true,
       baseTexture: true
