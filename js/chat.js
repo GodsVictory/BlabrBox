@@ -16,6 +16,7 @@ function Chat(message) {
   // PARSE MESSAGE
   // INSERT EMOTES
   var messageArray = message.split(' ');
+  var emoteFound = false;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     if (typeof memes[messageArray[i]] !== 'undefined') {
       var meme = memes[messageArray[i]];
@@ -32,6 +33,7 @@ function Chat(message) {
       emote.anchor.set(0, .5);
       emote.y = height / 2;
       this.container.addChild(emote);
+      emoteFound = true;
     } else {
       if (!emoteOnly) {
         var word = new PIXI.Text(messageArray[i], style);
@@ -45,6 +47,14 @@ function Chat(message) {
       space.x = this.container.getBounds().width;
       this.container.addChild(space);
     }
+  }
+
+  if (emoteOnly && !emoteFound) {
+    delete messages[this.message];
+    this.container.destroy({
+      children: true,
+      baseTexture: true
+    });
   }
 
   // MANUALLY SET ANCHOR TO .5
