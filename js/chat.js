@@ -32,8 +32,8 @@ function Chat(message) {
       var emote = new PIXI.Sprite.fromImage(url);
       if ('h' in meme) memeHeight = meme.h;
       if ('w' in meme) memeWidth = meme.w;
-      emote.width = height / memeHeight || 28 * memeWidth || 28; // * .575;
-      emote.height = height / memeHeight || 28 * memeHeight || 28; // * .575;
+      emote.width = height / memeHeight * memeWidth; // * .575;
+      emote.height = height / memeHeight * memeHeight; // * .575;
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
