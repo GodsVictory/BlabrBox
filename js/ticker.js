@@ -1,6 +1,6 @@
 function startTicker() {
   // RENDER LOOP
-  app.ticker.add(function(delta) {
+  app.ticker.add(function (delta) {
     if (document.hidden) return;
     document.getElementById('channel').focus();
 
@@ -9,6 +9,8 @@ function startTicker() {
 
     // INPUT HANDLER
     if (channelInput.grow && channelInput.text.length > 0) {
+      app.stage.removeChild(channelInput);
+      app.stage.addChild(channelInput);
       if (channelInput.width < app.renderer.width * .45)
         channelInput.scale.x = channelInput.scale.y += growSpeed * 5 * delta;
       else if (channelInput.width > app.renderer.width * .55)
@@ -38,7 +40,7 @@ function startTicker() {
       if (typeof messages[message] !== 'undefined')
         messages[message].addGrow(chatContainer.children.length);
       else {
-        if (!badwords.words.some(function(v) {
+        if (!badwords.words.some(function (v) {
             return message.indexOf(v) >= 0;
           }))
           new Chat(message);

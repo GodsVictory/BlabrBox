@@ -19,7 +19,7 @@ var fontSize = 36;
 window.onload = function start() {
   document.body.style.backgroundColor = bg;
   loadFont();
-  var waitForLoad = setInterval(function() {
+  var waitForLoad = setInterval(function () {
     if (fontLoaded) {
       clearInterval(waitForLoad);
       load();
@@ -61,14 +61,9 @@ function load() {
 
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
-  loader.add('lzma', 'assets/emotes.xz');
-  loader.once('complete', function(loader, resources) {
+  loader.once('complete', function (loader, resources) {
     memes = resources.emotes.data;
     badwords = resources.badwords.data;
-    LZMA.decompress(resources.lzma.data, function on_finish(result, error) {
-      console.log(result);
-      console.log(error);
-    });
     init();
   }).load();
 }
@@ -89,30 +84,30 @@ function init() {
   chatContainer = new PIXI.Container();
   app.stage.addChild(chatContainer);
 
-  window.onresize = function() {
+  window.onresize = function () {
     app.renderer.resize(window.innerWidth, window.innerHeight);
     channelInput.x = app.renderer.width / 2;
     channelInput.y = app.renderer.height / 2;
   }
 
-  document.onmousemove = function() {
+  document.onmousemove = function () {
     document.getElementById('channel').style.cursor = 'default';
     clearTimeout(cursorTimeout);
-    cursorTimeout = setTimeout(function() {
+    cursorTimeout = setTimeout(function () {
       document.getElementById('channel').style.cursor = 'none';
     }, 1000);
   }
 
-  document.onclick = function() {
+  document.onclick = function () {
     channelInput.grow = true;
     clearTimeout(channelTimeout);
     if (channel != 'Channel...')
-      channelTimeout = setTimeout(function() {
+      channelTimeout = setTimeout(function () {
         channelInput.grow = false;
       }, 2000);
   }
 
-  document.ondblclick = function() {
+  document.ondblclick = function () {
     screenfull.toggle();
   }
 
