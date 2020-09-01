@@ -6,6 +6,7 @@ var memes = {},
 var bg = Qurl.create().query('bg') || "black";
 var delay = Qurl.create().query('d');
 var length = Qurl.create().query('l') || 40;
+var emoteOnly = Qurl.create().query('e') || false;
 var growSpeed = 0;
 var decaySpeed = 0;
 var collisionSpeed = .05;
