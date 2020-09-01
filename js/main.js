@@ -64,6 +64,9 @@ function load() {
   loader.once('complete', function(loader, resources) {
     memes = resources.emotes.data;
     badwords = resources.badwords.data;
+    my_lzma.decompress(resources.lzma.data, function on_finish(result, error) {
+      console.log(result);
+    });
     init();
   }).load();
 }
