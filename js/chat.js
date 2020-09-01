@@ -27,8 +27,8 @@ function Chat(message) {
       //else
       //  url = "assets/emotes/ffz/" + memes[messageArray[i]] + ".png";
       var emote = new PIXI.Sprite.fromImage(url);
-      emote.width = height / (112 * 112 * .575);
-      emote.height = height / (112 * 112 * .575);
+      emote.width = 112; //height / (112 * 112 * .575);
+      emote.height = 112; //height / (112 * 112 * .575);
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
