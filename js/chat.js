@@ -33,7 +33,7 @@ function Chat(message) {
       emote.y = height / 2;
       this.container.addChild(emote);
     } else {
-      if (!emoteOnly)
+      if (!emoteOnly) {
         var word = new PIXI.Text(messageArray[i], style);
         word.x = i == 0 ? 0 : this.container.getBounds().width;
         this.container.addChild(word);
