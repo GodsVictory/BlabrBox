@@ -2,7 +2,7 @@ function Chat(message) {
   this.message = message;
   this.container = new PIXI.Sprite();
   this.container.text = message;
-  this.grow = 30 * scaleMultiplier;
+  this.grow = 30 + scaleMultiplier;
   this.container.vx = 0;
   this.container.vy = 0;
   this.container.x = app.renderer.width * Math.random();
