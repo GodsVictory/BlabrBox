@@ -21,7 +21,7 @@ function startTicker() {
     else
       channelInput.scale.x = channelInput.scale.y = 0;
 
-    growSpeed = (app.renderer.width * app.renderer.height) * .000000075;
+    growSpeed = (app.renderer.width * app.renderer.height) * .000000075 * scaleMultiplier;
     decaySpeed = growSpeed * .0015;
 
     // PROCESS
@@ -38,7 +38,7 @@ function startTicker() {
     if (newChat.length > 0) {
       var message = newChat.shift();
       if (typeof messages[message] !== 'undefined')
-        messages[message].addGrow(chatContainer.children.length);
+        messages[message].addGrow(growAmount);
       else {
         if (!badwords.words.some(function (v) {
             return message.indexOf(v) >= 0;

@@ -9,6 +9,7 @@ var length = Qurl.create().query('l') || 40;
 var emoteOnly = Qurl.create().query('e') || false;
 var scaleMultiplier = parseFloat(Qurl.create().query('scale')) || 1;
 var growSpeed = 0;
+var growAmount = 30;
 var decaySpeed = 0;
 var collisionSpeed = .05;
 var boundarySpeed = 0.167;
