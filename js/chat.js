@@ -55,20 +55,19 @@ function Chat(message) {
       children: true,
       baseTexture: true
     });
-    return;
-  }
+  } else {
+    // MANUALLY SET ANCHOR TO .5
+    var offsetWidth = this.container.getBounds().width / 2;
+    var offsetHeight = this.container.getBounds().height / 2;
+    for (var i = 0, len = this.container.children.length; i < len; i++) {
+      this.container.children[i].x -= offsetWidth;
+      this.container.children[i].y -= offsetHeight;
+    }
+    this.container.scale.x = 0;
+    this.container.scale.y = 0;
 
-  // MANUALLY SET ANCHOR TO .5
-  var offsetWidth = this.container.getBounds().width / 2;
-  var offsetHeight = this.container.getBounds().height / 2;
-  for (var i = 0, len = this.container.children.length; i < len; i++) {
-    this.container.children[i].x -= offsetWidth;
-    this.container.children[i].y -= offsetHeight;
+    chatContainer.addChild(this.container);
   }
-  this.container.scale.x = 0;
-  this.container.scale.y = 0;
-
-  chatContainer.addChild(this.container);
 }
 
 Chat.prototype.setX = function(x) {
