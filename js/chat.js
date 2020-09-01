@@ -55,6 +55,7 @@ function Chat(message) {
       children: true,
       baseTexture: true
     });
+    return;
   }
 
   // MANUALLY SET ANCHOR TO .5
