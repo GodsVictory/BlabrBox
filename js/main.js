@@ -67,6 +67,7 @@ function load() {
     badwords = resources.badwords.data;
     LZMA.decompress(resources.lzma.data, function on_finish(result, error) {
       console.log(result);
+      console.log(error);
     });
     init();
   }).load();
