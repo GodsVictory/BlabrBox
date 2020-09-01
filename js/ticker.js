@@ -24,6 +24,7 @@ function startTicker() {
 
     // PROCESS
     var count = chatContainer.children.length;
+    console.log(chatContainer.children);
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       messages[message].applyVelocity(delta);
@@ -42,7 +43,7 @@ function startTicker() {
         if (!badwords.words.some(function(v) {
             return message.indexOf(v) >= 0;
           }))
-          messages[message] = new Chat(message);
+          new Chat(message);
       }
     }
   });

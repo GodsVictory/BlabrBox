@@ -67,6 +67,7 @@ function Chat(message) {
     this.container.scale.y = 0;
 
     chatContainer.addChild(this.container);
+    messages[message] = this;
   }
 }
 
