@@ -30,8 +30,10 @@ function Chat(message) {
       //else
       //  url = "assets/emotes/ffz/" + memes[messageArray[i]] + ".png";
       var emote = new PIXI.Sprite.fromImage(url);
-      emote.width = height / meme.h || 28 * meme.w || 28; // * .575;
-      emote.height = height / meme.h || 28 * meme.h || 28; // * .575;
+      if ('h' in meme) memeHeight = meme.h;
+      if ('w' in meme) memeWidth = meme.w;
+      emote.width = height / memeHeight || 28 * memeWidth || 28; // * .575;
+      emote.height = height / memeHeight || 28 * memeHeight || 28; // * .575;
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
