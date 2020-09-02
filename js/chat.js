@@ -22,18 +22,19 @@ function Chat(message) {
     if (messageArray[i] in memes) {
       var meme = memes[messageArray[i]];
       var url;
+      var scale = 1;
       //if (meme.u == 't')
       if ('u' in meme)
         url = "https:" + meme.u;
       else {
         url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
-        var scale = 3;
+        scale = 3;
       }
       var emote = new PIXI.Sprite.fromImage(url);
-      if ('h' in meme) memeHeight = meme.h;
-      else memeHeight = 28 * scale | 1;
-      if ('w' in meme) memeWidth = meme.w;
-      else memeWidth = 28 * scale | 1;
+      if ('h' in meme) memeHeight = meme.h * scale;
+      else memeHeight = 28 * scale;
+      if ('w' in meme) memeWidth = meme.w * scale;
+      else memeWidth = 28 * scale;
       emote.width = height / memeHeight * memeWidth; // * .575;
       emote.height = height / memeHeight * memeHeight; // * .575;
       if (i > 0)
