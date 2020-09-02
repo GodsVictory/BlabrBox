@@ -19,47 +19,49 @@ function Chat(message) {
   var emoteFound = false;
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var isMeme = false;
-    if (messageArray[i] in memes) {
-      var meme = memes[messageArray[i]];
-      var url;
-      var scale = 1;
-      //if (meme.u == 't')
-      if ('u' in meme)
-        url = "https:" + meme.u;
-      else {
-        url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
-        scale = 3;
+    for (var k in memes)
+      if (messageArray[i].match(k)) {
+        var meme = memes[k];
+        var url;
+        var scale = 1;
+        if ('u' in meme)
+          url = "https:" + meme.u;
+        else {
+          url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
+          scale = 3;
+        }
+        var emote = new PIXI.Sprite.fromImage(url);
+        if ('h' in meme) memeHeight = meme.h * scale;
+        else memeHeight = 28 * scale;
+        if ('w' in meme) memeWidth = meme.w * scale;
+        else memeWidth = 28 * scale;
+        emote.width = height / memeHeight * memeWidth; // * .575;
+        emote.height = height / memeHeight * memeHeight; // * .575;
+        if (i > 0)
+          emote.x = this.container.getBounds().width;
+        emote.anchor.set(0, .5);
+        emote.y = height / 2;
+        this.container.addChild(emote);
+        emoteFound = true;
+        isMeme = true;
+        break;
       }
-      var emote = new PIXI.Sprite.fromImage(url);
-      if ('h' in meme) memeHeight = meme.h * scale;
-      else memeHeight = 28 * scale;
-      if ('w' in meme) memeWidth = meme.w * scale;
-      else memeWidth = 28 * scale;
-      emote.width = height / memeHeight * memeWidth; // * .575;
-      emote.height = height / memeHeight * memeHeight; // * .575;
-      if (i > 0)
-        emote.x = this.container.getBounds().width;
-      emote.anchor.set(0, .5);
-      emote.y = height / 2;
-      this.container.addChild(emote);
-      emoteFound = true;
-      isMeme = true;
-    } else {
+
+    if (!isMeme)
       if (!emoteOnly) {
         var word = new PIXI.Text(messageArray[i], style);
         word.x = i == 0 ? 0 : this.container.getBounds().width;
         this.container.addChild(word);
       }
-    }
-    // ADD SPACES IF ADDITIONAL WORD
-    if (!emoteOnly) {
-      if (!isMeme && !(messageArray[i + 1] in memes))
-        if (i + 1 < len) {
-          var space = new PIXI.Text(' ', style);
-          space.x = this.container.getBounds().width;
-          this.container.addChild(space);
-        }
-    }
+  }
+  // ADD SPACES IF ADDITIONAL WORD
+  if (!emoteOnly) {
+    if (!isMeme && !(messageArray[i + 1] in memes))
+      if (i + 1 < len) {
+        var space = new PIXI.Text(' ', style);
+        space.x = this.container.getBounds().width;
+        this.container.addChild(space);
+      }
   }
 
   if (emoteOnly && !emoteFound) {
