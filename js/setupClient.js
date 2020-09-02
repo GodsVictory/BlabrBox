@@ -7,19 +7,19 @@ function setupClient() {
     },
     client = new tmi.client(clientOptions);
   client.on('message', handleChat);
-  client.on('connected', function() {
+  client.on('connected', function () {
 
-    channel = Qurl.create().query('c');
+    channel = url.query('c');
     if (channel) {
       if (channel == 'simulateChat') {
-        setInterval(function() {
+        setInterval(function () {
           handleChat('', '', 'Kappa');
         }, 100);
-        setInterval(function() {
+        setInterval(function () {
           handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 10000)).toString()));
         }, 100);
       } else
-        client.join(channel).catch(function(e) {});
+        client.join(channel).catch(function (e) {});
       document.getElementById('channel').value = channel;
     } else
       channel = 'Channel...';
@@ -28,23 +28,23 @@ function setupClient() {
     channelInput.grow = true;
 
     if (channel != 'Channel...')
-      channelTimeout = setTimeout(function() {
+      channelTimeout = setTimeout(function () {
         channelInput.grow = false;
       }, 2000);
 
-    document.getElementById('channel').oninput = function() {
+    document.getElementById('channel').oninput = function () {
       clearTimeout(channelTimeout);
       channelInput.grow = true;
       client.part(channel);
 
       channel = document.getElementById('channel').value;
-      Qurl.create().query('c', channel);
+      url.query('c', channel);
 
       if (!channel)
         channel = 'Channel...'
       else {
-        channelTimeout = setTimeout(function() {
-          client.join(channel).catch(function(e) {});
+        channelTimeout = setTimeout(function () {
+          client.join(channel).catch(function (e) {});
           channelInput.grow = false;
         }, 2000);
       }
@@ -58,7 +58,7 @@ function setupClient() {
 function handleChat(channel, user, message, self) {
   if (!document.hidden)
     if (message.length <= length) {
-      setTimeout(function() {
+      setTimeout(function () {
         newChat.push(message);
       }, delay || 0);
     }

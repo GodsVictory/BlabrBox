@@ -31,7 +31,7 @@ function Chat(message) {
         url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
         scale = 3;
       }
-      var emote = new PIXI.Sprite.fromImage(url);
+      var emote = new PIXI.Sprite.from(url);
       if ('h' in meme) memeHeight = meme.h * scale;
       else memeHeight = 28 * scale;
       if ('w' in meme) memeWidth = meme.w * scale;

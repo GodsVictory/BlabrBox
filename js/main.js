@@ -3,13 +3,14 @@ var memes = {},
   messages = {},
   newChat = [],
   badwords = {};
-var bg = Qurl.create().query('bg') || "black";
-var delay = Qurl.create().query('delay');
-var length = Qurl.create().query('length') || 40;
-var emoteOnly = Qurl.create().query('emote_only') || false;
+var url = new Qurl();
+var bg = url.query('bg') || "black";
+var delay = url.query('delay');
+var length = url.query('length') || 40;
+var emoteOnly = url.query('emote_only') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
-var scaleMultiplier = parseFloat(Qurl.create().query('scale')) || 1;
+var scaleMultiplier = parseFloat(url.query('scale')) || 1;
 var growSpeed = 0;
 var growAmount = 30;
 var decaySpeed = 0;
@@ -29,19 +30,21 @@ window.onload = function start() {
     }
   }, 100);
 }
-const loader = PIXI.loader;
+const loader = PIXI.Loader.shared;
 
 function load() {
   PIXI.settings.GC_MODE = 'manual';
   PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
-  app = new PIXI.Application(window.innerWidth, window.innerHeight, {
+  app = new PIXI.Application({
     //backgroundColor: 0x000000,
     transparent: true,
     antialias: false,
     position: 'absolute',
     top: 0,
     left: 0,
-    crossOrigin: true
+    crossOrigin: true,
+    width: window.innerWidth,
+    height: window.innerHeight
   });
   document.body.appendChild(app.view);
   style = new PIXI.TextStyle({
@@ -64,11 +67,13 @@ function load() {
 
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
-  loader.once('complete', function (loader, resources) {
+  loader.load((loader, resources) => {
     memes = resources.emotes.data;
     badwords = resources.badwords.data;
+  });
+  loader.onComplete.once(() => {
     init();
-  }).load();
+  });
 }
 
 function init() {
