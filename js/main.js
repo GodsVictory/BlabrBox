@@ -12,11 +12,11 @@ if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
 var scaleMultiplier = parseFloat(url.query('scale')) || 1;
 var growSpeed = 0;
-var growAmount = 30;
+var growAmount = 36;
 var decaySpeed = 0;
-var collisionSpeed = .05;
-var boundarySpeed = 0.167;
-var maxSpeed = 10;
+var collisionSpeed = 1.2;
+var boundarySpeed = 1;
+var maxSpeed = 7;
 var brakeSpeed = .98;
 var fontSize = 36;
 

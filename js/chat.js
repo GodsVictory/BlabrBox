@@ -161,17 +161,10 @@ Chat.prototype.collision = function (delta) {
       w: other.getWidth()
     };
 
-    var side = this.checkCollide(thisInfo, otherInfo);
-    if (side == 'none') continue;
-    var weight = collisionSpeed * ((otherInfo.h * otherInfo.w) / (thisInfo.h * thisInfo.w));
-    if (side == 'top')
-      this.setVY(thisInfo.vy + weight);
-    else if (side == 'bottom')
-      this.setVY(thisInfo.vy - weight);
-    else if (side == 'left')
-      this.setVX(thisInfo.vx + weight);
-    else if (side == 'right')
-      this.setVX(thisInfo.vx - weight);
+    if (!this.checkCollide(thisInfo, otherInfo)) continue;
+    var weight = 1 - thisInfo.h / window.innerHeight;
+    this.setVY(thisInfo.vy + (thisInfo.y - otherInfo.y) * .001 * weight * collisionSpeed);
+    this.setVX(thisInfo.vx + (thisInfo.x - otherInfo.x) * .001 * weight * collisionSpeed);
     break;
   }
 }
@@ -181,24 +174,13 @@ Chat.prototype.checkCollide = function (r1, r2) {
   var dy = r1.y - r2.y;
   var width = (r1.w + r2.w) / 2;
   var height = (r1.h + r2.h) / 2;
-  var crossWidth = width * dy;
-  var crossHeight = height * dx;
-  var collision = 'none';
-  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
-    if (crossWidth > crossHeight) {
-      if (crossWidth > (-crossHeight)) collision = 'top';
-      else collision = 'right';
-    } else {
-      if (crossWidth > -(crossHeight)) collision = 'left';
-      else collision = 'bottom';
-    }
-  }
-  return (collision);
+  return Math.abs(dx) <= width && Math.abs(dy) <= height;
 }
 
 Chat.prototype.keepInBounds = function (delta) {
-  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed);
-  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed);
+  var weight = this.getHeight() / window.innerHeight;
+  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed * 10 * weight);
+  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed * 10 * weight);
 }
 
 Chat.prototype.inBoundsX = function (x, width) {
@@ -249,3 +231,61 @@ Chat.prototype.checkRemove = function () {
     });
   }
 }
+
+/*
+Chat.prototype.collision = function (delta) {
+  var thisInfo = {
+    x: this.getX(),
+    y: this.getY(),
+    h: this.getHeight(),
+    w: this.getWidth(),
+    vx: this.getVX(),
+    vy: this.getVY()
+  };
+  var overlap = 0;
+  for (var i = chatContainer.children.length - 1; i >= 0; i--) {
+    if (this.message == chatContainer.children[i].text) continue;
+    var other = messages[chatContainer.children[i].text];
+    if (typeof other === 'undefined') continue;
+    var otherInfo = {
+      x: other.getX(),
+      y: other.getY(),
+      h: other.getHeight(),
+      w: other.getWidth()
+    };
+
+    var side = this.checkCollide(thisInfo, otherInfo);
+    if (side == 'none') continue;
+    var weight = collisionSpeed * ((otherInfo.h * otherInfo.w) / (thisInfo.h * thisInfo.w));
+    if (side == 'top')
+      this.setVY(thisInfo.vy + weight);
+    else if (side == 'bottom')
+      this.setVY(thisInfo.vy - weight);
+    else if (side == 'left')
+      this.setVX(thisInfo.vx + weight);
+    else if (side == 'right')
+      this.setVX(thisInfo.vx - weight);
+    break;
+  }
+}
+
+Chat.prototype.checkCollide = function (r1, r2) {
+  var dx = r1.x - r2.x;
+  var dy = r1.y - r2.y;
+  var width = (r1.w + r2.w) / 2;
+  var height = (r1.h + r2.h) / 2;
+  var crossWidth = width * dy;
+  var crossHeight = height * dx;
+  var collision = 'none';
+  if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
+    if (crossWidth > crossHeight) {
+      if (crossWidth > (-crossHeight)) collision = 'top';
+      else collision = 'right';
+    } else {
+      if (crossWidth > -(crossHeight)) collision = 'left';
+      else collision = 'bottom';
+    }
+  }
+  return (collision);
+}
+*/
