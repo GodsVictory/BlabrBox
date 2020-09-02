@@ -7,6 +7,8 @@ var bg = Qurl.create().query('bg') || "black";
 var delay = Qurl.create().query('delay');
 var length = Qurl.create().query('length') || 40;
 var emoteOnly = Qurl.create().query('emote_only') || false;
+if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
+else emoteOnly = false;
 var scaleMultiplier = parseFloat(Qurl.create().query('scale')) || 1;
 var growSpeed = 0;
 var growAmount = 30;
