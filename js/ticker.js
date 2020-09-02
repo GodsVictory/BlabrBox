@@ -11,13 +11,13 @@ function startTicker() {
     if (channelInput.grow && channelInput.text.length > 0) {
       app.stage.removeChild(channelInput);
       app.stage.addChild(channelInput);
-      if (channelInput.width < app.renderer.width * .25)
-        channelInput.scale.x = channelInput.scale.y += growSpeed * 5 * delta;
-      else if (channelInput.width > app.renderer.width * .75)
-        channelInput.scale.x = channelInput.scale.y -= growSpeed * 5 * delta;
+      if (channelInput.width < app.renderer.width * .45)
+        channelInput.scale.x = channelInput.scale.y += growSpeed * delta;
+      else if (channelInput.width > app.renderer.width * .55)
+        channelInput.scale.x = channelInput.scale.y -= growSpeed * delta;
     } else
     if (channelInput.scale.x > 0)
-      channelInput.scale.x = channelInput.scale.y -= growSpeed * 3 * delta;
+      channelInput.scale.x = channelInput.scale.y -= growSpeed * delta;
     else
       channelInput.scale.x = channelInput.scale.y = 0;
 
