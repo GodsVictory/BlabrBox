@@ -129,8 +129,8 @@ Chat.prototype.getHeight = function () {
 }
 
 Chat.prototype.applyVelocity = function (delta) {
-  this.setX(this.getX() + this.getVX() * delta);
-  this.setY(this.getY() + this.getVY() * delta);
+  this.setX(this.getX() + this.getVX() * delta * (1 - this.getHeight() / window.innerHeight));
+  this.setY(this.getY() + this.getVY() * delta * (1 - this.getHeight() / window.innerHeight));
 }
 
 Chat.prototype.slowDown = function (delta) {
@@ -141,57 +141,39 @@ Chat.prototype.slowDown = function (delta) {
 }
 
 Chat.prototype.collision = function (delta) {
-  var thisInfo = {
-    x: this.getX(),
-    y: this.getY(),
-    h: this.getHeight(),
-    w: this.getWidth(),
-    vx: this.getVX(),
-    vy: this.getVY()
-  };
-  var overlap = 0;
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
     if (typeof other === 'undefined') continue;
-    var otherInfo = {
-      x: other.getX(),
-      y: other.getY(),
-      h: other.getHeight(),
-      w: other.getWidth()
-    };
-
-    if (!this.checkCollide(thisInfo, otherInfo)) continue;
-    var weight = 1 - thisInfo.h / window.innerHeight;
-    this.setVY(thisInfo.vy + (thisInfo.y - otherInfo.y) * .001 * weight * collisionSpeed);
-    this.setVX(thisInfo.vx + (thisInfo.x - otherInfo.x) * .001 * weight * collisionSpeed);
+    if (!this.checkCollide(this, other)) continue;
+    this.setVY(this.getVY() + (this.getY() - other.getY()) * collisionSpeed);
+    this.setVX(this.getVX() + (this.getX() - other.getX()) * collisionSpeed);
     break;
   }
 }
 
 Chat.prototype.checkCollide = function (r1, r2) {
-  var dx = r1.x - r2.x;
-  var dy = r1.y - r2.y;
-  var width = (r1.w + r2.w) / 2;
-  var height = (r1.h + r2.h) / 2;
+  var dx = r1.getX() - r2.getX();
+  var dy = r1.getY() - r2.getY();
+  var width = (r1.getWidth() + r2.getWidth()) / 2;
+  var height = (r1.getHeight() + r2.getHeight()) / 2;
   return Math.abs(dx) <= width && Math.abs(dy) <= height;
 }
 
 Chat.prototype.keepInBounds = function (delta) {
-  var weight = this.getHeight() / window.innerHeight;
-  this.setVX(this.getVX() + this.inBoundsX() * boundarySpeed * 10 * weight);
-  this.setVY(this.getVY() + this.inBoundsY() * boundarySpeed * 10 * weight);
+  this.setVX(this.getVX() - this.inBoundsX() * boundarySpeed);
+  this.setVY(this.getVY() - this.inBoundsY() * boundarySpeed);
 }
 
 Chat.prototype.inBoundsX = function (x, width) {
-  if (this.getX() - this.getWidth() / 2 < 0) return 1;
-  else if (this.getX() + this.getWidth() / 2 > app.renderer.width) return -1;
+  if (this.getX() - this.getWidth() / 2 < 0) return this.getX() - this.getWidth() / 2;
+  else if (this.getX() + this.getWidth() / 2 > app.renderer.width) return this.getX() + this.getWidth() / 2 - app.renderer.width;
   return 0;
 }
 
 Chat.prototype.inBoundsY = function (y, height) {
-  if (this.getY() - this.getHeight() / 2 < 0) return 1;
-  else if (this.getY() + this.getHeight() / 2 > app.renderer.height) return -1;
+  if (this.getY() - this.getHeight() / 2 < 0) return this.getY() - this.getHeight() / 2;
+  else if (this.getY() + this.getHeight() / 2 > app.renderer.height) return this.getY() + this.getHeight() / 2 - app.renderer.height;
   return 0;
 }
 

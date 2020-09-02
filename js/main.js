@@ -14,9 +14,9 @@ var scaleMultiplier = parseFloat(url.query('scale')) || 1;
 var growSpeed = 0;
 var growAmount = 36;
 var decaySpeed = 0;
-var collisionSpeed = 1.2;
-var boundarySpeed = 1;
-var maxSpeed = 7;
+var collisionSpeed = .001;
+var boundarySpeed = .05;
+var maxSpeed = 5;
 var brakeSpeed = .98;
 var fontSize = 36;
 
