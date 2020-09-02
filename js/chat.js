@@ -36,8 +36,8 @@ function Chat(message) {
       else memeHeight = 28 * scale;
       if ('w' in meme) memeWidth = meme.w * scale;
       else memeWidth = 28 * scale;
-      emote.width = height / memeHeight * memeWidth; // * .575;
-      emote.height = height / memeHeight * memeHeight; // * .575;
+      emote.width = height / memeHeight * memeWidth * .575;
+      emote.height = height / memeHeight * memeHeight * .575;
       if (i > 0)
         emote.x = this.container.getBounds().width;
       emote.anchor.set(0, .5);
