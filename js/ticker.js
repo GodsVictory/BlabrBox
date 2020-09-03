@@ -38,9 +38,9 @@ function startTicker() {
 
     if (newChat.length > 0) {
       var message = newChat.shift();
-      if (typeof messages[message] !== 'undefined')
-        messages[message].addGrow(growAmount);
-      else {
+      if (message in messages) {
+        messages[message].addGrow();
+      } else {
         if (!badwords.words.some(function (v) {
             return message.indexOf(v) >= 0;
           }))

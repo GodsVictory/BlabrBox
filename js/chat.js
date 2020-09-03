@@ -3,6 +3,7 @@ function Chat(message) {
   this.container = new PIXI.Sprite();
   this.container.text = message;
   this.grow = growAmount;
+  this.count = 0;
   this.container.vx = 0;
   this.container.vy = 0;
   this.container.x = app.renderer.width * Math.random();
@@ -18,9 +19,10 @@ function Chat(message) {
   var messageArray = message.split(' ');
   var emoteFound = false;
   for (var i = 0, len = messageArray.length; i < len; i++) {
+    var meme = false;
     for (var k in memes)
       if (RegExp(k).test(messageArray[i]))
-        var meme = memes[k];
+        meme = memes[k];
 
     if (meme) {
       var url;
@@ -44,7 +46,6 @@ function Chat(message) {
       emote.y = height / 2;
       this.container.addChild(emote);
       emoteFound = true;
-      break;
     } else {
       if (!emoteOnly) {
         var word = new PIXI.Text(messageArray[i], style);
@@ -62,6 +63,7 @@ function Chat(message) {
   }
 
   if (emoteOnly && !emoteFound) {
+    delete messages[message];
     this.container.destroy({
       children: true,
       baseTexture: true
@@ -185,8 +187,9 @@ Chat.prototype.setScale = function (scale) {
   this.container.scale.y = scale;
 }
 
-Chat.prototype.addGrow = function (amount) {
-  this.grow += Math.round(amount * 2 * (this.getScale() * this.getHeight() * .00001));
+Chat.prototype.addGrow = function () {
+  this.grow += Math.round(growAmount * (1 - this.getScale() * this.getHeight() * .00001));
+  this.count++;
 }
 
 Chat.prototype.applyGrow = function (delta, count) {
