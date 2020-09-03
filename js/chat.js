@@ -186,18 +186,18 @@ Chat.prototype.setScale = function (scale) {
   this.container.scale.y = scale;
 }
 
-Chat.prototype.addGrow = function (count) {
-  this.grow += Math.round(100 / (count / 100 + 1) / (this.getScale() / 5 + 1));
+Chat.prototype.addGrow = function (amount) {
+  this.grow += Math.round(amount * 2 * (this.getScale() * this.getHeight() * .00001));
 }
 
 Chat.prototype.applyGrow = function (delta, count) {
   if (this.getWidth() > app.renderer.width - 10 || this.getHeight() > app.renderer.height - 10)
     this.grow = 0;
   if (this.grow == 0) {
-    if (count < 10)
-      this.setScale(this.getScale() - (decaySpeed * 10 + (this.getHeight() * .0001)) * delta);
+    if (count < 40)
+      this.setScale(this.getScale() - (decaySpeed * 40 + (this.getScale() * this.getHeight() * .000005)) * delta);
     else
-      this.setScale(this.getScale() - (decaySpeed * count + (this.getHeight() * .0001)) * delta);
+      this.setScale(this.getScale() - (decaySpeed * count + (this.getScale() * this.getHeight() * .000005)) * delta);
   } else
     this.setScale(this.getScale() + growSpeed * delta);
   if (this.grow > 0)
@@ -211,7 +211,9 @@ Chat.prototype.checkRemove = function () {
       children: true,
       baseTexture: true
     });
+    return true;
   }
+  return false;
 }
 
 /*

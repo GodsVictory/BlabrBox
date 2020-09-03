@@ -21,18 +21,19 @@ function startTicker() {
     else
       channelInput.scale.x = channelInput.scale.y = 0;
 
-    growSpeed = (app.renderer.width * app.renderer.height) * .000000075 * scaleMultiplier;
+    growSpeed = app.renderer.height / fontSize * .005;
+    if (growSpeed < .02) growSpeed = .02;
     decaySpeed = growSpeed * .0015;
 
     // PROCESS
     var count = chatContainer.children.length;
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
+      if (messages[message].checkRemove(delta)) break;
       messages[message].applyVelocity(delta);
       messages[message].slowDown(delta);
       messages[message].collision(delta);
       messages[message].keepInBounds(delta);
-      messages[message].checkRemove(delta);
     }
 
     if (newChat.length > 0) {

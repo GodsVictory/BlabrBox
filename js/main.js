@@ -10,15 +10,14 @@ var length = url.query('length') || 40;
 var emoteOnly = url.query('emote_only') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
-var scaleMultiplier = parseFloat(url.query('scale')) || 1;
 var growSpeed = 0;
-var growAmount = 36;
+var growAmount = Math.round(36 * parseFloat(url.query('scale') || 1));
 var decaySpeed = 0;
 var collisionSpeed = .001;
 var boundarySpeed = .05;
 var maxSpeed = 5;
 var brakeSpeed = .98;
-var fontSize = 36;
+var fontSize = 128;
 
 window.onload = function start() {
   document.body.style.backgroundColor = bg;
@@ -53,7 +52,7 @@ function load() {
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 2,
+    strokeThickness: Math.round(fontSize * .05),
   });
   loading = new PIXI.Text("LOADING", style);
   loading.anchor.set(.5);
