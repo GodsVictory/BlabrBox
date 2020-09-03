@@ -11,13 +11,13 @@ var emoteOnly = url.query('emote_only') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
 var growSpeed = 0;
-var growAmount = Math.round(36 * parseFloat(url.query('scale') || 1));
+var growAmount = Math.round(32 * parseFloat(url.query('scale') || 1));
 var decaySpeed = 0;
 var collisionSpeed = .001;
 var boundarySpeed = .05;
 var maxSpeed = 5;
 var brakeSpeed = .98;
-var fontSize = 128;
+var fontSize = 32;
 
 window.onload = function start() {
   document.body.style.backgroundColor = bg;

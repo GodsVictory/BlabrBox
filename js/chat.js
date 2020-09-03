@@ -146,7 +146,7 @@ Chat.prototype.collision = function (delta) {
     var other = messages[chatContainer.children[i].text];
     if (typeof other === 'undefined') continue;
     if (!this.checkCollide(this, other)) continue;
-    this.setVY(this.getVY() + (this.getY() - other.getY()) * collisionSpeed);
+    this.setVY(this.getVY() + (this.getY() - other.getY()) * collisionSpeed * 2);
     this.setVX(this.getVX() + (this.getX() - other.getX()) * collisionSpeed);
     break;
   }
