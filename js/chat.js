@@ -21,7 +21,7 @@ function Chat(message) {
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var meme = false;
     for (var k in memes)
-      if (RegExp(k).test(messageArray[i]))
+      if (RegExp("^" + k + "$").test(messageArray[i]))
         meme = memes[k];
 
     if (meme) {
@@ -188,7 +188,7 @@ Chat.prototype.setScale = function (scale) {
 }
 
 Chat.prototype.addGrow = function () {
-  this.grow += Math.round(growAmount * (1 - this.getScale() * this.getHeight() * .00001));
+  this.grow += Math.round(growAmount * (1 - this.getHeight() * .00001));
   this.count++;
 }
 
@@ -197,9 +197,9 @@ Chat.prototype.applyGrow = function (delta, count) {
     this.grow = 0;
   if (this.grow == 0) {
     if (count < 40)
-      this.setScale(this.getScale() - (decaySpeed * 40 + (this.getScale() * this.getHeight() * .000005)) * delta);
+      this.setScale(this.getScale() - (decaySpeed * 40 + (this.getHeight() * .0001)) * delta);
     else
-      this.setScale(this.getScale() - (decaySpeed * count + (this.getScale() * this.getHeight() * .000005)) * delta);
+      this.setScale(this.getScale() - (decaySpeed * count + (this.getHeight() * .0001)) * delta);
   } else
     this.setScale(this.getScale() + growSpeed * delta);
   if (this.grow > 0)
