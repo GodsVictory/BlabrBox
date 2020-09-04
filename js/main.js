@@ -1,24 +1,26 @@
 var app, chatContainer, channelInput, channel, cursorTimeout, channelTimeout, fontLoaded, loading, style;
 var memes = {},
   messages = {},
-  newChat = [],
-  badwords = {};
+  badwords = {},
+  newChat = [];
 var url = new Qurl();
 var bg = url.query('bg') || "black";
 var delay = url.query('delay');
 var length = url.query('length') || 40;
 var emoteOnly = url.query('emote_only') || false;
+var fps = url.query('fps') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
-var growSpeed = 0;
-var growAmount = Math.round(32 * parseFloat(url.query('scale') || 1));
-var decaySpeed = 0;
-var physicsMod = 15;
-var collisionSpeed = .001 * (60 / physicsMod);
-var boundarySpeed = .01 * (60 / physicsMod);
-var maxSpeed = 30;
-var brakeSpeed = .98; // - (physicsMod / 60);
 var fontSize = 32;
+var scale = parseFloat(url.query('scale') || 1);
+var growSpeed = .2;
+var decaySpeed = growSpeed * .001;
+var growAmount = 0;
+var collisionSpeed = .005;
+var boundarySpeed = .05;
+var maxSpeed = 100;
+var brakeSpeed = .98; // - (physicsMod / 60);
+var fpsText;
 
 window.onload = function start() {
   document.body.style.backgroundColor = bg;
@@ -91,11 +93,22 @@ function init() {
   app.stage.addChild(channelInput);
   chatContainer = new PIXI.Container();
   app.stage.addChild(chatContainer);
+  growAmount = Math.round(app.renderer.height / fontSize * 2 * scale);
+
+  if (fps) {
+    fpsText = new PIXI.Text('', style);
+    fpsText.x = 0;
+    fpsText.y = 0;
+    app.stage.addChild(fpsText);
+  }
 
   window.onresize = function () {
     app.renderer.resize(window.innerWidth, window.innerHeight);
     channelInput.x = app.renderer.width / 2;
     channelInput.y = app.renderer.height / 2;
+    growSpeed = .2;
+    decaySpeed = growSpeed * .0015;
+    growAmount = Math.round(app.renderer.height / fontSize * 2 * scale);
   }
 
   document.onmousemove = function () {

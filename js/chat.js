@@ -81,7 +81,7 @@ function Chat(message) {
     this.container.scale.x = 0;
     this.container.scale.y = 0;
 
-    chatContainer.addChild(this.container);
+    chatContainer.addChildAt(this.container, 0);
   }
 }
 
@@ -132,18 +132,18 @@ Chat.prototype.getHeight = function () {
 }
 
 Chat.prototype.applyVelocity = function (delta) {
-  this.setX(this.getX() + this.getVX() * delta * (1 - this.getHeight() / window.innerHeight));
-  this.setY(this.getY() + this.getVY() * delta * (1 - this.getHeight() / window.innerHeight));
+  this.setX(this.getX() + (this.getVX() * .5 * (1 - this.getHeight() / window.innerHeight)) * delta);
+  this.setY(this.getY() + (this.getVY() * .5 * (1 - this.getHeight() / window.innerHeight)) * delta);
 }
 
-Chat.prototype.slowDown = function (delta) {
+Chat.prototype.slowDown = function () {
   if (this.getVX() < -.05 || this.getVX() > .05) this.setVX(this.getVX() * brakeSpeed);
   else this.setVX(0);
   if (this.getVY() < -.05 || this.getVY() > .05) this.setVY(this.getVY() * brakeSpeed);
   else this.setVY(0);
 }
 
-Chat.prototype.collision = function (delta) {
+Chat.prototype.collision = function () {
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
@@ -163,7 +163,7 @@ Chat.prototype.checkCollide = function (r1, r2) {
   return Math.abs(dx) <= width && Math.abs(dy) <= height;
 }
 
-Chat.prototype.keepInBounds = function (delta) {
+Chat.prototype.keepInBounds = function () {
   this.setVX(this.getVX() - this.inBoundsX() * boundarySpeed);
   this.setVY(this.getVY() - this.inBoundsY() * boundarySpeed);
 }
@@ -202,8 +202,12 @@ Chat.prototype.applyGrow = function (delta, count) {
       this.setScale(this.getScale() - (decaySpeed * 10 * 2 + (this.getHeight() * .0001)) * delta);
     else
       this.setScale(this.getScale() - (decaySpeed * count * 2 + (this.getHeight() * .0001)) * delta);
-  } else
-    this.setScale(this.getScale() + growSpeed * delta);
+  } else {
+    var mod = this.grow * .01;
+    //if (this.grow <= .2 * growAmount)
+    //  mod = this.grow * .01;
+    this.setScale(this.getScale() + growSpeed * mod * delta);
+  }
   if (this.grow > 0)
     this.grow--;
 }

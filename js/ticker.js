@@ -1,13 +1,27 @@
 function startTicker() {
   // RENDER LOOP
   var counter = 0;
+  var lastTime = Date.now(),
+    timeSinceLastFrame = 0,
+    lastCount = 0;
   app.ticker.add(function (delta) {
+    if (fps) {
+      var now = Date.now();
+      timeSinceLastFrame = now - lastTime;
+      if (timeSinceLastFrame >= 1000) {
+        var curFPS = counter - lastCount;
+        fpsText.text = Math.round(curFPS);
+        lastTime = now;
+        lastCount = counter;
+      }
+    }
     counter++;
     if (document.hidden) return;
     document.getElementById('channel').focus();
 
     // SORT MESSAGES SO BIGGEST IS IN FRONT
-    chatContainer.children.sort(depthCompare);
+    if (counter % 30 == 0)
+      chatContainer.children.sort(depthCompare);
 
     // INPUT HANDLER
     if (channelInput.grow && channelInput.text.length > 0) {
@@ -23,22 +37,19 @@ function startTicker() {
     else
       channelInput.scale.x = channelInput.scale.y = 0;
 
-    growSpeed = app.renderer.height / fontSize * .005;
-    if (growSpeed < .02) growSpeed = .02;
-    decaySpeed = growSpeed * .0015;
-
     // PROCESS
     var count = chatContainer.children.length;
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
-      if (messages[message].checkRemove(delta)) break;
-      if (counter % physicsMod == 0)
-        messages[message].keepInBounds(delta);
-      if (counter % physicsMod == 5)
-        messages[message].collision(delta);
+      if (messages[message].checkRemove()) break;
+      if (counter % 15 == 0)
+        messages[message].keepInBounds();
+      if (counter % 20 == 0)
+        messages[message].collision();
       messages[message].applyVelocity(delta);
-      messages[message].slowDown(delta);
+      messages[message].slowDown();
     }
+
 
     if (counter % 5 == 0)
       if (newChat.length > 0) {
@@ -52,7 +63,6 @@ function startTicker() {
             messages[message] = new Chat(message);
         }
       }
-    if (counter == 60) counter = 0;
   });
 }
 
