@@ -11,11 +11,11 @@ var emoteOnly = url.query('emote_only') || false;
 var fps = url.query('fps') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
-var fontSize = 32;
+var fontSize = 48;
 var scale = parseFloat(url.query('scale') || 1);
-var growSpeed = .2;
-var decaySpeed = growSpeed * .001;
-var growAmount = 0;
+var growSpeed = .1;
+var decaySpeed = growSpeed * .01;
+var growAmount = 30 * scale;
 var collisionSpeed = .001;
 var boundarySpeed = .01;
 var brakeSpeed = .98;
@@ -54,7 +54,7 @@ function load() {
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: Math.round(fontSize * .05),
+    strokeThickness: 3,
   });
   loading = new PIXI.Text("LOADING", style);
   loading.anchor.set(.5);
@@ -92,10 +92,16 @@ function init() {
   app.stage.addChild(channelInput);
   chatContainer = new PIXI.Container();
   app.stage.addChild(chatContainer);
-  growAmount = Math.round(app.renderer.height / fontSize * 2 * scale);
 
   if (fps) {
-    fpsText = new PIXI.Text('', style);
+    fpsText = new PIXI.Text('', {
+      fontFamily: 'Fredoka One',
+      fontSize: 32,
+      align: 'center',
+      fill: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 3,
+    });
     fpsText.x = 0;
     fpsText.y = 0;
     app.stage.addChild(fpsText);
@@ -105,9 +111,6 @@ function init() {
     app.renderer.resize(window.innerWidth, window.innerHeight);
     channelInput.x = app.renderer.width / 2;
     channelInput.y = app.renderer.height / 2;
-    growSpeed = .2;
-    decaySpeed = growSpeed * .0015;
-    growAmount = Math.round(app.renderer.height / fontSize * 2 * scale);
   }
 
   document.onmousemove = function () {

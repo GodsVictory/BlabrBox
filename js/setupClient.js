@@ -16,7 +16,7 @@ function setupClient() {
           handleChat('', '', 'Kappa');
         }, 100);
         setInterval(function () {
-          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 1000)).toString()));
+          handleChat('', '', 'Kappa '.concat(Math.round((Math.random() * 100)).toString()));
         }, 25);
       } else
         client.join(channel).catch(function (e) {});

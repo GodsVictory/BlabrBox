@@ -3,6 +3,7 @@ function Chat(message) {
   this.container = new PIXI.Sprite();
   this.container.text = message;
   this.grow = growAmount;
+  this.nextScale = 0;
   this.count = 0;
   this.container.vx = 0;
   this.container.vy = 0;
@@ -118,11 +119,11 @@ Chat.prototype.getVY = function (vy) {
 }
 
 Chat.prototype.getWidth = function () {
-  return this.container.getBounds(false).width;
+  return this.container.getBounds(true).width;
 }
 
 Chat.prototype.getHeight = function () {
-  return this.container.getBounds(false).height * .6;
+  return this.container.getBounds(true).height * .6;
 }
 
 Chat.prototype.applyVelocity = function (delta) {
@@ -178,30 +179,19 @@ Chat.prototype.getScale = function () {
   return this.container.scale.x;
 }
 
-Chat.prototype.setScale = function (scale) {
-  this.container.scale.x = scale;
-  this.container.scale.y = scale;
-}
-
 Chat.prototype.addGrow = function () {
-  this.grow += Math.round(growAmount * (1 - this.getHeight() * .00001));
+  this.grow += growAmount;
   this.count++;
 }
 
 Chat.prototype.applyGrow = function (delta, count) {
-  if (this.getWidth() > app.renderer.width - 10 || this.getHeight() > app.renderer.height - 10)
+  if (this.getWidth() > app.renderer.width - 10 || this.getHeight() > app.renderer.height - 10 || this.grow < 0)
     this.grow = 0;
-  if (this.grow == 0) {
-    if (count < 10)
-      this.setScale(this.getScale() - (decaySpeed * 10 * 2 + (this.getHeight() * .0001)) * delta);
-    else
-      this.setScale(this.getScale() - (decaySpeed * count * 2 + (this.getHeight() * .0001)) * delta);
-  } else {
-    var mod = this.grow * .01;
-    //if (this.grow <= .2 * growAmount)
-    //  mod = this.grow * .01;
-    this.setScale(this.getScale() + growSpeed * mod * delta);
-  }
+  let scale = this.getScale();
+  if (this.grow == 0)
+    this.container.height = this.container.width += (-decaySpeed - scale * .002 - count * .001) * delta;
+  else
+    this.container.height = this.container.width += (growSpeed - scale * .002) * delta;
   if (this.grow > 0)
     this.grow--;
 }
