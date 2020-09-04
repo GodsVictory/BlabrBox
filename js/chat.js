@@ -21,8 +21,10 @@ function Chat(message) {
   for (var i = 0, len = messageArray.length; i < len; i++) {
     var meme = false;
     for (var k in memes)
-      if (RegExp("^" + k + "$").test(messageArray[i]))
+      if (RegExp("^" + k + "$").test(messageArray[i])) {
         meme = memes[k];
+        break;
+      }
 
     if (meme) {
       var url;

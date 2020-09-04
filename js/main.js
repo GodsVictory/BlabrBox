@@ -13,10 +13,11 @@ else emoteOnly = false;
 var growSpeed = 0;
 var growAmount = Math.round(32 * parseFloat(url.query('scale') || 1));
 var decaySpeed = 0;
-var collisionSpeed = .001;
-var boundarySpeed = .05;
+var physicsMod = 15;
+var collisionSpeed = .001 * (60 / physicsMod);
+var boundarySpeed = .01 * (60 / physicsMod);
 var maxSpeed = 5;
-var brakeSpeed = .98;
+var brakeSpeed = .98 - (physicsMod / 60);
 var fontSize = 32;
 
 window.onload = function start() {

@@ -1,6 +1,8 @@
 function startTicker() {
   // RENDER LOOP
+  var counter = 0;
   app.ticker.add(function (delta) {
+    counter++;
     if (document.hidden) return;
     document.getElementById('channel').focus();
 
@@ -31,20 +33,24 @@ function startTicker() {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove(delta)) break;
       messages[message].applyVelocity(delta);
-      messages[message].slowDown(delta);
-      messages[message].collision(delta);
-      messages[message].keepInBounds(delta);
+      if (counter % physicsMod == 0) {
+        messages[message].slowDown(delta);
+        messages[message].collision(delta);
+        messages[message].keepInBounds(delta);
+      }
     }
 
-    if (newChat.length > 0) {
-      var message = newChat.shift();
-      if (message in messages) {
-        messages[message].addGrow();
-      } else {
-        if (!badwords.words.some(function (v) {
-            return message.indexOf(v) >= 0;
-          }))
-          messages[message] = new Chat(message);
+    if (counter % 5 == 0) {
+      if (newChat.length > 0) {
+        var message = newChat.shift();
+        if (message in messages) {
+          messages[message].addGrow();
+        } else {
+          if (!badwords.words.some(function (v) {
+              return message.toLowerCase().indexOf(v.toLowerCase()) >= 0;
+            }))
+            messages[message] = new Chat(message);
+        }
       }
     }
   });
