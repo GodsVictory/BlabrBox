@@ -56,16 +56,6 @@ function load() {
     stroke: '#000000',
     strokeThickness: 3,
   });
-  loading = new PIXI.Text("LOADING", style);
-  loading.anchor.set(.5);
-  var iWidth = loading.getBounds().width;
-  var iHeight = loading.getBounds().height;
-  loading.x = app.renderer.width / 2;
-  loading.y = app.renderer.height / 2;
-  app.stage.addChild(loading);
-  loading.width = app.renderer.width * .45;
-  loading.height = app.renderer.width * .45 / iWidth * iHeight;
-
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
   loader.load((loader, resources) => {
@@ -78,10 +68,6 @@ function load() {
 }
 
 function init() {
-  loading.destroy({
-    children: true,
-    baseTexture: true
-  });
   channelInput = new PIXI.Text(channel, style);
   channelInput.anchor.set(.5);
   channelInput.scale.x = 0;
