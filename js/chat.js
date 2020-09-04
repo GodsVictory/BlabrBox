@@ -126,8 +126,8 @@ Chat.prototype.getHeight = function () {
 }
 
 Chat.prototype.applyVelocity = function (delta) {
-  this.setX(this.getX() + (this.getVX() * 1 * (1 - this.getHeight() / window.innerHeight)) * delta);
-  this.setY(this.getY() + (this.getVY() * 1 * (1 - this.getHeight() / window.innerHeight)) * delta);
+  this.setX(this.getX() + (this.getVX() * (1 - this.getHeight() / window.innerHeight)) * delta);
+  this.setY(this.getY() + (this.getVY() * (1 - this.getHeight() / window.innerHeight)) * delta);
 }
 
 Chat.prototype.slowDown = function () {
