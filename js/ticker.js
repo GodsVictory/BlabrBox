@@ -53,6 +53,7 @@ function startTicker() {
         }
       }
     }
+    if (counter == 60) counter = 0;
   });
 }
 
