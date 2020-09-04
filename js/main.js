@@ -16,8 +16,8 @@ var decaySpeed = 0;
 var physicsMod = 15;
 var collisionSpeed = .001 * (60 / physicsMod);
 var boundarySpeed = .01 * (60 / physicsMod);
-var maxSpeed = 5;
-var brakeSpeed = .98 - (physicsMod / 60);
+var maxSpeed = 30;
+var brakeSpeed = .98; // - (physicsMod / 60);
 var fontSize = 32;
 
 window.onload = function start() {

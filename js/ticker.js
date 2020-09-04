@@ -32,15 +32,15 @@ function startTicker() {
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove(delta)) break;
-      messages[message].applyVelocity(delta);
-      if (counter % physicsMod == 0) {
-        messages[message].slowDown(delta);
-        messages[message].collision(delta);
+      if (counter % physicsMod == 0)
         messages[message].keepInBounds(delta);
-      }
+      if (counter % physicsMod == 5)
+        messages[message].collision(delta);
+      messages[message].applyVelocity(delta);
+      messages[message].slowDown(delta);
     }
 
-    if (counter % 5 == 0) {
+    if (counter % 5 == 0)
       if (newChat.length > 0) {
         var message = newChat.shift();
         if (message in messages) {
@@ -52,7 +52,6 @@ function startTicker() {
             messages[message] = new Chat(message);
         }
       }
-    }
     if (counter == 60) counter = 0;
   });
 }
