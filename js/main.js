@@ -16,10 +16,9 @@ var scale = parseFloat(url.query('scale') || 1);
 var growSpeed = .2;
 var decaySpeed = growSpeed * .001;
 var growAmount = 0;
-var collisionSpeed = .005;
-var boundarySpeed = .05;
-var maxSpeed = 100;
-var brakeSpeed = .98; // - (physicsMod / 60);
+var collisionSpeed = .001;
+var boundarySpeed = .01;
+var brakeSpeed = .98;
 var fpsText;
 
 window.onload = function start() {

@@ -102,17 +102,11 @@ Chat.prototype.getY = function () {
 }
 
 Chat.prototype.setVX = function (vx) {
-  if (Math.abs(vx) > maxSpeed) {
-    if (vx < 0) this.container.vx = -maxSpeed;
-    else this.container.vx = maxSpeed;
-  } else this.container.vx = +vx.toFixed(2);
+  this.container.vx = +vx.toFixed(2);
 }
 
 Chat.prototype.setVY = function (vy) {
-  if (Math.abs(vy) > maxSpeed) {
-    if (vy < 0) this.container.vy = -maxSpeed;
-    else this.container.vy = maxSpeed;
-  } else this.container.vy = +vy.toFixed(2);
+  this.container.vy = +vy.toFixed(2);
 }
 
 Chat.prototype.getVX = function (vx) {
@@ -128,12 +122,12 @@ Chat.prototype.getWidth = function () {
 }
 
 Chat.prototype.getHeight = function () {
-  return this.container.getBounds(false).height / 1.75;
+  return this.container.getBounds(false).height * .6;
 }
 
 Chat.prototype.applyVelocity = function (delta) {
-  this.setX(this.getX() + (this.getVX() * .5 * (1 - this.getHeight() / window.innerHeight)) * delta);
-  this.setY(this.getY() + (this.getVY() * .5 * (1 - this.getHeight() / window.innerHeight)) * delta);
+  this.setX(this.getX() + (this.getVX() * 1 * (1 - this.getHeight() / window.innerHeight)) * delta);
+  this.setY(this.getY() + (this.getVY() * 1 * (1 - this.getHeight() / window.innerHeight)) * delta);
 }
 
 Chat.prototype.slowDown = function () {

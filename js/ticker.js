@@ -42,10 +42,8 @@ function startTicker() {
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove()) break;
-      if (counter % 15 == 0)
-        messages[message].keepInBounds();
-      if (counter % 20 == 0)
-        messages[message].collision();
+      messages[message].keepInBounds();
+      messages[message].collision();
       messages[message].applyVelocity(delta);
       messages[message].slowDown();
     }
