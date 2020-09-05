@@ -16,8 +16,8 @@ var scale = parseFloat(url.query('scale') || 1);
 var growSpeed = .25;
 var decaySpeed = growSpeed * .005;
 var growAmount = 25 * scale;
-var collisionSpeed = .0005;
-var boundarySpeed = .005;
+var collisionSpeed = .005;
+var boundarySpeed = .05;
 var brakeSpeed = .02;
 var fpsText;
 
