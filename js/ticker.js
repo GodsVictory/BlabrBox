@@ -4,9 +4,11 @@ function startTicker() {
   var lastTime = Date.now(),
     timeSinceLastFrame = 0,
     lastCount = 0;
+  var lastPhysicsTime = 0;
+  var lastChatTime = 0;
   app.ticker.add(function (delta) {
+    var now = Date.now();
     if (fps) {
-      var now = Date.now();
       timeSinceLastFrame = now - lastTime;
       if (timeSinceLastFrame >= 1000) {
         var curFPS = counter - lastCount;
@@ -19,9 +21,6 @@ function startTicker() {
     if (document.hidden) return;
     document.getElementById('channel').focus();
 
-    // SORT MESSAGES SO BIGGEST IS IN FRONT
-    if (counter % 30 == 0)
-      chatContainer.children.sort(depthCompare);
 
     // INPUT HANDLER
     if (channelInput.grow && channelInput.text.length > 0) {
@@ -39,17 +38,25 @@ function startTicker() {
 
     // PROCESS
     var count = chatContainer.children.length;
+    let physicsApplied = false;
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove()) break;
-      messages[message].setDimensions();
-      messages[message].keepInBounds();
-      messages[message].collision();
+      if (now - lastPhysicsTime >= 100) {
+        // SORT MESSAGES SO BIGGEST IS IN FRONT
+        chatContainer.children.sort(depthCompare);
+        messages[message].setDimensions();
+        messages[message].keepInBounds();
+        messages[message].collision();
+        physicsApplied = true;
+      }
       messages[message].applyVelocity(delta);
       messages[message].slowDown();
     }
+    if (physicsApplied) lastPhysicsTime = now;
 
-    if (counter % 10 == 0 || newChat.length > 20)
+    if (now - lastChatTime >= 50) {
+      lastChatTime = now;
       if (newChat.length > 0) {
         var message = newChat.shift();
         if (message.length <= length)
@@ -62,6 +69,7 @@ function startTicker() {
               messages[message] = new Chat(message);
           }
       }
+    }
   });
 }
 
