@@ -14,11 +14,11 @@ else emoteOnly = false;
 var fontSize = 32;
 var scale = parseFloat(url.query('scale') || 1);
 var growSpeed = .25;
-var decaySpeed = growSpeed * .01;
+var decaySpeed = growSpeed * .005;
 var growAmount = 25 * scale;
-var collisionSpeed = .001;
-var boundarySpeed = .01;
-var brakeSpeed = .98;
+var collisionSpeed = .0005;
+var boundarySpeed = .005;
+var brakeSpeed = .02;
 var fpsText;
 
 window.onload = function start() {
@@ -68,6 +68,18 @@ function load() {
 }
 
 function init() {
+
+  /*for (var k in memes) {
+    var url;
+    if ('u' in memes[k])
+      url = "https:" + memes[k].u;
+    else {
+      url = "https://static-cdn.jtvnw.net/emoticons/v1/" + memes[k].i + "/3.0";
+    }
+    var emote = new PIXI.Sprite.from(url);
+    emote.destroy();
+  }*/
+
   channelInput = new PIXI.Text(channel, style);
   channelInput.anchor.set(.5);
   channelInput.scale.x = 0;
@@ -122,4 +134,8 @@ function init() {
 
   setupClient();
   startTicker();
+}
+
+function lerp(v0, v1, t) {
+  return v0 * (1 - t) + v1 * t;
 }

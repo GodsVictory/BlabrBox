@@ -57,9 +57,5 @@ function setupClient() {
 
 function handleChat(channel, user, message, self) {
   if (!document.hidden)
-    if (message.length <= length) {
-      setTimeout(function () {
-        newChat.push(message);
-      }, delay || 0);
-    }
+    newChat.push(message);
 }

@@ -42,24 +42,25 @@ function startTicker() {
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove()) break;
+      messages[message].setDimensions();
       messages[message].keepInBounds();
       messages[message].collision();
       messages[message].applyVelocity(delta);
       messages[message].slowDown();
     }
 
-
-    if (counter % 5 == 0)
+    if (counter % 10 == 0 || newChat.length > 20)
       if (newChat.length > 0) {
         var message = newChat.shift();
-        if (message in messages) {
-          messages[message].addGrow();
-        } else {
-          if (!badwords.words.some(function (v) {
-              return message.toLowerCase().indexOf(v.toLowerCase()) >= 0;
-            }))
-            messages[message] = new Chat(message);
-        }
+        if (message.length <= length)
+          if (message in messages) {
+            messages[message].addGrow();
+          } else {
+            if (!badwords.words.some(function (v) {
+                return message.toLowerCase().indexOf(v.toLowerCase()) >= 0;
+              }))
+              messages[message] = new Chat(message);
+          }
       }
   });
 }

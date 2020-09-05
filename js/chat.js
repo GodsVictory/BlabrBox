@@ -9,6 +9,8 @@ function Chat(message) {
   this.container.vy = 0;
   this.container.x = app.renderer.width * Math.random();
   this.container.y = app.renderer.height * Math.random();
+  this.width = 0;
+  this.height = 0;
 
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
@@ -103,11 +105,11 @@ Chat.prototype.getY = function () {
 }
 
 Chat.prototype.setVX = function (vx) {
-  this.container.vx = +vx.toFixed(2);
+  this.container.vx = vx;
 }
 
 Chat.prototype.setVY = function (vy) {
-  this.container.vy = +vy.toFixed(2);
+  this.container.vy = vy;
 }
 
 Chat.prototype.getVX = function (vx) {
@@ -126,16 +128,19 @@ Chat.prototype.getHeight = function () {
   return this.container.getBounds(true).height * .6;
 }
 
+Chat.prototype.setDimensions = function () {
+  this.width = this.getWidth();
+  this.height = this.getHeight();
+}
+
 Chat.prototype.applyVelocity = function (delta) {
   this.setX(this.getX() + (this.getVX() * (1 - this.getHeight() / window.innerHeight)) * delta);
   this.setY(this.getY() + (this.getVY() * (1 - this.getHeight() / window.innerHeight)) * delta);
 }
 
 Chat.prototype.slowDown = function () {
-  if (this.getVX() < -.05 || this.getVX() > .05) this.setVX(this.getVX() * brakeSpeed);
-  else this.setVX(0);
-  if (this.getVY() < -.05 || this.getVY() > .05) this.setVY(this.getVY() * brakeSpeed);
-  else this.setVY(0);
+  this.setVX(lerp(this.getVX(), 0, brakeSpeed));
+  this.setVY(lerp(this.getVY(), 0, brakeSpeed));
 }
 
 Chat.prototype.collision = function () {
@@ -153,8 +158,8 @@ Chat.prototype.collision = function () {
 Chat.prototype.checkCollide = function (r1, r2) {
   var dx = r1.getX() - r2.getX();
   var dy = r1.getY() - r2.getY();
-  var width = (r1.getWidth() + r2.getWidth()) / 2;
-  var height = (r1.getHeight() + r2.getHeight()) / 2;
+  var width = (r1.width + r2.width) / 2;
+  var height = (r1.height + r2.height) / 2;
   return Math.abs(dx) <= width && Math.abs(dy) <= height;
 }
 
@@ -164,14 +169,14 @@ Chat.prototype.keepInBounds = function () {
 }
 
 Chat.prototype.inBoundsX = function (x, width) {
-  if (this.getX() - this.getWidth() / 2 < 0) return this.getX() - this.getWidth() / 2;
-  else if (this.getX() + this.getWidth() / 2 > app.renderer.width) return this.getX() + this.getWidth() / 2 - app.renderer.width;
+  if (this.getX() - this.width / 2 < 0) return this.getX() - this.width / 2;
+  else if (this.getX() + this.width / 2 > app.renderer.width) return this.getX() + this.width / 2 - app.renderer.width;
   return 0;
 }
 
 Chat.prototype.inBoundsY = function (y, height) {
-  if (this.getY() - this.getHeight() / 2 < 0) return this.getY() - this.getHeight() / 2;
-  else if (this.getY() + this.getHeight() / 2 > app.renderer.height) return this.getY() + this.getHeight() / 2 - app.renderer.height;
+  if (this.getY() - this.height / 2 < 0) return this.getY() - this.height / 2;
+  else if (this.getY() + this.height / 2 > app.renderer.height) return this.getY() + this.height / 2 - app.renderer.height;
   return 0;
 }
 
@@ -185,11 +190,11 @@ Chat.prototype.addGrow = function () {
 }
 
 Chat.prototype.applyGrow = function (delta, count) {
-  if (this.getWidth() > app.renderer.width - 10 || this.getHeight() > app.renderer.height - 10 || this.grow < 0)
+  if (this.width > app.renderer.width - 10 || this.height > app.renderer.height - 10 || this.grow < 0)
     this.grow = 0;
   let scale = this.getScale();
   if (this.grow == 0)
-    this.container.height = this.container.width += (-decaySpeed - scale * .002 - count * .001) * delta;
+    this.container.height = this.container.width += (-decaySpeed - scale * .002 - count * .002) * delta;
   else
     this.container.height = this.container.width += (growSpeed - scale * .002) * delta;
   if (this.grow > 0)
