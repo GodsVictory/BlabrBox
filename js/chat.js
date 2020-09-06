@@ -205,7 +205,7 @@ Chat.prototype.applyGrow = function (delta, count) {
   if (this.width > app.renderer.width - 10 || this.height > app.renderer.height - 10 || this.grow < 0)
     this.grow = 0;
   if (this.grow == 0)
-    this.container.height = this.container.width += (-decaySpeed - this.getScale() * .002 - count * .002) * delta;
+    this.container.height = this.container.width += (-decaySpeed - this.getScale() * .002 - count * .001) * delta;
   else
     this.container.height = this.container.width += (growSpeed - this.getScale() * .002) * delta;
   if (this.grow > 0)
