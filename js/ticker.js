@@ -4,7 +4,7 @@ function startTicker() {
   var lastTime = Date.now(),
     timeSinceLastFrame = 0,
     lastCount = 0;
-  var lastPhysicsTime = 0;
+  //var lastPhysicsTime = 0;
   var lastChatTime = 0;
   app.ticker.add(function (delta) {
     var now = Date.now();
@@ -67,7 +67,7 @@ function startTicker() {
                 return message.toLowerCase().indexOf(v.toLowerCase()) >= 0;
               }))
               setTimeout(function () {
-                messages[message] = new Chat(message);
+                new Chat(message);
               }, 0);
 
           }

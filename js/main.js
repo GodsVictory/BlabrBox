@@ -9,8 +9,6 @@ var delay = url.query('delay');
 var length = url.query('length') || 40;
 var emoteOnly = url.query('emote_only') || false;
 var fps = url.query('fps') || false;
-if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
-else emoteOnly = false;
 var fontSize = 20;
 var scale = parseFloat(url.query('scale') || 1);
 var growSpeed = .25;

@@ -3,7 +3,6 @@ function Chat(message) {
   this.container = new PIXI.Sprite();
   this.container.text = message;
   this.grow = growAmount;
-  this.nextScale = 0;
   this.count = 0;
   this.container.vx = 0;
   this.container.vy = 0;
@@ -15,7 +14,8 @@ function Chat(message) {
   // FORCE PROPER DIMENSIONS
   var dimensionPlaceholder = new PIXI.Text(' ', style);
   this.container.addChild(dimensionPlaceholder);
-  height = Math.round(this.container.getBounds().height);
+  let width = 0;
+  let height = Math.round(this.container.getBounds().height);
 
   // PARSE MESSAGE
   // INSERT EMOTES
@@ -73,19 +73,25 @@ function Chat(message) {
       children: true,
       baseTexture: true
     });
-  } else {
-    // MANUALLY SET ANCHOR TO .5
-    var offsetWidth = this.container.getBounds().width / 2;
-    var offsetHeight = this.container.getBounds().height / 2;
-    for (var i = 0, len = this.container.children.length; i < len; i++) {
-      this.container.children[i].x -= offsetWidth;
-      this.container.children[i].y -= offsetHeight;
-    }
-    this.container.scale.x = 0;
-    this.container.scale.y = 0;
-
-    chatContainer.addChildAt(this.container, 0);
+    return;
   }
+
+  // MANUALLY SET ANCHOR TO .5
+  width = this.container.getBounds().width;
+  height = this.container.getBounds().height;
+  for (var i = 0, len = this.container.children.length; i < len; i++) {
+    this.container.children[i].x -= width / 2;
+    this.container.children[i].y -= height / 2;
+  }
+
+  this.initWidth = width;
+  this.initHeight = height * .58;
+
+  this.container.scale.x = 0;
+  this.container.scale.y = 0;
+
+  messages[message] = this;
+  chatContainer.addChildAt(this.container, 0);
 }
 
 Chat.prototype.setX = function (x) {
@@ -129,8 +135,10 @@ Chat.prototype.getHeight = function () {
 }
 
 Chat.prototype.setDimensions = function () {
-  this.width = this.getWidth();
-  this.height = this.getHeight();
+  //this.width = this.getWidth();
+  //this.height = this.getHeight();
+  this.width = this.initWidth * this.getScale();
+  this.height = this.initHeight * this.getScale();
 }
 
 Chat.prototype.applyVelocity = function (delta) {
@@ -189,18 +197,17 @@ Chat.prototype.getScale = function () {
 }
 
 Chat.prototype.addGrow = function () {
-  this.grow += growAmount;
+  this.grow += growAmount * scale;
   this.count++;
 }
 
 Chat.prototype.applyGrow = function (delta, count) {
   if (this.width > app.renderer.width - 10 || this.height > app.renderer.height - 10 || this.grow < 0)
     this.grow = 0;
-  let scale = this.getScale();
   if (this.grow == 0)
-    this.container.height = this.container.width += (-decaySpeed - scale * .002 - count * .002) * delta;
+    this.container.height = this.container.width += (-decaySpeed - this.getScale() * .002 - count * .002) * delta;
   else
-    this.container.height = this.container.width += (growSpeed - scale * .002) * delta;
+    this.container.height = this.container.width += (growSpeed - this.getScale() * .002) * delta;
   if (this.grow > 0)
     this.grow--;
 }
