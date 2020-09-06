@@ -11,14 +11,15 @@ var emoteOnly = url.query('emote_only') || false;
 var fps = url.query('fps') || false;
 if (emoteOnly == 'true' || emoteOnly == '1') emoteOnly = true;
 else emoteOnly = false;
-var fontSize = 32;
+var fontSize = 20;
 var scale = parseFloat(url.query('scale') || 1);
 var growSpeed = .25;
 var decaySpeed = growSpeed * .005;
 var growAmount = 25 * scale;
-var collisionSpeed = .005;
+var collisionSpeed = .001;
 var boundarySpeed = .05;
-var brakeSpeed = .02;
+var brakeSpeed = .95;
+var maxSpeed = 5;
 var fpsText;
 
 window.onload = function start() {
@@ -54,7 +55,7 @@ function load() {
     align: 'center',
     fill: '#ffffff',
     stroke: '#000000',
-    strokeThickness: 3,
+    strokeThickness: 2,
   });
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');

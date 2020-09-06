@@ -27,12 +27,12 @@ function startTicker() {
       app.stage.removeChild(channelInput);
       app.stage.addChild(channelInput);
       if (channelInput.width < app.renderer.width * .45)
-        channelInput.scale.x = channelInput.scale.y += growSpeed * delta;
+        channelInput.scale.x = channelInput.scale.y += (growSpeed * 2) * delta;
       else if (channelInput.width > app.renderer.width * .55)
-        channelInput.scale.x = channelInput.scale.y -= growSpeed * delta;
+        channelInput.scale.x = channelInput.scale.y -= (growSpeed * 2) * delta;
     } else
     if (channelInput.scale.x > 0)
-      channelInput.scale.x = channelInput.scale.y -= growSpeed * delta;
+      channelInput.scale.x = channelInput.scale.y -= (growSpeed * 2) * delta;
     else
       channelInput.scale.x = channelInput.scale.y = 0;
 
@@ -42,18 +42,18 @@ function startTicker() {
     for (var message in messages) {
       messages[message].applyGrow(delta, count);
       if (messages[message].checkRemove()) break;
-      if (now - lastPhysicsTime >= 100) {
-        // SORT MESSAGES SO BIGGEST IS IN FRONT
-        chatContainer.children.sort(depthCompare);
-        messages[message].setDimensions();
-        messages[message].keepInBounds();
-        messages[message].collision();
-        physicsApplied = true;
-      }
+      //if (now - lastPhysicsTime >= 100) {
+      // SORT MESSAGES SO BIGGEST IS IN FRONT
+      chatContainer.children.sort(depthCompare);
+      messages[message].setDimensions();
+      messages[message].keepInBounds(delta);
+      messages[message].collision(delta);
+      //physicsApplied = true;
+      //}
       messages[message].applyVelocity(delta);
-      messages[message].slowDown();
+      messages[message].slowDown(delta);
     }
-    if (physicsApplied) lastPhysicsTime = now;
+    //if (physicsApplied) lastPhysicsTime = now;
 
     if (now - lastChatTime >= 50) {
       lastChatTime = now;
@@ -66,7 +66,10 @@ function startTicker() {
             if (!badwords.words.some(function (v) {
                 return message.toLowerCase().indexOf(v.toLowerCase()) >= 0;
               }))
-              messages[message] = new Chat(message);
+              setTimeout(function () {
+                messages[message] = new Chat(message);
+              }, 0);
+
           }
       }
     }

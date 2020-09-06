@@ -134,23 +134,27 @@ Chat.prototype.setDimensions = function () {
 }
 
 Chat.prototype.applyVelocity = function (delta) {
-  this.setX(this.getX() + (this.getVX() * (1 - this.getHeight() / window.innerHeight)) * delta);
-  this.setY(this.getY() + (this.getVY() * (1 - this.getHeight() / window.innerHeight)) * delta);
+  let speedX = (this.getVX() * (1 - this.getHeight() / window.innerHeight));
+  let speedY = (this.getVY() * (1 - this.getHeight() / window.innerHeight));
+  speedX = Math.abs(speedX) > maxSpeed ? maxSpeed * Math.sign(speedX) : speedX;
+  speedY = Math.abs(speedY) > maxSpeed ? maxSpeed * Math.sign(speedY) : speedY;
+  this.setX(this.getX() + speedX * delta);
+  this.setY(this.getY() + speedY * delta);
 }
 
-Chat.prototype.slowDown = function () {
-  this.setVX(lerp(this.getVX(), 0, brakeSpeed));
-  this.setVY(lerp(this.getVY(), 0, brakeSpeed));
+Chat.prototype.slowDown = function (delta) {
+  this.setVX(lerp(this.getVX(), 0, 1 - brakeSpeed ** delta));
+  this.setVY(lerp(this.getVY(), 0, 1 - brakeSpeed ** delta));
 }
 
-Chat.prototype.collision = function () {
+Chat.prototype.collision = function (delta) {
   for (var i = chatContainer.children.length - 1; i >= 0; i--) {
     if (this.message == chatContainer.children[i].text) continue;
     var other = messages[chatContainer.children[i].text];
     if (typeof other === 'undefined') continue;
     if (!this.checkCollide(this, other)) continue;
-    this.setVY(this.getVY() + (this.getY() - other.getY()) * collisionSpeed * 2);
-    this.setVX(this.getVX() + (this.getX() - other.getX()) * collisionSpeed);
+    this.setVY(this.getVY() + ((this.getY() - other.getY()) * collisionSpeed * 2) * delta);
+    this.setVX(this.getVX() + ((this.getX() - other.getX()) * collisionSpeed) * delta);
     break;
   }
 }
@@ -163,9 +167,9 @@ Chat.prototype.checkCollide = function (r1, r2) {
   return Math.abs(dx) <= width && Math.abs(dy) <= height;
 }
 
-Chat.prototype.keepInBounds = function () {
-  this.setVX(this.getVX() - this.inBoundsX() * boundarySpeed);
-  this.setVY(this.getVY() - this.inBoundsY() * boundarySpeed);
+Chat.prototype.keepInBounds = function (delta) {
+  this.setVX(this.getVX() - (this.inBoundsX() * boundarySpeed) * delta);
+  this.setVY(this.getVY() - (this.inBoundsY() * boundarySpeed) * delta);
 }
 
 Chat.prototype.inBoundsX = function (x, width) {
@@ -202,7 +206,7 @@ Chat.prototype.applyGrow = function (delta, count) {
 }
 
 Chat.prototype.checkRemove = function () {
-  if (this.getScale() <= .01) {
+  if (this.getScale() <= .05) {
     delete messages[this.message];
     this.container.destroy({
       children: true,
