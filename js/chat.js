@@ -38,7 +38,6 @@ function Chat(message) {
         url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
         scale = 3;
       }
-      console.log(url);
       var emote = new PIXI.Sprite.from(url);
       if ('h' in meme) memeHeight = meme.h * scale;
       else memeHeight = 28 * scale;

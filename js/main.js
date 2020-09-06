@@ -57,7 +57,6 @@ function load() {
   });
   loader.add('emotes', 'assets/emotes.json');
   loader.add('badwords', 'assets/badwords.json');
-  loader.add('catJAM', 'https://cdn.betterttv.net/emote/59b73909b27c823d5b1f6052/3x');
   loader.load((loader, resources) => {
     memes = resources.emotes.data;
     badwords = resources.badwords.data;
