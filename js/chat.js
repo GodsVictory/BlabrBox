@@ -33,11 +33,12 @@ function Chat(message) {
       var url;
       var scale = 1;
       if ('u' in meme)
-        url = "https:" + meme.u;
+        url = meme.u;
       else {
         url = "https://static-cdn.jtvnw.net/emoticons/v1/" + meme.i + "/3.0";
         scale = 3;
       }
+      console.log(url);
       var emote = new PIXI.Sprite.from(url);
       if ('h' in meme) memeHeight = meme.h * scale;
       else memeHeight = 28 * scale;
