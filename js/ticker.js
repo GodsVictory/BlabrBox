@@ -19,7 +19,7 @@ function startTicker() {
     }
     counter++;
     if (document.hidden) return;
-    document.getElementById('channel').focus();
+    //document.getElementById('channel').focus();
 
 
     // INPUT HANDLER
