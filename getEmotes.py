@@ -3,7 +3,7 @@ import json, requests
 out = {}
 
 #emotes = [{"id":1,"regex":"\\:-?\\)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/1/1.0"}},{"id":2,"regex":"\\:-?\\(","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/2/1.0"}},{"id":3,"regex":"\\:-?D","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/3/1.0"}},{"id":4,"regex":"\\\u0026gt\\;\\(","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/4/1.0"}},{"id":5,"regex":"\\:-?[z|Z|\\|]","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/5/1.0"}},{"id":6,"regex":"[oO](_|\\.)[oO]","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/6/1.0"}},{"id":7,"regex":"B-?\\)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/7/1.0"}},{"id":8,"regex":"\\:-?(o|O)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/8/1.0"}},{"id":9,"regex":"\\\u0026lt\\;3","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/9/1.0"}},{"id":10,"regex":"\\:-?[\\\\/]","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/10/1.0"}},{"id":11,"regex":"\\;-?\\)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/11/1.0"}},{"id":12,"regex":"\\:-?(p|P)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/12/1.0"}},{"id":13,"regex":"\\;-?(p|P)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/13/1.0"}},{"id":14,"regex":"R-?\\)","images":{"emoticon_set":0,"height":18,"width":24,"url":"https://static-cdn.jtvnw.net/emoticons/v1/14/1.0"}}]
-'''
+
 h = {'Client-ID': 'qhiutlo0k7m9dd5ovtqgy3ii087gbe', 'Accept': 'application/vnd.twitchtv.v5+json'}
 r = requests.get('https://api.twitch.tv/kraken/chat/emoticon_images?emotesets=0', headers=h)
 emotes = r.json()['emoticon_sets']['0']
@@ -61,6 +61,7 @@ for e in out:
   else:
     with open("emotes/"+e+".png", 'wb') as f:
       f.write(r.content)  
+'''
 
 with open('emotes.json', 'w') as f:
   json.dump(out, f)
